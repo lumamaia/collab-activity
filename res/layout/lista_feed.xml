@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="40dp"
+    android:background="@drawable/list_customizado"
+    android:orientation="horizontal"
+    android:descendantFocusability="blocksDescendants" >
+
+    <TextView
+        android:id="@+id/tv_msgm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/ic_feed"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="15dp"
+        android:text="mensagem feed"
+        android:textColor="#343434"
+        android:textSize="10dip"
+        android:typeface="sans" />
+
+  
+
+    <TextView
+        android:id="@+id/tv_texto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/tv_contador"
+        android:layout_marginRight="10dp"
+        android:textColor="#343434"
+        android:textSize="8dip"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/tv_contador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:textColor="#343434"
+        android:textSize="8dip" />
+
+      <ImageButton
+          android:id="@+id/ic_feed"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:layout_alignParentTop="true"
+          android:layout_marginTop="8dp"
+          android:layout_alignRight="@+id/tv_contador"
+          android:background="@drawable/bg_button_selector"
+          android:focusableInTouchMode="true" />
+
+</RelativeLayout>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="20dip"
+    android:orientation="horizontal"
+    android:background="@drawable/list_customizado"
+    android:descendantFocusability="blocksDescendants" >
+
+    <TextView
+        android:id="@+id/tv_membro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="mensagem feed"
+        android:typeface="sans" 
+        android:textColor="@android:color/black"/>
+          <!--  android:focusableInTouchMode="true" -->
+
+      <ImageButton
+          android:id="@+id/ic_convite"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignBottom="@+id/tv_membro"
+          android:layout_alignParentRight="true"
+          android:layout_alignParentTop="true"
+          android:focusableInTouchMode="true" />
+
+</RelativeLayout>

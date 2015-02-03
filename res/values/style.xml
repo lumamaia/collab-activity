@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <style name="AppTheme" parent="android:Theme.Light" />
+    
+	<style name="bt_customizado">
+	    <item name="android:layout_gravity">center_horizontal</item>
+	    <item name="android:padding">6dp</item>
+	    <item name="android:minWidth">6dp</item>
+	    <item name="android:minHeight">6dp</item>
+	    <item name="android:textSize">16sp</item>
+	    <item name="android:background">@drawable/bt_customizado</item>
+	    <item name="android:textColor">#ffffff</item>
+	    <item name="android:gravity">center</item>
+	    <item name="android:textStyle">bold</item>
+	</style>
+	
+	<style name="bt_customizado2">
+	    <item name="android:layout_gravity">center_horizontal</item>
+	    <item name="android:padding">6dp</item>
+	    <item name="android:minWidth">6dp</item>
+	    <item name="android:minHeight">6dp</item>
+	    <item name="android:textSize">16sp</item>
+	    <item name="android:textColor">#ffffff</item>
+	    <item name="android:background">#7587a1</item>	    
+	    <item name="android:gravity">center</item>
+	    <item name="android:textStyle">bold</item>
+	</style>
+	
+	
+</resources>

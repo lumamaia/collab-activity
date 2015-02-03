@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_customizado"
+    android:orientation="horizontal"
+    android:descendantFocusability="blocksDescendants" >
+
+
+    <!-- Rightend Arrow -->
+    <LinearLayout
+        android:id="@+id/thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="2dp"
+        android:padding="1dp" >
+
+        <ImageButton
+            android:id="@+id/ic_projeto"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:paddingTop="4dp"
+            android:src="@drawable/ic_projeto"
+            android:background="@android:color/transparent" />
+    </LinearLayout>
+    
+    <ImageView
+        android:id="@+id/ic_setinha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_setinha" 
+         android:focusableInTouchMode="true" />
+    <!-- City -->
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/tv_proj_nome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="13dp"
+            android:text="Nome Atividade"
+            android:textColor="#040404"
+            android:textSize="16dip"
+            android:textStyle="bold"
+            android:typeface="sans" />
+        <!-- Weather Information -->
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_proj_prazo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/linearLayout1"
+        android:layout_toLeftOf="@+id/ic_setinha"
+        android:layout_weight="0.74"
+        android:text="prazo"
+        android:textColor="#343434"
+        android:textSize="11dip" />
+
+</RelativeLayout>
