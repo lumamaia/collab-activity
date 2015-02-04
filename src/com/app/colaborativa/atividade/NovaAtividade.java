@@ -40,7 +40,7 @@ public class NovaAtividade extends ListActivity {
 	private EditText descricao;
 	private Date data_prazo;
 	private Button salvar;
-	private String proj_id;
+	private String proj_id, proj_nome;
 	ParseObject projeto;
 	List<ParseUser> convidados = new ArrayList<ParseUser>();
 	private Button bt_projeto, bt_feed, bt_convidar;
@@ -54,6 +54,7 @@ public class NovaAtividade extends ListActivity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			proj_id = extras.getString("projeto_id");
+			proj_nome = extras.getString("projeto_nome");
 			findProjeto();
 			
 		}
@@ -120,6 +121,7 @@ public class NovaAtividade extends ListActivity {
 					
 					Intent VoltarParaAtividade = new Intent(NovaAtividade.this, Atividade.class);
 					VoltarParaAtividade.putExtra("projeto_id", proj_id);
+					VoltarParaAtividade.putExtra("projeto_nome", proj_id);
 					NovaAtividade.this.startActivity(VoltarParaAtividade);
 					NovaAtividade.this.finish();
 					

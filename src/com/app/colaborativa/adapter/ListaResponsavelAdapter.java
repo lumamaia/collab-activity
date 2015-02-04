@@ -1,5 +1,6 @@
 package com.app.colaborativa.adapter;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.app.colaborativa.R;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 public class ListaResponsavelAdapter extends BaseAdapter {
@@ -48,6 +50,22 @@ public class ListaResponsavelAdapter extends BaseAdapter {
 			public void onClick(View v) {
 				if(status == "semconvite"){
 					//enviar convite
+					
+					 ParseObject convite = new ParseObject("convite_responsavel");
+					 convite.put("atividade", atividade);
+					 convite.put("responsavel", membro);
+					 convite.put("usuario", ParseUser.getCurrentUser());
+					 convite.put("status", "pendente");
+					 convite.saveInBackground();
+					 
+					 ParseObject feed2 = new ParseObject("feed");
+					 feed2.put("atividade", atividade);
+					 feed2.put("modelo", "InformativoSugestaoResponsavel");
+					 feed2.put("icone", "like");
+					 feed2.put("membro", membro);
+					 feed2.put("contador", 0);
+					 feed2.put("data", new Date());
+					 feed2.saveInBackground();
 				}
 				else if(status == "semconvite"){
 					

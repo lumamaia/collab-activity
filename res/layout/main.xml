@@ -60,22 +60,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Seu numero de Cadastro:" />
-
-        <EditText
-            android:id="@+id/main_celular2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:editable="false"
-            android:layout_weight="1"
-            android:ems="10" />
-        
+       
         <EditText
             android:id="@+id/main_celular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:editable="false"
-            android:hint="Celular"
-            style="@drawable/apptheme_textfield_focused_holo_light"/>
+            android:hint="Celular"/>
 
     </LinearLayout>
 

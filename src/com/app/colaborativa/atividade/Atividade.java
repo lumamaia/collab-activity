@@ -43,6 +43,7 @@ public class Atividade extends ListActivity {
 				
 				Intent IrParaAddAtividade = new Intent(Atividade.this, NovaAtividade.class);
 				IrParaAddAtividade.putExtra("projeto_id", proj_id);
+				IrParaAddAtividade.putExtra("projeto_nome", proj_nome);
 				Atividade.this.startActivity(IrParaAddAtividade);
 				Atividade.this.finish();
 				

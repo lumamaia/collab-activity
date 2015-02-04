@@ -100,10 +100,10 @@ public class GerenciarResponsavel extends ListActivity{
 				feed.put("data", new Date());
 				feed.saveInBackground();
 
-				Intent IrParaResponsavel = new Intent(
-						GerenciarResponsavel.this, GerenciarResponsavel.class);
-				GerenciarResponsavel.this.startActivity(IrParaResponsavel);
-				GerenciarResponsavel.this.finish();
+//				Intent IrParaResponsavel = new Intent(
+//						GerenciarResponsavel.this, GerenciarResponsavel.class);
+//				GerenciarResponsavel.this.startActivity(IrParaResponsavel);
+//				GerenciarResponsavel.this.finish();
 
 			}
 		});
@@ -183,12 +183,10 @@ public class GerenciarResponsavel extends ListActivity{
 					}
 				}
 				if(membro.hasSameId(ParseUser.getCurrentUser())){
-					if(status.equals("responsavel")){
-						bt_ser_responsavel.setEnabled(true);
-						bt_ser_responsavel.setText("Você já é Responsável");
+					if(status.equals("aceito")){
+						bt_ser_responsavel.setVisibility(View.GONE);
 					}
 					else{
-						bt_ser_responsavel.setEnabled(false);
 						bt_ser_responsavel.setText("Ser Responsável");
 					}
 				}
