@@ -59,6 +59,9 @@ public class NovaAtividade extends ListActivity {
 			
 		}
 		
+		TextView contexto = (TextView) findViewById(R.id.tv_contexto);
+		contexto.setText(proj_nome+" > Nova Atividade");
+		
 		prazo = (EditText) findViewById(R.id.atividade_prazo);
 		prazo.addTextChangedListener(Mask.insert("##/##/####", prazo));
 		
@@ -104,7 +107,7 @@ public class NovaAtividade extends ListActivity {
 						 convite.put("atividade", atividade);
 						 convite.put("responsavel", membro);
 						 convite.put("usuario", ParseUser.getCurrentUser());
-						 convite.put("status", "pendente");
+						 convite.put("status", "Convidado");
 						 convite.saveInBackground();
 						 
 						 ParseObject feed2 = new ParseObject("feed");
@@ -121,7 +124,7 @@ public class NovaAtividade extends ListActivity {
 					
 					Intent VoltarParaAtividade = new Intent(NovaAtividade.this, Atividade.class);
 					VoltarParaAtividade.putExtra("projeto_id", proj_id);
-					VoltarParaAtividade.putExtra("projeto_nome", proj_id);
+					VoltarParaAtividade.putExtra("projeto_nome", proj_nome);
 					NovaAtividade.this.startActivity(VoltarParaAtividade);
 					NovaAtividade.this.finish();
 					

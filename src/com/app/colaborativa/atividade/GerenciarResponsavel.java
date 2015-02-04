@@ -3,8 +3,10 @@ package com.app.colaborativa.atividade;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.app.colaborativa.adapter.ListaComentarioAdapter;
@@ -37,12 +40,14 @@ public class GerenciarResponsavel extends ListActivity{
 
 	private EditText txt_nome, txt_comentario, txt_prazo, txt_descricao;
 	private Button salvar, bt_projeto, bt_feed, bt_recusar, bt_ser_responsavel;
-	public ParseObject atividade1;
+	public ParseObject atividade1, convite_atual;
 	public List<ParseObject> convite = null;
 	public ListaResponsavelAdapter responsavelAdapter;
-	public String atividade_id, nome, prazo, descricao, projeto_id;
+	public String atividade_id, nome, prazo, descricao, projeto_id,projeto_nome;
+	public List<String> projeto_membros = new ArrayList<String>();
 	public ViewFlipper viewFlipper;
 	public static List<ParseUser> todos_membros;
+	Map<ParseUser, String> lista_responsavel;
 
 	/** Called when the activity is first created. */
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +56,9 @@ public class GerenciarResponsavel extends ListActivity{
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			atividade_id = extras.getString("atividade_id");
+			projeto_id = extras.getString("projeto_id");
+			projeto_nome = extras.getString("projeto_nome");
+			projeto_membros.addAll(Arrays.asList(extras.getString("projeto_membros").replace("[", "").replace("]", "").split("\\s*,\\s*")));
 			findAtividade();
 		}
 
@@ -87,9 +95,22 @@ public class GerenciarResponsavel extends ListActivity{
 			@Override
 			public void onClick(View v) {
 
-				// ParseObject convite = new ParseObject("convite_responsavel");
-				convite.get(0).put("status", "Aceito");
-				convite.get(0).saveInBackground();
+				bt_ser_responsavel.setVisibility(View.GONE);
+			
+				if(convite_atual == null){
+					convite_atual = new ParseObject("convite_responsavel");
+					convite_atual.put("atividade", atividade1);
+					convite_atual.put("responsavel", ParseUser.getCurrentUser());
+					convite_atual.put("usuario", ParseUser.getCurrentUser());
+				}
+				
+				convite_atual.put("status", "Responsável");
+				convite_atual.saveInBackground();
+				
+				List<Object> responsaveis = new ArrayList<Object>();
+				responsaveis.add(ParseUser.getCurrentUser().getObjectId());				
+				atividade1.put("responsavel", responsaveis);
+				atividade1.saveInBackground();
 
 				ParseObject feed = new ParseObject("feed");
 				feed.put("atividade", atividade1);
@@ -100,10 +121,14 @@ public class GerenciarResponsavel extends ListActivity{
 				feed.put("data", new Date());
 				feed.saveInBackground();
 
-//				Intent IrParaResponsavel = new Intent(
-//						GerenciarResponsavel.this, GerenciarResponsavel.class);
-//				GerenciarResponsavel.this.startActivity(IrParaResponsavel);
-//				GerenciarResponsavel.this.finish();
+				Intent IrPara = new Intent(
+						GerenciarResponsavel.this, GerenciarAtividade.class);
+				IrPara.putExtra("atividade_id", atividade_id);
+				IrPara.putExtra("projeto_id", projeto_id);
+				IrPara.putExtra("projeto_nome", projeto_nome);
+				IrPara.putExtra("projeto_membros", projeto_membros.toString());
+				GerenciarResponsavel.this.startActivity(IrPara);
+				GerenciarResponsavel.this.finish();
 
 			}
 		});
@@ -118,28 +143,10 @@ public class GerenciarResponsavel extends ListActivity{
 			public void done(ParseObject object, com.parse.ParseException e) {
 				if (e == null) {
 					atividade1 = object;
-					new RemoteDataTask().execute();
+					TextView contexto = (TextView) findViewById(R.id.tv_contexto);
+					contexto.setText(projeto_nome+" > "+atividade1.getString("nome"));					
 					
-//					ParseQuery<ParseObject> query = ParseQuery.getQuery("convite_responsavel");
-//					query.whereEqualTo("atividade", atividade1);
-//					query.whereEqualTo("responsavel", ParseUser.getCurrentUser());
-//
-//					query.findInBackground(new FindCallback<ParseObject>() {
-//						
-//						@Override
-//						public void done(List<ParseObject> objects, com.parse.ParseException e) {
-//							if (e == null) {
-//								if(objects.size() != 0){
-//									
-//									convite = objects;
-//									bt_aceitar = (Button) findViewById(R.id.bt_aceitar_convite);
-//									bt_aceitar.setEnabled(true);
-//								}
-//							
-//							}
-//						}
-//					
-//					});
+					new RemoteDataTask().execute();
 				}
 			}	
 
@@ -160,7 +167,9 @@ public class GerenciarResponsavel extends ListActivity{
 
 			try {
 				convite = query.find();
-				todos_membros = ParseUser.getQuery().orderByAscending("objectId").find();
+				//todos_membros = ParseUser.getQuery().orderByAscending("objectId").find();
+				todos_membros = ParseUser.getQuery().whereContainedIn("objectId", projeto_membros).orderByAscending("nome").find();
+					
 
 			} catch (com.parse.ParseException e) {
 
@@ -171,29 +180,28 @@ public class GerenciarResponsavel extends ListActivity{
 		@Override
 		protected void onPostExecute(Void result) {
 			bt_ser_responsavel = (Button) findViewById(R.id.bt_aceitar_convite);
-			Map<ParseUser, String> lista_responsavel = new HashMap<ParseUser, String>();
-			
+			lista_responsavel = new LinkedHashMap<ParseUser, String>();
+			ParseObject convite_aux = null;
 			String status;
 			for (ParseUser membro : todos_membros) {
-				status = "semconvite";
+				status = "";
 				for (ParseObject conv  : convite){
 					if(membro.hasSameId(conv.getParseUser("responsavel"))){
 						status = conv.getString("status");
+						convite_aux = conv;
 						break;
 					}
 				}
 				if(membro.hasSameId(ParseUser.getCurrentUser())){
-					if(status.equals("aceito")){
-						bt_ser_responsavel.setVisibility(View.GONE);
-					}
-					else{
-						bt_ser_responsavel.setText("Ser Responsável");
+					convite_atual = convite_aux;
+					if(!status.equals("Responsável")){
+						bt_ser_responsavel.setVisibility(View.VISIBLE);
 					}
 				}
 				lista_responsavel.put(membro, status);
 			}
 				
-			responsavelAdapter = new ListaResponsavelAdapter(GerenciarResponsavel.this, lista_responsavel);
+			responsavelAdapter = new ListaResponsavelAdapter(GerenciarResponsavel.this, lista_responsavel, atividade1);
 			setListAdapter(responsavelAdapter);
 
 			//se o membro já não for responsavel

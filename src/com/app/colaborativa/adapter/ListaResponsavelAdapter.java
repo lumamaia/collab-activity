@@ -1,7 +1,7 @@
 package com.app.colaborativa.adapter;
 
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import android.content.Context;
@@ -18,20 +18,22 @@ import com.parse.ParseUser;
 
 public class ListaResponsavelAdapter extends BaseAdapter {
 
-	private Map<ParseUser, String> membros = new HashMap<ParseUser, String>();
+	private Map<ParseUser, String> membros = new LinkedHashMap<ParseUser, String>();
 	private ParseUser[] mKeys;
+	private ParseObject atividade;
 	private Context context;
 	private String status;
-	public ListaResponsavelAdapter(Context context, Map<ParseUser, String> membros) {
+	public ListaResponsavelAdapter(Context context, Map<ParseUser, String> membros, ParseObject atividade) {
 		//super();
 		this.membros= membros;
+		this.atividade = atividade;
 		mKeys = membros.keySet().toArray(new ParseUser[membros.size()]);
 		this.context = context;
 	}
 
 	@Override
 	public View getView(int position, View view, ViewGroup parent) {
-		ParseUser membro = (ParseUser) mKeys[position];
+		final ParseUser membro = (ParseUser) mKeys[position];
 		status = (String) getItem(position);
 
 		if (view == null)
@@ -41,21 +43,23 @@ public class ListaResponsavelAdapter extends BaseAdapter {
 		TextView textViewNome = (TextView) view.findViewById(R.id.tv_membro);
 		textViewNome.setText(membro.getString("nome"));
 		
-		TextView textViewStatus = (TextView) view.findViewById(R.id.tv_status);
+		final TextView textViewStatus = (TextView) view.findViewById(R.id.tv_status);
 		textViewStatus.setText(status);
 		
 		view.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				if(status == "semconvite"){
+				if(status == ""){
 					//enviar convite
+					
+					 textViewStatus.setText("Convidado");
 					
 					 ParseObject convite = new ParseObject("convite_responsavel");
 					 convite.put("atividade", atividade);
 					 convite.put("responsavel", membro);
 					 convite.put("usuario", ParseUser.getCurrentUser());
-					 convite.put("status", "pendente");
+					 convite.put("status", "Convidado");
 					 convite.saveInBackground();
 					 
 					 ParseObject feed2 = new ParseObject("feed");

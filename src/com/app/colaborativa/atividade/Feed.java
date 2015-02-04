@@ -84,6 +84,8 @@ public class Feed extends ListActivity {
 						Intent intent = new Intent(Feed.this,
 								GerenciarAtividade.class);
 						intent.putExtra("atividade_id", feed.getParseObject("atividade").getObjectId());
+						intent.putExtra("projeto_nome",feed.getParseObject("atividade").getParseObject("projeto").getString("nome"));
+						intent.putExtra("projeto_membros", feed.getParseObject("atividade").getParseObject("projeto").getList("membros").toString());
 						startActivity(intent);
 					}
 				});

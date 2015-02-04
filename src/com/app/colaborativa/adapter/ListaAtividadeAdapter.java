@@ -50,6 +50,9 @@ public class ListaAtividadeAdapter extends ArrayAdapter<ParseObject> {
         else
         {
         	if(diferenca < 0){
+        		if(ativ.getList("responsavel") == null)
+            		icon_status.setImageResource(R.drawable.ic_status_atrasada_sr);
+        		else
         		icon_status.setImageResource(R.drawable.ic_status_atrasada);
         	}else{
         	icon_status.setImageResource(R.drawable.ic_status_aberta);

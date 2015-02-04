@@ -37,7 +37,11 @@ public class CollabActivityProjectActivity extends Activity {
 		txt_main_celular = (EditText) findViewById(R.id.main_celular);
 
 		//txt_main_celular.addTextChangedListener(Mask.insert("### (##) #####-####", txt_main_celular));
-		
+		if(nome_cadastrado != null)
+		{
+			txt_main_apelido = (EditText) findViewById(R.id.main_apelido);
+			txt_main_apelido.setText(nome_cadastrado);
+		}
 		if(celular_cadastrado != null){
 			txt_main_celular = (EditText) findViewById(R.id.main_celular);
 			txt_main_celular.setText(celular_cadastrado);
@@ -48,11 +52,7 @@ public class CollabActivityProjectActivity extends Activity {
 			txt_main_celular.setText(celular);
 			currentUser.put("celular", celular);
 		}
-		if(nome_cadastrado != null)
-		{
-			txt_main_apelido = (EditText) findViewById(R.id.main_apelido);
-			txt_main_apelido.setText(nome_cadastrado);
-		}
+		
 		
 		
 		bt_projeto = (Button) findViewById(R.id.bt_projeto);		    

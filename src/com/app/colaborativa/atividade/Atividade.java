@@ -23,7 +23,7 @@ import com.app.colaborativa.R;
 public class Atividade extends ListActivity {
 	
 	private ImageButton add_atividade;
-	private String proj_nome, proj_id;
+	private String projeto_nome, projeto_id, proj_membros;
 	private ListaAtividadeAdapter atividadeAdapter;
 	private List<ParseObject> atividades;
 	private Button bt_projeto, bt_feed;
@@ -42,8 +42,8 @@ public class Atividade extends ListActivity {
 			public void onClick(View v) {
 				
 				Intent IrParaAddAtividade = new Intent(Atividade.this, NovaAtividade.class);
-				IrParaAddAtividade.putExtra("projeto_id", proj_id);
-				IrParaAddAtividade.putExtra("projeto_nome", proj_nome);
+				IrParaAddAtividade.putExtra("projeto_id", projeto_id);
+				IrParaAddAtividade.putExtra("projeto_nome", projeto_nome);
 				Atividade.this.startActivity(IrParaAddAtividade);
 				Atividade.this.finish();
 				
@@ -83,12 +83,14 @@ public class Atividade extends ListActivity {
 		
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-			proj_id = extras.getString("projeto_id");
-			proj_nome = extras.getString("projeto_nome");
+			projeto_id = extras.getString("projeto_id");
+			projeto_nome = extras.getString("projeto_nome");
+			proj_membros = extras.getString("projeto_membros");
+			
 		}
 		
 		TextView contexto = (TextView) findViewById(R.id.tv_contexto);
-		contexto.setText(proj_nome+"> Atividades");
+		contexto.setText(projeto_nome+"> Atividades");
 		new RemoteDataTask().execute();
 		
 		super.onContentChanged();
@@ -99,7 +101,7 @@ public class Atividade extends ListActivity {
 
 			ParseQuery<ParseObject> query = ParseQuery.getQuery("atividade");
 //			query.whereEqualTo("projeto", proj_id);
-			query.whereEqualTo("projeto_id", proj_id);
+			query.whereEqualTo("projeto_id", projeto_id);
 
 			try {
 				atividades = query.find();
@@ -122,13 +124,10 @@ public class Atividade extends ListActivity {
 					public void onItemClick(AdapterView<?> adapter, View v, int position, long l) {
 		              ParseObject ativ = atividadeAdapter.getItem(position);
 		              Intent intent = new Intent(Atividade.this,GerenciarAtividade.class);
-		              intent.putExtra("nome", ativ.getString("nome"));
-		              intent.putExtra("prazo", ativ.getDate("prazo").getTime());
-		              intent.putExtra("descricao", ativ.getString("descricao"));
-		              intent.putExtra("status", ativ.getString("status"));
 		              intent.putExtra("projeto_id", ativ.getString("projeto_id"));
+		              intent.putExtra("projeto_nome", projeto_nome);
+		              intent.putExtra("projeto_membros", proj_membros);
 		              intent.putExtra("atividade_id", ativ.getObjectId());
-		              intent.putExtra("position", position);
 		              startActivity(intent);
 		              
 		              //Toast.makeText(ListaProjeto.this,proj.getInt("nome"), Toast.LENGTH_SHORT).show();    

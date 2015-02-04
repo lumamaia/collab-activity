@@ -107,6 +107,7 @@ public class Projeto extends ListActivity {
 								Atividade.class);
 						intent.putExtra("projeto_nome", proj.getString("nome"));
 						intent.putExtra("projeto_id", proj.getObjectId());
+						intent.putExtra("projeto_membros", proj.getList("membros").toString());
 						intent.putExtra("position", position);
 						startActivity(intent);
 

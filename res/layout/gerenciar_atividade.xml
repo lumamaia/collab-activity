@@ -15,7 +15,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
 
-            <LinearLayout
+           <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:orientation="vertical" >
@@ -43,15 +43,39 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
 
-                    <Button
-                        android:id="@+id/bt_salvar"
-                        style="@style/bt_customizado2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Salvar" />
-                </LinearLayout>
+                    <TextView
+			            android:id="@+id/tv_contexto"
+			            android:layout_width="match_parent"
+			            android:layout_height="match_parent"
+			            android:layout_weight="0.73"
+			            android:background="#b5cdff"
+			            android:gravity="center"
+			            android:textSize="15dp"
+			            android:text="@string/contexto"
+			            android:textAppearance="?android:attr/textAppearanceLarge" />
+                   </LinearLayout>
+                       
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content" >
+
+                     <Button
+                         android:id="@+id/bt_salvar"
+                         style="@style/bt_customizado2"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_weight="0.93"
+                         android:text="Salvar" />
+
+                     <Button
+                         android:id="@+id/bt_finalizar"
+                         style="@style/bt_customizado2"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="Finalizar Atividade" />
+                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -114,37 +138,25 @@
                         android:ems="10" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
 
-                    <Button
-                        android:id="@+id/bt_finalizar"
-                        style="@style/bt_customizado2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Finalizar Atividade" />
-
-                </LinearLayout>
                 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal" >
 
-                    <Button
+<!--                     <Button
                         android:id="@+id/bt_ser_responsavel"
                         style="@style/bt_customizado"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight="1.40"
-                        android:text="Ser Responsável" />
+                        android:text="Ser Responsável" 
+                        android:visibility="gone"/> -->
 
                     <Button
                         android:id="@+id/bt_responsavel"
                         style="@style/bt_customizado"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Gerenciar Responsável" />
                 </LinearLayout>

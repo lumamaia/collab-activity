@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.app.colaborativa.adapter.ListaComentarioAdapter;
@@ -34,18 +35,22 @@ public class GerenciarAtividade extends ListActivity {
 	private Button salvar, salvar_comentario, add_comentario, bt_projeto, bt_feed, finalizar_atividade, bt_responsavel, bt_ser_responsavel;
 	public ParseObject atividade1;
 	public List<ParseObject> comentarios = null;
+	List<ParseObject> responsaveis;
 	public ListaComentarioAdapter comentarioAdapter;
-	public String atividade_id, nome, prazo, descricao, projeto_id;
+	public String atividade_id, nome, prazo, descricao, projeto_id,projeto_nome,projeto_membros;
 	public ViewFlipper viewFlipper;
 
 	/** Called when the activity is first created. */
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.gerenciar_atividade);
+		
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			atividade_id = extras.getString("atividade_id");
 			projeto_id = extras.getString("projeto_id");
+			projeto_nome = extras.getString("projeto_nome");
+			projeto_membros = extras.getString("projeto_membros");
 			this.findAtividade();
 		}
 		
@@ -105,6 +110,9 @@ public class GerenciarAtividade extends ListActivity {
 						Intent VoltarParaAtividade = new Intent(
 								GerenciarAtividade.this, Atividade.class);
 						VoltarParaAtividade.putExtra("projeto_id", projeto_id);
+						VoltarParaAtividade.putExtra("projeto_nome", projeto_nome);
+						VoltarParaAtividade.putExtra("atividade_id", atividade_id);
+						VoltarParaAtividade.putExtra("projeto_membros", projeto_membros);
 						GerenciarAtividade.this
 								.startActivity(VoltarParaAtividade);
 						GerenciarAtividade.this.finish();
@@ -147,6 +155,9 @@ public class GerenciarAtividade extends ListActivity {
 						Intent VoltarParaAtividade = new Intent(
 								GerenciarAtividade.this, Atividade.class);
 						VoltarParaAtividade.putExtra("projeto_id", projeto_id);
+						VoltarParaAtividade.putExtra("projeto_nome", projeto_nome);
+						VoltarParaAtividade.putExtra("atividade_id", atividade_id);
+						VoltarParaAtividade.putExtra("projeto_membros", projeto_membros);
 						GerenciarAtividade.this
 								.startActivity(VoltarParaAtividade);
 						GerenciarAtividade.this.finish();
@@ -213,38 +224,7 @@ public class GerenciarAtividade extends ListActivity {
 			}
 		});
 	    
-	    bt_ser_responsavel = (Button) findViewById(R.id.bt_ser_responsavel);
-	    bt_ser_responsavel.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-
-				List<Object> responsaveis = new ArrayList<Object>();
-				responsaveis.add(ParseUser.getCurrentUser().getObjectId());
-				
-				atividade1.put("responsavel", responsaveis);
-				atividade1.saveInBackground();
-				
-				ParseObject convite = new ParseObject("convite_responsavel");
-				 convite.put("atividade", atividade1);
-				 convite.put("responsavel", ParseUser.getCurrentUser());
-				 convite.put("usuario", ParseUser.getCurrentUser());
-				 convite.put("status", "aceito");
-				 convite.saveInBackground();
-
-				 
-				ParseObject feed = new ParseObject("feed");
-				feed.put("atividade", atividade1);
-				feed.put("membro", ParseUser.getCurrentUser());
-				feed.put("modelo", "NovoResponsavel");
-				feed.put("icone", "like");
-				feed.put("contador", 0);
-				feed.put("data", new Date());
-				feed.saveInBackground();
-
-			}
-		});
-		
 	    bt_responsavel = (Button) findViewById(R.id.bt_responsavel);		    
 	    bt_responsavel.setOnClickListener(new View.OnClickListener() {
 			
@@ -252,11 +232,49 @@ public class GerenciarAtividade extends ListActivity {
 			public void onClick(View v) {
 				Intent IrParaResponsavel = new Intent(GerenciarAtividade.this, GerenciarResponsavel.class);
 				IrParaResponsavel.putExtra("atividade_id", atividade_id);
+				IrParaResponsavel.putExtra("projeto_id", projeto_id);
+				IrParaResponsavel.putExtra("projeto_nome", projeto_nome);
+				IrParaResponsavel.putExtra("projeto_membros", projeto_membros);
 				GerenciarAtividade.this.startActivity(IrParaResponsavel);
 				GerenciarAtividade.this.finish();
 				
 			}
 		});
+	    
+//	    bt_ser_responsavel = (Button) findViewById(R.id.bt_ser_responsavel);
+//	    bt_ser_responsavel.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//
+//				bt_ser_responsavel.setVisibility(View.GONE);
+//				
+//				List<Object> responsaveis = new ArrayList<Object>();
+//				responsaveis.add(ParseUser.getCurrentUser().getObjectId());
+//				
+//				atividade1.put("responsavel", responsaveis);
+//				atividade1.saveInBackground();
+//				
+//				ParseObject convite = new ParseObject("convite_responsavel");
+//				 convite.put("atividade", atividade1);
+//				 convite.put("responsavel", ParseUser.getCurrentUser());
+//				 convite.put("usuario", ParseUser.getCurrentUser());
+//				 convite.put("status", "Responsável");
+//				 convite.saveInBackground();
+//
+//				 
+//				ParseObject feed = new ParseObject("feed");
+//				feed.put("atividade", atividade1);
+//				feed.put("membro", ParseUser.getCurrentUser());
+//				feed.put("modelo", "NovoResponsavel");
+//				feed.put("icone", "like");
+//				feed.put("contador", 0);
+//				feed.put("data", new Date());
+//				feed.saveInBackground();
+//
+//			}
+//		});
+		
 	}
 
 	public void findAtividade() {
@@ -265,8 +283,15 @@ public class GerenciarAtividade extends ListActivity {
 
 			@Override
 			public void done(ParseObject object, com.parse.ParseException e) {
-				if (e == null) {
+				if (e == null) {				
+					
 					atividade1 = object;
+					if(atividade1.getString("status").equals("Finalizada"))
+						finalizar_atividade.setVisibility(View.GONE);
+					
+					TextView contexto = (TextView) findViewById(R.id.tv_contexto);
+					contexto.setText(projeto_nome+" > "+atividade1.getString("nome"));					
+							
 					txt_nome = (EditText) findViewById(R.id.atividade_nome);
 					txt_nome.setText(atividade1.getString("nome"));
 					txt_prazo = (EditText) findViewById(R.id.atividade_prazo);
@@ -279,11 +304,11 @@ public class GerenciarAtividade extends ListActivity {
 						finalizar_atividade = (Button) findViewById(R.id.bt_finalizar);
 						finalizar_atividade.setEnabled(false);
 					}
-					List<ParseObject> resp = atividade1.getList("responsavel");
-					if(resp != null)
-					{
-						bt_ser_responsavel.setVisibility(View.GONE);
-					}
+//					List<ParseObject> resp = atividade1.getList("responsavel");
+//					if(resp == null)
+//					{
+//						bt_ser_responsavel.setVisibility(View.VISIBLE);
+//					}
 
 				}
 			}
