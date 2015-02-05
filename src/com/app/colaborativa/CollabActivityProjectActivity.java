@@ -88,6 +88,7 @@ public class CollabActivityProjectActivity extends Activity {
 
 			txt_main_apelido = (EditText) findViewById(R.id.main_apelido);
 			nome_cadastrado = txt_main_apelido.getText().toString();
+			currentUser.increment("acessos");	
 			if(!nome_cadastrado.isEmpty()){
 				currentUser.put("nome", nome_cadastrado);
 				currentUser.saveInBackground();				

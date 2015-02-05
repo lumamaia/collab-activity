@@ -100,7 +100,7 @@ public class Atividade extends ListActivity {
 		protected Void doInBackground(Void... params) {
 
 			ParseQuery<ParseObject> query = ParseQuery.getQuery("atividade");
-//			query.whereEqualTo("projeto", proj_id);
+			query.orderByDescending("prazo");
 			query.whereEqualTo("projeto_id", projeto_id);
 
 			try {

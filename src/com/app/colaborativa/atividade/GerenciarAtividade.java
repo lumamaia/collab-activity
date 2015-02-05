@@ -194,6 +194,7 @@ public class GerenciarAtividade extends ListActivity {
 				 feed.saveInBackground();
 				 
 				 new RemoteDataTask().execute();
+				 txt_comentario = null;
 				 viewFlipper.showPrevious();
 
 			}

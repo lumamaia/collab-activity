@@ -69,6 +69,7 @@ public class NovoProjeto extends ListActivity {
 			txt_prazo.setText(DateFormat.format("dd/MM/yyyy",
 					extras.getLong("projeto_prazo")));
 		}
+		integrantes.add(ParseUser.getCurrentUser().getObjectId().toString());
 		buscarMembros();
 		
 		salvar = (Button) findViewById(R.id.bt_salvar);
@@ -102,24 +103,7 @@ public class NovoProjeto extends ListActivity {
 
 			}
 		});
-
-		add_membro = (Button) findViewById(R.id.bt_add_membro);
-		add_membro.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				nome = txt_nome.getText().toString();
-				prazo = txt_prazo.getText().toString();
-
-				Intent IrParaBuscarContato = new Intent(NovoProjeto.this,
-						BuscarMembro.class);
-				NovoProjeto.this.startActivity(IrParaBuscarContato);
-				NovoProjeto.this.finish();
-
-			}
-		});
-
+		
 		bt_projeto = (Button) findViewById(R.id.button_projeto);
 		bt_projeto.setOnClickListener(new View.OnClickListener() {
 
@@ -163,7 +147,7 @@ public class NovoProjeto extends ListActivity {
 	}
 	
 	private void buscarMembros() {
-		ParseUser.getQuery().findInBackground(new FindCallback<ParseUser>() {
+		ParseUser.getQuery().orderByAscending("nome").findInBackground(new FindCallback<ParseUser>() {
 
 			@Override
 			public void done(List<ParseUser> objects, com.parse.ParseException e) {
@@ -178,6 +162,7 @@ public class NovoProjeto extends ListActivity {
 							int position, long l) {
 						
 						ImageButton selecionado = (ImageButton) v.findViewById(R.id.ic_convite);
+						//if(selecionado.)
 						selecionado.setBackgroundResource(R.drawable.ic_status_finalizada);
 						ParseUser user = integrantesAdapter.getItem(position);
 						integrantes.add(integrantesAdapter.getItem(position).getObjectId());

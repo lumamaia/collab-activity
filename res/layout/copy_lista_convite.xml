@@ -3,14 +3,15 @@
     android:layout_width="fill_parent"
     android:layout_height="20dip"
     android:orientation="horizontal"
-    android:background="@color/myWindowBackground"
+    android:background="@drawable/list_customizado"
     android:descendantFocusability="blocksDescendants" >
 
     <TextView
         android:id="@+id/tv_membro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="membro"
+        android:text="mensagem feed"
+        android:typeface="sans" 
         android:textColor="@android:color/black"/>
           <!--  android:focusableInTouchMode="true" -->
 
@@ -21,7 +22,6 @@
           android:layout_alignBottom="@+id/tv_membro"
           android:layout_alignParentRight="true"
           android:layout_alignParentTop="true"
-          android:focusableInTouchMode="true"
-          android:gravity="center_vertical|center_horizontal" />
+          android:focusableInTouchMode="true" />
 
 </RelativeLayout>
