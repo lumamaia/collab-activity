@@ -16,7 +16,7 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.app.colaborativa.R;
 
-public class ListaMembroAdapter extends ArrayAdapter<ParseUser> implements
+public class ApagarListaMembroAdapter extends ArrayAdapter<ParseUser> implements
 		Filterable {
 
 	private Context context;
@@ -25,7 +25,7 @@ public class ListaMembroAdapter extends ArrayAdapter<ParseUser> implements
 	private static List<ParseUser> original = null;
 	private Filter filter;
 
-	public ListaMembroAdapter(Context context, List<ParseUser> membros) {
+	public ApagarListaMembroAdapter(Context context, List<ParseUser> membros) {
 		super(context, 0, membros);
 		this.context = context;
 		this.original = new ArrayList<ParseUser>(membros);

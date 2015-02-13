@@ -15,5 +15,6 @@
 	<color name="myTextPrimaryColor">#1F1F1F</color>
 	<color name="myNavigationColor">#000000</color>
 	<color name="myGrayColor">#B3B3B3</color>
+	<color name="myBlackColor">#000000</color>
 	<color name="myTextSecundaryColor">#858585</color>
 </resources>

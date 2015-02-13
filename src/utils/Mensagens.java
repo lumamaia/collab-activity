@@ -7,7 +7,7 @@ public class Mensagens {
 	}
 	
 	public String NovaAtividade(String projeto, String atividade, String membro){
-		return projeto+": Uma nova atividade foi criada. Deseja visualizá-la?";
+		return projeto+": Uma nova atividade \""+atividade+"\" foi criada. Deseja visualizá-la?";
 	}
 	public String SugestaoResponsavel(String projeto, String atividade, String membro){
 		return projeto+": Sugeriram você como responsável pela Atividade \""+atividade+"\". Aceita esse desafio??";
@@ -22,7 +22,7 @@ public class Mensagens {
 	}
 
 	public String NovoComentario(String projeto, String atividade, String membro){
-		return projeto+": Tem um novo comentário na \""+atividade+"\"! Deseja visualizá-lo?";
+		return projeto+": Tem um novo comentário na  Atividade \""+atividade+"\"! Deseja visualizá-lo?";
 	}
 
 	public String AtividadeFinalizada(String projeto, String atividade, String membro){

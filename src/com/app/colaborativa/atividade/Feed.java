@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.app.colaborativa.adapter.ListaFeedAdapter;
 import com.parse.ParseException;
@@ -29,7 +30,11 @@ public class Feed extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.feed);
 
+		TextView contexto = (TextView) findViewById(R.id.tv_contexto);
+		contexto.setText("Notificações");
+		
 		new RemoteDataTask().execute();
+		
 
 		bt_projeto = (Button) findViewById(R.id.button_projeto);
 		bt_projeto.setOnClickListener(new View.OnClickListener() {

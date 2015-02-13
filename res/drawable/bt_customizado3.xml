@@ -19,7 +19,7 @@
     <item>
         <shape>
             <solid
-                android:color="#647690" />
+                android:color="#96aac7" />
             <stroke
                 android:width="0.5dp"
                 android:color="#a6bedf" />

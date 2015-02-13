@@ -184,7 +184,7 @@ public class GerenciarResponsavel extends ListActivity{
 			ParseObject convite_aux = null;
 			String status;
 			for (ParseUser membro : todos_membros) {
-				status = "";
+				status = "semconvite";
 				for (ParseObject conv  : convite){
 					if(membro.hasSameId(conv.getParseUser("responsavel"))){
 						status = conv.getString("status");

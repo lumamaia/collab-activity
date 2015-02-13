@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/list_customizado"
+    android:gravity="center_vertical|center_horizontal"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -10,37 +12,36 @@
 
         <Button
             android:id="@+id/button_projeto"
-            style="@style/bt_customizado"
+            style="@style/bt_customizado2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:text="@string/botao1" />
+            android:layout_weight="1"
+            android:text="Projeto" />
 
         <Button
             android:id="@+id/button_feeds"
-            style="@style/bt_customizado"
+            style="@style/bt_customizado2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.49"
-            android:text="@string/botao3" />
-
+            android:layout_weight="1"
+            android:text="Feeds" />
     </LinearLayout>
 
-
-    <LinearLayout
+     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:padding="10dp" >
 
         <TextView
             android:id="@+id/tv_contexto"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0.73"
-            android:background="#b5cdff"
-            android:gravity="center"
-            android:textSize="15dp"
+            android:background="@color/myGrayColor"
+            android:gravity="center_horizontal|center_vertical"
             android:text="@string/contexto"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white" />
 
         <ImageButton
             android:id="@+id/add_atividade"
@@ -48,22 +49,11 @@
             android:layout_height="34dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_plus" />
-
     </LinearLayout>
-    	 <ListView
+
+    <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    
-    
-	    <TextView 
-	        android:id="@android:id/empty"
-	        android:layout_gravity="center"
-	        android:text="Nenhuma Atividade Encontrada"
-	        android:layout_height="wrap_content"
-	        android:layout_width="wrap_content"
-	        android:textColor="@android:color/black"
-	        android:textSize="22sp"
-	         />
 
 </LinearLayout>

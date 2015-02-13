@@ -2,105 +2,81 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    android:orientation="vertical" 
+    android:background="@color/myWindowBackground"
+    android:gravity="center_horizontal">
+ <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
         <Button
             android:id="@+id/button_projeto"
-            style="@style/bt_customizado"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:text="@string/botao1" />
+            android:layout_weight="1"
+            android:text="Projeto" 
+            style="@style/bt_customizado2"/>
 
         <Button
             android:id="@+id/button_feeds"
-            style="@style/bt_customizado"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.49"
-            android:text="@string/botao3" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.73"
-            android:background="#b5cdff"
-            android:gravity="center"
-            android:text="Novo Projeto"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="15dip" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Nome:"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:text="Feeds" 
+            style="@style/bt_customizado2"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    <Button
+            android:id="@+id/bt_salvar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Salvar" 
+            style="@style/bt_customizado3"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="vertical" >
+    	
+        <TextView
+             android:id="@+id/tv_contexto"
+            android:background="@color/myGrayColor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/contexto"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white" />
 
         <EditText
             android:id="@+id/proj_nome"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10" >
+			android:hint="Nome"
+            android:inputType="textCapWords" 
+            android:background="@drawable/apptheme_textfield_default_holo_light" />
 
-            <requestFocus />
-        </EditText>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Prazo:"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
+  
         <EditText
             android:id="@+id/proj_prazo"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="date" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+            android:inputType="date" 
+            android:hint="Prazo"
+            android:background="@drawable/apptheme_textfield_default_holo_light" />
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Grupo:"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:paddingTop="5dp"
+            android:text="Selecione os Membros que farão parte do Projeto:"
+            android:textColor="@color/myGrayColor" />
     </LinearLayout>
 
     <LinearLayout
@@ -113,12 +89,5 @@
             android:layout_height="225dp" />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/bt_salvar"
-        style="@style/bt_customizado"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Salvar" />
 
 </LinearLayout>

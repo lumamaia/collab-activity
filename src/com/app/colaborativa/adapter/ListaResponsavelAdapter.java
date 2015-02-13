@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.colaborativa.R;
@@ -22,7 +23,6 @@ public class ListaResponsavelAdapter extends BaseAdapter {
 	private ParseUser[] mKeys;
 	private ParseObject atividade;
 	private Context context;
-	private String status;
 	public ListaResponsavelAdapter(Context context, Map<ParseUser, String> membros, ParseObject atividade) {
 		//super();
 		this.membros= membros;
@@ -34,7 +34,7 @@ public class ListaResponsavelAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View view, ViewGroup parent) {
 		final ParseUser membro = (ParseUser) mKeys[position];
-		status = (String) getItem(position);
+		final String status = (String) getItem(position);
 
 		if (view == null)
 			view = LayoutInflater.from(context).inflate(R.layout.lista_responsavel,
@@ -43,6 +43,15 @@ public class ListaResponsavelAdapter extends BaseAdapter {
 		TextView textViewNome = (TextView) view.findViewById(R.id.tv_membro);
 		textViewNome.setText(membro.getString("nome"));
 		
+		final ImageView selecionado = (ImageView) view.findViewById(R.id.ic_convite);
+		if(status.equals("Convidado"))
+			selecionado.setBackgroundResource(R.drawable.ic_convidado);
+		else if(status.equals("semconvite"))
+			selecionado.setBackgroundResource(R.drawable.ic_semconvite);
+		else if(status.equals("Responsável"))
+			selecionado.setBackgroundResource(R.drawable.ic_responsavel);
+		
+		
 		final TextView textViewStatus = (TextView) view.findViewById(R.id.tv_status);
 		textViewStatus.setText(status);
 		
@@ -50,10 +59,14 @@ public class ListaResponsavelAdapter extends BaseAdapter {
 			
 			@Override
 			public void onClick(View v) {
-				if(status == ""){
+				
+				TextView tvstatus = (TextView) v.findViewById(R.id.tv_status);
+				
+				if(tvstatus.getText().equals("semconvite")){
 					//enviar convite
 					
 					 textViewStatus.setText("Convidado");
+					 selecionado.setBackgroundResource(R.drawable.ic_convidado);
 					
 					 ParseObject convite = new ParseObject("convite_responsavel");
 					 convite.put("atividade", atividade);
@@ -70,9 +83,6 @@ public class ListaResponsavelAdapter extends BaseAdapter {
 					 feed2.put("contador", 0);
 					 feed2.put("data", new Date());
 					 feed2.saveInBackground();
-				}
-				else if(status == "semconvite"){
-					
 				}
 				
 				

@@ -2,9 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/list_customizado"
+    android:background="@color/myWindowBackground"
     android:orientation="horizontal"
     android:descendantFocusability="blocksDescendants" >
+    
+    <!--     android:background="@drawable/list_customizado" -->
 
 
     <!-- Rightend Arrow -->
@@ -48,7 +50,7 @@
             android:layout_marginLeft="50dp"
             android:layout_marginTop="13dp"
             android:text="Nome Atividade"
-            android:textColor="#040404"
+            android:textColor="@color/myTextPrimaryColor"
             android:textSize="16dip"
             android:textStyle="bold"
             android:typeface="sans" />
@@ -64,7 +66,7 @@
         android:layout_toLeftOf="@+id/ic_setinha"
         android:layout_weight="0.74"
         android:text="prazo"
-        android:textColor="#343434"
+         android:textColor="@color/myTextSecundaryColor"
         android:textSize="11dip" />
 
 </RelativeLayout>

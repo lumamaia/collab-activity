@@ -19,7 +19,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.parse.FindCallback;
@@ -59,6 +61,8 @@ public class NovoProjeto extends ListActivity {
 		
 		txt_prazo = (EditText) findViewById(R.id.proj_prazo);
 		txt_prazo.addTextChangedListener(Mask.insert("##/##/####", txt_prazo));
+		
+		TextView contexto = (TextView) findViewById(R.id.tv_contexto);	
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
@@ -68,6 +72,8 @@ public class NovoProjeto extends ListActivity {
 			txt_nome.setText(extras.getString("projeto_nome"));
 			txt_prazo.setText(DateFormat.format("dd/MM/yyyy",
 					extras.getLong("projeto_prazo")));
+
+			contexto.setText("Projeto"+" - "+(extras.getString("projeto_nome")));
 		}
 		integrantes.add(ParseUser.getCurrentUser().getObjectId().toString());
 		buscarMembros();
@@ -79,27 +85,34 @@ public class NovoProjeto extends ListActivity {
 			public void onClick(View v) {
 
 				txt_prazo = (EditText) findViewById(R.id.proj_prazo);
-				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-				try {
-					data_prazo = sdf.parse(txt_prazo.getText().toString());
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
+								
 				if(projeto==null)
 					projeto = new ParseObject("projeto");
 				
-				projeto.put("nome", txt_nome.getText().toString());
-				projeto.put("prazo", data_prazo);	
-				projeto.put("membros", integrantes);	
-				projeto.put("criador", ParseUser.getCurrentUser());
-				projeto.saveInBackground();
-
-				Intent VoltarParaProjeto = new Intent(NovoProjeto.this,
-						Projeto.class);
-				NovoProjeto.this.startActivity(VoltarParaProjeto);
-				//NovoProjeto.this.finish();
+				if(txt_nome.getText().toString().trim().equals(""))
+				     txt_nome.setError( "Nome é obrigatorio!" );
+				else if(txt_prazo.getText().toString().trim().equals(""))
+					txt_prazo.setError( "Prazo é obrigatorio!" );
+				else{
+					
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+					try {
+						data_prazo = sdf.parse(txt_prazo.getText().toString());
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					projeto.put("nome", txt_nome.getText().toString());
+					projeto.put("prazo", data_prazo);	
+					projeto.put("membros", integrantes);	
+					projeto.put("criador", ParseUser.getCurrentUser());
+					projeto.saveInBackground();
+	
+					Intent VoltarParaProjeto = new Intent(NovoProjeto.this,
+							Projeto.class);
+					NovoProjeto.this.startActivity(VoltarParaProjeto);
+					//NovoProjeto.this.finish();
+				}
 
 			}
 		});
@@ -161,11 +174,16 @@ public class NovoProjeto extends ListActivity {
 					public void onItemClick(AdapterView<?> adapter, View v,
 							int position, long l) {
 						
-						ImageButton selecionado = (ImageButton) v.findViewById(R.id.ic_convite);
-						//if(selecionado.)
-						selecionado.setBackgroundResource(R.drawable.ic_status_finalizada);
+						ImageView selecionado = (ImageView) v.findViewById(R.id.ic_convite);
 						ParseUser user = integrantesAdapter.getItem(position);
-						integrantes.add(integrantesAdapter.getItem(position).getObjectId());
+						
+						if(!integrantes.contains(user.getObjectId())){
+							selecionado.setBackgroundResource(R.drawable.ic_membro_check);
+							integrantes.add(user.getObjectId());
+						}else{
+							selecionado.setBackgroundResource(R.drawable.ic_membro_uncheck);
+							integrantes.remove(user.getObjectId());
+						}
 					
 					}
 				});

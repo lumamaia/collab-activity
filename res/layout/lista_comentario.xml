@@ -19,22 +19,21 @@
         android:id="@+id/tv_comentario_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tv_comentario_membro"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="prazo"
-        android:textColor="#343434"
-        android:textSize="8dip" />
+        android:layout_marginRight="10dp"
+        android:text="prazo 10/12/2015"
+        android:textSize="12dip" />
 
     <TextView
         android:id="@+id/tv_comentario_membro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="225dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="15dp"
+        android:layout_alignParentRight="true"
         android:text="Membro"
-        android:textColor="#343434"
-        android:textSize="10dip"
+        android:textSize="12dip"
         android:typeface="sans" />
 
     <TextView
@@ -45,9 +44,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/tv_comentario_data"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="10dp"
         android:text="comentario........"
-        android:textColor="#343434"
-        android:textSize="12dip"
-        android:typeface="sans" />
-
+        android:textSize="14dip"
+        android:typeface="sans"
+        android:textColor="@color/myBlackColor"/>
 </RelativeLayout>

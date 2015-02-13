@@ -46,14 +46,14 @@ public class ListaIntegranteGrupoAdapter extends ArrayAdapter<ParseUser> {
 		TextView tvNome = (TextView) view.findViewById(R.id.tv_membro);
 		tvNome.setText(membro.getString("nome"));
 		
-		ImageButton selecionado = (ImageButton) view.findViewById(R.id.ic_convite);
+		ImageView selecionado = (ImageView) view.findViewById(R.id.ic_convite);
 		
 		if(integrante.contains(membro.getObjectId())){
-			selecionado.setBackgroundResource(R.drawable.ic_status_finalizada);
+			selecionado.setBackgroundResource(R.drawable.ic_membro_check);
 		}
 		else
 		{
-			selecionado.setBackgroundResource(R.drawable.ic_uncheck);
+			selecionado.setBackgroundResource(R.drawable.ic_membro_uncheck);
 		}
 		return view;
 	}

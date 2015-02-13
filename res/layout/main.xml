@@ -1,73 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+     android:background="@drawable/bg_team"
+         android:baselineAligned="false" >
+
+    <LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <Button
-            android:id="@+id/bt_projeto"
-            style="@style/bt_customizado"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.47"
-            android:text="Projetos" />
-
-        <Button
-            android:id="@+id/bt_feeds"
-            style="@style/bt_customizado"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:text="Feeds" />
-    </LinearLayout>
-
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Seja bem vindo a Atividade Colaborativa!" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
+        android:text="Bem Vindo!" 
+        android:padding="10dp"
+        android:textSize="20dp" 
+         />
+     <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/tv1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Seu Apelido:" />
-
-        <EditText
-            android:id="@+id/main_apelido"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/tv2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Seu numero de Cadastro:" />
-       
-        <EditText
-            android:id="@+id/main_celular"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:editable="false"
-            android:hint="Celular"/>
-
-    </LinearLayout>
+        android:text="Atividade Colaborativa!" 
+        android:padding="10dp"
+        android:textSize="20dp" 
+         />
 
 </LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true" 
+     android:orientation="vertical" >
+    
+     <EditText
+        android:id="@+id/main_apelido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/apptheme_textfield_default_holo_light"
+        android:hint="Seu Apelido"
+        android:inputType="textCapWords">
+    <requestFocus />
+        </EditText>
+
+    <EditText
+        android:id="@+id/main_celular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/apptheme_textfield_default_holo_light"
+        android:editable="false"
+        android:hint="Celular"
+        android:inputType="textCapWords" />
+
+    <Button
+        android:id="@+id/bt_projeto"
+        style="@style/bt_customizado2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Entrar" />
+</LinearLayout>
+</RelativeLayout>

@@ -44,8 +44,8 @@ public class ListaConviteAdapter extends ArrayAdapter<ParseUser> {
 		TextView textViewNome = (TextView) view.findViewById(R.id.tv_membro);
 		textViewNome.setText(membro.getString("nome"));
 		
-		ImageButton conviteIcone = (ImageButton) view.findViewById(R.id.ic_convite);
-		conviteIcone.setBackgroundResource(R.drawable.ic_uncheck);
+		ImageView conviteIcone = (ImageView) view.findViewById(R.id.ic_convite);
+		conviteIcone.setBackgroundResource(R.drawable.ic_membro_uncheck);
 		
 //		conviteIcone.setOnClickListener(new View.OnClickListener() {
 //			

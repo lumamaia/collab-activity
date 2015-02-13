@@ -75,59 +75,66 @@ public class NovaAtividade extends ListActivity {
 					prazo = (EditText) findViewById(R.id.atividade_prazo);
 					descricao = (EditText) findViewById(R.id.atividade_descricao);
 					
-					SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
-					try {
-						data_prazo = sdf.parse(prazo.getText().toString());
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					ParseObject atividade = new ParseObject("atividade");
-					atividade.put("nome", nome.getText().toString());
-					atividade.put("prazo", data_prazo);
-					atividade.put("status", "Em Aberto");
-					atividade.put("descricao", descricao.getText().toString());
-					atividade.put("projeto_id", proj_id);
-					atividade.put("criador", ParseUser.getCurrentUser());
-					if(projeto != null)
-						atividade.put("projeto", projeto);
-					atividade.saveInBackground();
+					if(nome.getText().toString().trim().equals(""))
+					     nome.setError( "Nome é obrigatorio!" );
+					else if(prazo.getText().toString().trim().equals(""))
+						prazo.setError( "Prazo é obrigatorio!" );
+					else{
 					
-					 ParseObject feed = new ParseObject("feed");
-					 feed.put("atividade", atividade);
-					 feed.put("modelo", "NovaAtividade");
-					 feed.put("icone", "like");
-					 feed.put("contador", 0);
-					 feed.put("data", new Date());
-					 feed.saveInBackground();
-					 
-					 for (ParseUser membro : convidados) {
-						 
-						 ParseObject convite = new ParseObject("convite_responsavel");
-						 convite.put("atividade", atividade);
-						 convite.put("responsavel", membro);
-						 convite.put("usuario", ParseUser.getCurrentUser());
-						 convite.put("status", "Convidado");
-						 convite.saveInBackground();
-						 
-						 ParseObject feed2 = new ParseObject("feed");
-						 feed2.put("atividade", atividade);
-						 feed2.put("modelo", "InformativoSugestaoResponsavel");
-						 feed2.put("icone", "like");
-						 feed2.put("membro", membro);
-						 feed2.put("contador", 0);
-						 feed2.put("data", new Date());
-						 feed2.saveInBackground();
-						 
+						SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
+						try {
+							data_prazo = sdf.parse(prazo.getText().toString());
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						ParseObject atividade = new ParseObject("atividade");
+						atividade.put("nome", nome.getText().toString());
+						atividade.put("prazo", data_prazo);
+						atividade.put("status", "Em Aberto");
+						atividade.put("descricao", descricao.getText().toString());
+						atividade.put("projeto_id", proj_id);
+						atividade.put("criador", ParseUser.getCurrentUser());
+						if(projeto != null)
+							atividade.put("projeto", projeto);
+						atividade.saveInBackground();
 						
+						 ParseObject feed = new ParseObject("feed");
+						 feed.put("atividade", atividade);
+						 feed.put("modelo", "NovaAtividade");
+						 feed.put("icone", "like");
+						 feed.put("contador", 0);
+						 feed.put("data", new Date());
+						 feed.saveInBackground();
+						 
+						 for (ParseUser membro : convidados) {
+							 
+							 ParseObject convite = new ParseObject("convite_responsavel");
+							 convite.put("atividade", atividade);
+							 convite.put("responsavel", membro);
+							 convite.put("usuario", ParseUser.getCurrentUser());
+							 convite.put("status", "Convidado");
+							 convite.saveInBackground();
+							 
+							 ParseObject feed2 = new ParseObject("feed");
+							 feed2.put("atividade", atividade);
+							 feed2.put("modelo", "InformativoSugestaoResponsavel");
+							 feed2.put("icone", "like");
+							 feed2.put("membro", membro);
+							 feed2.put("contador", 0);
+							 feed2.put("data", new Date());
+							 feed2.saveInBackground();
+							 
+							
+						}
+						
+						Intent VoltarParaAtividade = new Intent(NovaAtividade.this, Atividade.class);
+						VoltarParaAtividade.putExtra("projeto_id", proj_id);
+						VoltarParaAtividade.putExtra("projeto_nome", proj_nome);
+						NovaAtividade.this.startActivity(VoltarParaAtividade);
+						NovaAtividade.this.finish();
+					
 					}
-					
-					Intent VoltarParaAtividade = new Intent(NovaAtividade.this, Atividade.class);
-					VoltarParaAtividade.putExtra("projeto_id", proj_id);
-					VoltarParaAtividade.putExtra("projeto_nome", proj_nome);
-					NovaAtividade.this.startActivity(VoltarParaAtividade);
-					NovaAtividade.this.finish();
-					
 				}
 			});
 		
@@ -181,13 +188,15 @@ public class NovaAtividade extends ListActivity {
 									public void onItemClick(AdapterView<?> adapter, View v,
 											int position, long l) {
 										
+										ImageView conviteIcone = (ImageView) v.findViewById(R.id.ic_convite);
 										ParseUser user = responsavelAdapter.getItem(position);
-										if(!convidados.contains(user))
-											convidados.add(responsavelAdapter.getItem(position));
-										
-										ImageButton conviteIcone = (ImageButton) v.findViewById(R.id.ic_convite);
-										conviteIcone.setBackgroundResource(R.drawable.ic_status_finalizada);
-										
+										if(!convidados.contains(user)){
+											convidados.add(user);
+											conviteIcone.setBackgroundResource(R.drawable.ic_membro_check);
+										}else{
+											convidados.remove(user);
+											conviteIcone.setBackgroundResource(R.drawable.ic_membro_uncheck);
+										}
 									}
 								});
 								

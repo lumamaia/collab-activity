@@ -3,18 +3,14 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@color/myWindowBackground"
-    android:gravity="center_vertical|center_horizontal"
+    android:gravity="center_horizontal"
     >
-
-   
+  
 
     <LinearLayout
         android:id="@+id/ll02"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/myWindowBackground"
-        android:gravity="center_vertical|center_horizontal"
-        android:orientation="horizontal" >
+        android:layout_height="wrap_content" >
 
         <Button
             android:id="@+id/button_projeto"
@@ -34,13 +30,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ll021"
+        android:id="@+id/ll03"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll02"
-        android:background="@color/myPrimaryDarkColor"
-        android:gravity="center_vertical|center_horizontal"
-        android:orientation="horizontal" >
+        android:layout_below="@+id/ll02" >
     <Button
             android:id="@+id/bt_salvar"
             android:layout_width="0dp"
@@ -50,72 +43,44 @@
             style="@style/bt_customizado3"/>
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/ll03"
+        android:id="@+id/ll04"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll021"
-        android:background="@color/myWindowBackground"
+        android:layout_below="@+id/ll03"
         android:padding="10dp"
         android:orientation="vertical" >
     	
         <TextView
-             android:id="@+id/tv_contexto"
-            android:background="@color/myGrayColor"
+            android:id="@+id/tv_contexto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/myGrayColor"
             android:gravity="center_horizontal|center_vertical"
             android:text="@string/contexto"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white" />
         
-        <!-- <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Atividade:"
-            android:paddingTop="15dp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/myGrayColor" />
-         -->
         <EditText
             android:id="@+id/atividade_nome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Nome"
-            android:textSize="12sp"
             android:inputType="textCapWords" 
             android:background="@drawable/apptheme_textfield_default_holo_light" />
-        
-        <!--  <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Prazo:"
-            android:paddingTop="5dp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/myGrayColor" /> -->
         
         <EditText
             android:id="@+id/atividade_prazo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Prazo"
-            android:textSize="12sp"
             android:inputType="date" 
             android:background="@drawable/apptheme_textfield_default_holo_light" />
-        
-         <!-- <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Descrição:"
-            android:paddingTop="5dp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/myGrayColor" /> -->
         
         <EditText
             android:id="@+id/atividade_descricao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Descrição"
-            android:textSize="12sp"
             android:inputType="textMultiLine" 
             android:background="@drawable/apptheme_textfield_default_holo_light" />
 
