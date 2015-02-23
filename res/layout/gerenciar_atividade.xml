@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ScrollView01"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
-
-    <LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/LinearLayout01"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/myWindowBackground"
         android:gravity="center_horizontal"
-        android:orientation="vertical" >
+        android:orientation="vertical" 
+        android:scrollbars="vertical">
 
-        <!--
-             <ViewFlipper
-            android:id="@+id/ViewFlipper01"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
-        -->
-
+        
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -88,7 +78,8 @@
                             android:layout_width="55dp"
                             android:layout_height="55dp"
                             android:src="@drawable/ic_add_comentario"
-                            android:layout_weight="1" />
+                            android:layout_weight="1" 
+                            style="@style/bt_imagem"/>
 
 
                         <ImageView
@@ -97,7 +88,8 @@
                             android:layout_height="55dp"
                             android:layout_gravity="center_horizontal"
                             android:src="@drawable/ic_add_responsavel" 
-                            android:layout_weight="1"/>
+                            android:layout_weight="1" 
+                            style="@style/bt_imagem"/>
                  
 
                         <ImageView
@@ -105,7 +97,8 @@
                             android:layout_width="55dp"
                             android:layout_height="55dp"
                             android:src="@drawable/ic_ativ_finalizar" 
-                            android:layout_weight="1"/>
+                            android:layout_weight="1" 
+                            style="@style/bt_imagem"/>
 
                         <ImageView
                             android:id="@+id/ic_finalizada"
@@ -131,7 +124,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/apptheme_textfield_default_holo_light"
                     android:hint="Nome"
-                    android:inputType="textCapWords" />
+                    android:inputType="textCapSentences" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -163,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/apptheme_textfield_default_holo_light"
                     android:hint="Descrição"
-                    android:inputType="textCapWords" />
+                    android:inputType="textCapSentences" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -181,50 +174,10 @@
                 <ListView
                     android:id="@android:id/list"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="fill_parent" >
                 </ListView>
             </LinearLayout>
         </LinearLayout>
-        <!--
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical" >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <Button
-                        android:id="@+id/bt_salvar_comentario"
-                        style="@style/bt_customizado"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Salvar" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:id="@+id/textView6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Comentario:" />
-
-                    <EditText
-                        android:id="@+id/atividade_comentario"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10" />
-                </LinearLayout>
-            </LinearLayout>
-        </ViewFlipper>
-        -->
 
     </LinearLayout>
 
-</ScrollView>

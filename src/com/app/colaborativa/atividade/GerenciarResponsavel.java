@@ -40,13 +40,14 @@ public class GerenciarResponsavel extends ListActivity{
 
 	private EditText txt_nome, txt_comentario, txt_prazo, txt_descricao;
 	private Button salvar, bt_projeto, bt_feed, bt_recusar, bt_ser_responsavel;
-	public ParseObject atividade1, convite_atual;
+	public ParseObject atividade1;
 	public List<ParseObject> convite = null;
 	public ListaResponsavelAdapter responsavelAdapter;
 	public String atividade_id, nome, prazo, descricao, projeto_id,projeto_nome;
 	public List<String> projeto_membros = new ArrayList<String>();
 	public ViewFlipper viewFlipper;
 	public static List<ParseUser> todos_membros;
+	public static ParseObject convite_atual;
 	Map<ParseUser, String> lista_responsavel;
 
 	/** Called when the activity is first created. */
@@ -185,6 +186,7 @@ public class GerenciarResponsavel extends ListActivity{
 			String status;
 			for (ParseUser membro : todos_membros) {
 				status = "semconvite";
+				convite_aux = null;
 				for (ParseObject conv  : convite){
 					if(membro.hasSameId(conv.getParseUser("responsavel"))){
 						status = conv.getString("status");

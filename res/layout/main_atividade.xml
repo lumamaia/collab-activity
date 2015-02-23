@@ -40,13 +40,14 @@
             android:background="@color/myGrayColor"
             android:gravity="center_horizontal|center_vertical"
             android:text="@string/contexto"
+            android:layout_marginRight="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white" />
 
         <ImageButton
             android:id="@+id/add_atividade"
-            android:layout_width="44dp"
-            android:layout_height="34dp"
+            android:layout_width="35dp"
+            android:layout_height="37dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_plus" />
     </LinearLayout>

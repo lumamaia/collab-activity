@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.colaborativa.R;
+import com.app.colaborativa.atividade.GerenciarResponsavel;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -83,6 +84,8 @@ public class ListaResponsavelAdapter extends BaseAdapter {
 					 feed2.put("contador", 0);
 					 feed2.put("data", new Date());
 					 feed2.saveInBackground();
+					 
+					 GerenciarResponsavel.convite_atual = convite;
 				}
 				
 				

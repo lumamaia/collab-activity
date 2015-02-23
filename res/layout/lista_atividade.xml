@@ -19,8 +19,7 @@
             android:id="@+id/ic_status"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:paddingTop="4dp"
-            android:src="@drawable/ic_ativ_feito" />
+            android:paddingTop="4dp" />
     </LinearLayout>
     <!-- Rightend Arrow -->
 

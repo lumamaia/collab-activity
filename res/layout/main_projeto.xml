@@ -16,7 +16,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Projeto" />
+            android:text="Projeto"
+            android:drawableLeft="@drawable/ic_bt_proj_pq" />
 
         <Button
             android:id="@+id/button_feeds"
@@ -24,7 +25,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Feeds" />
+            android:text="Feeds" 
+            android:drawableLeft="@drawable/ic_bt_feed_pq"/>
     </LinearLayout>
 
     <LinearLayout
@@ -36,24 +38,29 @@
             android:id="@+id/tv_contexto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.73"
+            android:layout_weight="0.60"
             android:background="@color/myGrayColor"
             android:gravity="center_horizontal|center_vertical"
             android:text="@string/contexto"
+            android:layout_marginRight="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white" />
 
         <ImageButton
             android:id="@+id/add_projeto"
-            android:layout_width="44dp"
-            android:layout_height="34dp"
+            android:layout_width="35dp"
+            android:layout_height="37dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_plus" />
     </LinearLayout>
 
-    <ListView
-        android:id="@android:id/list"
+     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" >
+	    <ListView
+	        android:id="@android:id/list"
+	        android:layout_width="match_parent"
+	        android:layout_height="fill_parent" />
+	    </LinearLayout>
 
 </LinearLayout>
