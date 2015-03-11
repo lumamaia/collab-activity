@@ -13,7 +13,7 @@
     android:gravity="center_horizontal"
     android:orientation="vertical" >
 
-    <LinearLayout
+   <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Projeto" />
+                android:text="@string/btn_projeto" />
 
             <Button
                 android:id="@+id/button_feeds"
@@ -136,20 +136,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
 
-            <Button
-                android:id="@+id/bt_aceitar_convite"
-                style="@style/bt_customizado3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_responsavel_min"
-                android:text="Ser Responsável       "
-                android:visibility="gone" />
-        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"

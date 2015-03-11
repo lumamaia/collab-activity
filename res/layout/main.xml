@@ -50,8 +50,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/apptheme_textfield_default_holo_light"
         android:editable="false"
-        android:hint="Celular"
-        android:inputType="textCapWords" />
+        android:hint="Celular" />
 
     <Button
         android:id="@+id/bt_projeto"

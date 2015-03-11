@@ -7,5 +7,7 @@
     <string name="botao3">Feeds</string>
     <string name="nomeProjeto">Projeto:</string>
     <string name="contexto">Projetos</string>
+    <string name="btn_projeto">Projetos</string>
+    
     
 </resources>

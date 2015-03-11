@@ -16,8 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Projeto"
-            android:drawableLeft="@drawable/ic_bt_proj_pq" />
+            android:text="@string/btn_projeto" />
 
         <Button
             android:id="@+id/button_feeds"
@@ -25,8 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Feeds" 
-            android:drawableLeft="@drawable/ic_bt_feed_pq"/>
+            android:text="Feeds" />
     </LinearLayout>
 
     <LinearLayout

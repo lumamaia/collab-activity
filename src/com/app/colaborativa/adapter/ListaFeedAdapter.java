@@ -59,8 +59,10 @@ public class ListaFeedAdapter extends ArrayAdapter<ParseObject> {
 		
 
 		Object arglist[] = new Object[3];
-		arglist[0] = atividade.getParseObject("projeto").getString("nome");
-		arglist[1] = atividade.getString("nome");
+		arglist[0] = feed.getParseObject("projeto").getString("nome");
+		
+		if(atividade != null)
+			arglist[1] = atividade.getString("nome");
 		
 		if(membro != null)
 			arglist[2] = membro.getString("nome");
@@ -112,6 +114,11 @@ public class ListaFeedAdapter extends ArrayAdapter<ParseObject> {
 		if(feed.getString("icone").equals("like")){
 			imageIcone.setBackgroundResource(R.drawable.ic_like);
 			textViewTexto.setText("Curtidas:");
+		}
+		else if(feed.getString("icone").equals("none")){
+			imageIcone.setVisibility(View.GONE);
+			textViewTexto.setVisibility(View.GONE);
+			textViewContador.setVisibility(View.GONE);
 		}
 //		else{
 //			imageIcone.setBackgroundResource(R.drawable.ic_applouse);

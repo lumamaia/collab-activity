@@ -2,73 +2,110 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
     android:background="@color/myWindowBackground"
-    android:gravity="center_horizontal">
- <LinearLayout
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
         <Button
             android:id="@+id/button_projeto"
+            style="@style/bt_customizado2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Projeto" 
-            style="@style/bt_customizado2"/>
+            android:text="@string/btn_projeto" />
 
         <Button
             android:id="@+id/button_feeds"
+            style="@style/bt_customizado2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Feeds" 
-            style="@style/bt_customizado2"/>
+            android:text="Feeds" />
     </LinearLayout>
+
+       
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-    <Button
-            android:id="@+id/bt_salvar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Salvar" 
-            style="@style/bt_customizado3"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="vertical" >
-    	
+        android:orientation="vertical"
+        android:padding="10dp" >
+
         <TextView
-             android:id="@+id/tv_contexto"
-            android:background="@color/myGrayColor"
+            android:id="@+id/tv_contexto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/myGrayColor"
             android:gravity="center_horizontal|center_vertical"
             android:text="@string/contexto"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white" />
 
+         <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal" >
+
+
+                        <ImageView
+                            android:id="@+id/ic_salvar"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:src="@drawable/ic_salvar"
+                            android:layout_weight="1" 
+                            style="@style/bt_imagem"/>
+                        
+                         <ImageView
+                        android:id="@+id/ic_excluir"
+                        style="@style/bt_imagem"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_excluir" 
+                        android:visibility="gone"/>
+
+
+                </LinearLayout>
+                
+        <TextView
+            android:id="@+id/tv_nome"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp"
+            android:visibility="gone"
+            android:text="Nome:"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/myGrayColor" />
+
         <EditText
             android:id="@+id/proj_nome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-			android:hint="Nome"
-            android:inputType="textCapSentences" 
-            android:background="@drawable/apptheme_textfield_default_holo_light" />
+            android:background="@drawable/apptheme_textfield_default_holo_light"
+            android:hint="Nome"
+            android:inputType="textCapSentences" />
 
-  
+        <TextView
+            android:id="@+id/tv_prazo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp"
+             android:visibility="gone"
+            android:text="Prazo:"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/myGrayColor" />
+
         <EditText
             android:id="@+id/proj_prazo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="date" 
+            android:background="@drawable/apptheme_textfield_default_holo_light"
             android:hint="Prazo"
-            android:background="@drawable/apptheme_textfield_default_holo_light" />
+            android:inputType="date" />
 
         <TextView
             android:id="@+id/textView4"
@@ -87,7 +124,6 @@
             android:id="@android:id/list"
             android:layout_width="match_parent"
             android:layout_height="fill_parent" />
-
     </LinearLayout>
 
 </LinearLayout>

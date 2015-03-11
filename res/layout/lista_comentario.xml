@@ -1,53 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/list_customizado"
+    android:layout_height="fill_parent"
+    android:background="@color/myWindowBackground"
     android:orientation="horizontal">
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:orientation="vertical">
-
-        <!-- Weather Information -->
-
-    </LinearLayout>
+    
+      <TextView
+        android:id="@+id/tv_texto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/tv_contador"
+        android:layout_marginRight="15dp"
+                  android:textSize="12dip"
+          android:typeface="sans" 
+        android:text="Curtidas:"
+        android:paddingTop="3dp" />
 
     <TextView
-        android:id="@+id/tv_comentario_data"
+        android:id="@+id/tv_contador"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="10dp"
-        android:text="prazo 10/12/2015"
-        android:textSize="12dip" />
+        android:layout_marginRight="5dp"
+                  android:textSize="12dip"
+          android:typeface="sans" 
+        android:paddingTop="3dp" />
 
-    <TextView
-        android:id="@+id/tv_comentario_membro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_alignParentRight="true"
-        android:text="Membro"
-        android:textSize="12dip"
-        android:typeface="sans" />
+      <ImageButton
+          android:id="@+id/ic_like"
+          android:layout_width="40dp"
+          android:layout_height="40dp"
+          android:layout_marginTop="2dp"
+          android:focusableInTouchMode="true" 
+          android:layout_alignParentRight="true"
+          android:layout_below="@+id/tv_contador"/>
 
-    <TextView
-        android:id="@+id/tv_comentario"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+      <TextView
+          android:id="@+id/tv_comentario_membro"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentTop="true"
+          android:text="Membro"
+          android:textSize="12dip"
+          android:typeface="sans" 
+          android:paddingTop="3dp"
+          android:paddingLeft="5dp"/>
 
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/tv_comentario_data"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="10dp"
-        android:text="comentario........"
-        android:textSize="14dip"
-        android:typeface="sans"
-        android:textColor="@color/myBlackColor"/>
+      <TextView
+          android:id="@+id/tv_comentario_traco"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentTop="true"
+          android:layout_toRightOf="@+id/tv_comentario_membro"
+          android:text=" - "
+          android:textSize="12dip"
+          android:paddingTop="3dp" />
+      
+      <TextView
+          android:id="@+id/tv_comentario_data"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentTop="true"
+          android:layout_toRightOf="@+id/tv_comentario_traco"
+          android:text="10/12/2015 hh:mm:ss"
+          android:textSize="12dip"
+          android:paddingTop="3dp" />
+
+      <TextView
+          android:id="@+id/tv_comentario"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentLeft="true"
+          android:layout_below="@+id/tv_comentario_membro"
+          android:layout_toLeftOf="@+id/tv_texto"
+          android:gravity="center_vertical"
+          android:text="comentario........"
+          android:textColor="@color/myBlackColor"
+          android:textSize="14dip"
+          android:textIsSelectable="true"
+          android:linksClickable="true"
+          android:autoLink="web"          
+          android:typeface="sans" 
+          android:paddingTop="3dp"
+          android:paddingLeft="5dp" />
+
+      <ImageView
+          android:id="@+id/anexo"
+          android:layout_width="100dp"
+          android:layout_height="50dp"
+          android:layout_alignParentLeft="true"
+          android:layout_below="@+id/tv_comentario"
+          android:scaleType="centerCrop"
+                    android:visibility="gone" />
+    
 </RelativeLayout>

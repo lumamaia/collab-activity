@@ -61,7 +61,8 @@ public class Feed extends ListActivity {
 		protected Void doInBackground(Void... params) {
 
 			ParseQuery<ParseObject> query = ParseQuery.getQuery("feed");
-			query.include("atividade.projeto");
+			query.include("atividade");
+			query.include("projeto");
 			query.include("membro");
 			query.orderByDescending("data");
 
@@ -86,11 +87,16 @@ public class Feed extends ListActivity {
 					public void onItemClick(AdapterView<?> adapter, View v,
 							int position, long l) {
 						ParseObject feed = feedAdapter.getItem(position);
-						Intent intent = new Intent(Feed.this,
-								GerenciarAtividade.class);
-						intent.putExtra("atividade_id", feed.getParseObject("atividade").getObjectId());
-						intent.putExtra("projeto_nome",feed.getParseObject("atividade").getParseObject("projeto").getString("nome"));
-						intent.putExtra("projeto_membros", feed.getParseObject("atividade").getParseObject("projeto").getList("membros").toString());
+						Intent intent;
+						if(feed.getString("modelo").equals("NovoProjeto")){
+							intent = new Intent(Feed.this, Atividade.class);
+						}else{
+							intent = new Intent(Feed.this, GerenciarAtividade.class);
+							intent.putExtra("atividade_id", feed.getParseObject("atividade").getObjectId());
+						}
+						
+						intent.putExtra("projeto_nome",feed.getParseObject("projeto").getString("nome"));
+						intent.putExtra("projeto_membros", feed.getParseObject("projeto").getList("membros").toString());
 						startActivity(intent);
 					}
 				});

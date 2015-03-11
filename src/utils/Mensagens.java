@@ -6,6 +6,9 @@ public class Mensagens {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public String NovoProjeto(String projeto, String atividade, String membro){
+		return "Um novo projeto \""+projeto+"\" foi criado pelo membro \""+membro+"\".";
+	}
 	public String NovaAtividade(String projeto, String atividade, String membro){
 		return projeto+": Uma nova atividade \""+atividade+"\" foi criada. Deseja visualizá-la?";
 	}
@@ -27,6 +30,9 @@ public class Mensagens {
 
 	public String AtividadeFinalizada(String projeto, String atividade, String membro){
 		return projeto+": A Atividade \""+atividade+"\" foi conclúida! Parabéns ao grupo!";
+	}
+	public String AtividadeReaberta(String projeto, String atividade, String membro){
+		return projeto+": A Atividade \""+atividade+"\" foi reaberta! Deseja visualizá-la?";
 	}
 	public String NovoResponsavel(String projeto, String atividade, String membro){
 		return projeto+": "+membro+" agora tambem é responsável pela atividade \""+atividade+"\". Dê os parabéns!";

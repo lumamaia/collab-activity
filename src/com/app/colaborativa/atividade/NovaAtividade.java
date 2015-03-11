@@ -3,6 +3,7 @@ package com.app.colaborativa.atividade;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -39,8 +40,9 @@ public class NovaAtividade extends ListActivity {
 	private EditText prazo;
 	private EditText descricao;
 	private Date data_prazo;
-	private Button salvar;
+	private ImageView salvar;
 	private String proj_id, proj_nome;
+	private Long proj_prazo;
 	ParseObject projeto;
 	List<ParseUser> convidados = new ArrayList<ParseUser>();
 	private Button bt_projeto, bt_feed, bt_convidar;
@@ -55,6 +57,7 @@ public class NovaAtividade extends ListActivity {
 		if (extras != null) {
 			proj_id = extras.getString("projeto_id");
 			proj_nome = extras.getString("projeto_nome");
+			proj_prazo = extras.getLong("projeto_prazo");
 			findProjeto();
 			
 		}
@@ -65,7 +68,7 @@ public class NovaAtividade extends ListActivity {
 		prazo = (EditText) findViewById(R.id.atividade_prazo);
 		prazo.addTextChangedListener(Mask.insert("##/##/####", prazo));
 		
-		salvar = (Button) findViewById(R.id.bt_salvar);
+		salvar = (ImageView) findViewById(R.id.bt_salvar);
 		salvar.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
@@ -81,13 +84,28 @@ public class NovaAtividade extends ListActivity {
 						prazo.setError( "Prazo é obrigatorio!" );
 					else{
 					
-						SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 						try {
 							data_prazo = sdf.parse(prazo.getText().toString());
+							Calendar cal = Calendar.getInstance();
+					        cal.setTime(data_prazo);
+					        if(cal.get(Calendar.YEAR)<1000){
+								cal.add(Calendar.YEAR, 2000);
+							}
+							data_prazo = cal.getTime();
+								
 						} catch (ParseException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
+					
+						if(new Date().after(data_prazo)){
+							prazo.setError( "Esse prazo já passou!" );
+						}
+						else if(new Date(proj_prazo).before(data_prazo)){
+							prazo.setError( "Esse prazo é maior que o prazo do Projeto!" );
+						}
+						else{
 						ParseObject atividade = new ParseObject("atividade");
 						atividade.put("nome", nome.getText().toString());
 						atividade.put("prazo", data_prazo);
@@ -101,6 +119,7 @@ public class NovaAtividade extends ListActivity {
 						
 						 ParseObject feed = new ParseObject("feed");
 						 feed.put("atividade", atividade);
+						 feed.put("projeto", projeto);
 						 feed.put("modelo", "NovaAtividade");
 						 feed.put("icone", "like");
 						 feed.put("contador", 0);
@@ -126,14 +145,15 @@ public class NovaAtividade extends ListActivity {
 							 feed2.saveInBackground();
 							 
 							
-						}
+						} 
 						
 						Intent VoltarParaAtividade = new Intent(NovaAtividade.this, Atividade.class);
 						VoltarParaAtividade.putExtra("projeto_id", proj_id);
 						VoltarParaAtividade.putExtra("projeto_nome", proj_nome);
+						VoltarParaAtividade.putExtra("projeto_membros",  projeto.getList("membros").toString());
 						NovaAtividade.this.startActivity(VoltarParaAtividade);
 						NovaAtividade.this.finish();
-					
+						}
 					}
 				}
 			});

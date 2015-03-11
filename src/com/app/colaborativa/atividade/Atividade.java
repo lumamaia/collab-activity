@@ -24,6 +24,7 @@ public class Atividade extends ListActivity {
 	
 	private ImageButton add_atividade;
 	private String projeto_nome, projeto_id, proj_membros;
+	private long projeto_prazo;
 	private ListaAtividadeAdapter atividadeAdapter;
 	private List<ParseObject> atividades;
 	private Button bt_projeto, bt_feed;
@@ -32,8 +33,7 @@ public class Atividade extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_atividade);
-				
-		
+
 		// + Atividade
 		add_atividade = (ImageButton) findViewById(R.id.add_atividade);
 		add_atividade.setOnClickListener(new View.OnClickListener() {
@@ -44,6 +44,7 @@ public class Atividade extends ListActivity {
 				Intent IrParaAddAtividade = new Intent(Atividade.this, NovaAtividade.class);
 				IrParaAddAtividade.putExtra("projeto_id", projeto_id);
 				IrParaAddAtividade.putExtra("projeto_nome", projeto_nome);
+				IrParaAddAtividade.putExtra("projeto_prazo", projeto_prazo);
 				Atividade.this.startActivity(IrParaAddAtividade);
 				Atividade.this.finish();
 				
@@ -86,6 +87,7 @@ public class Atividade extends ListActivity {
 			projeto_id = extras.getString("projeto_id");
 			projeto_nome = extras.getString("projeto_nome");
 			proj_membros = extras.getString("projeto_membros");
+			projeto_prazo = extras.getLong("projeto_prazo");
 			
 		}
 		
@@ -127,6 +129,7 @@ public class Atividade extends ListActivity {
 		              intent.putExtra("projeto_id", ativ.getString("projeto_id"));
 		              intent.putExtra("projeto_nome", projeto_nome);
 		              intent.putExtra("projeto_membros", proj_membros);
+		              intent.putExtra("projeto_prazo", projeto_prazo);
 		              intent.putExtra("atividade_id", ativ.getObjectId());
 		              startActivity(intent);
 		              

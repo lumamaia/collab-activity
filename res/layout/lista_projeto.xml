@@ -23,7 +23,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:paddingTop="4dp"
-            android:src="@drawable/ic_projeto"
+            android:src="@drawable/ic_projeto_edit"
             android:background="@android:color/transparent" />
     </LinearLayout>
     

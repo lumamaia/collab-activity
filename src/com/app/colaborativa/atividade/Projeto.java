@@ -8,6 +8,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -106,6 +107,7 @@ public class Projeto extends ListActivity {
 						Intent intent = new Intent(Projeto.this,
 								Atividade.class);
 						intent.putExtra("projeto_nome", proj.getString("nome"));
+						intent.putExtra("projeto_prazo", proj.getDate("prazo").getTime());
 						intent.putExtra("projeto_id", proj.getObjectId());
 						intent.putExtra("projeto_membros", proj.getList("membros").toString());
 						intent.putExtra("position", position);
