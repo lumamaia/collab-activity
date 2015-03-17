@@ -25,7 +25,7 @@ import com.parse.ParseUser;
 
 public class GerenciarResponsavel extends ListActivity {
 
-	private Button bt_projeto, bt_feed;
+	private Button bt_projeto, bt_feed, bt_contexto;
 	public ParseObject atividade1;
 	public List<ParseObject> convite = null;
 	public ListaResponsavelAdapter responsavelAdapter;
@@ -77,6 +77,15 @@ public class GerenciarResponsavel extends ListActivity {
 
 			}
 		});
+		
+		bt_contexto = (Button) findViewById(R.id.button_contexto);
+		bt_contexto.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 	}
 
 	public void findAtividade() {
@@ -89,8 +98,8 @@ public class GerenciarResponsavel extends ListActivity {
 			public void done(ParseObject object, com.parse.ParseException e) {
 				if (e == null) {
 					atividade1 = object;
-					TextView contexto = (TextView) findViewById(R.id.tv_contexto);
-					contexto.setText(projeto_nome + " > "
+					bt_contexto = (Button) findViewById(R.id.button_contexto);
+					bt_contexto.setText("Projeto " + projeto_nome + " > Atividade "
 							+ atividade1.getString("nome"));
 
 					new RemoteDataTask().execute();

@@ -37,6 +37,7 @@ public class NovoProjeto extends ListActivity {
 	private EditText txt_nome, txt_prazo;
 	private TextView tv_nome, tv_prazo;
 	private String nome, prazo, projeto_id;
+	private boolean is_edicao;
 	private Date data_prazo;
 	private Button bt_projeto, bt_feed;
 	private ImageView salvar, excluir;
@@ -47,6 +48,7 @@ public class NovoProjeto extends ListActivity {
 	public List<ParseObject> membros = new ArrayList<ParseObject>();
 	public List<String> integrantes = new ArrayList<String>();
 	public ParseObject projeto;
+	
 
 	String phoneNumber;
 	public ListView listTelefone;
@@ -56,6 +58,8 @@ public class NovoProjeto extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.novo_projeto);
+		
+		is_edicao = false;
 		
 		txt_nome = (EditText) findViewById(R.id.proj_nome);		
 		txt_prazo = (EditText) findViewById(R.id.proj_prazo);
@@ -67,6 +71,7 @@ public class NovoProjeto extends ListActivity {
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
+			is_edicao = true;
 			projeto_id = extras.getString("projeto_id");
 			projeto = buscarProjeto(projeto_id);
 			integrantes.addAll(Arrays.asList(extras.getString("projeto_membros").split("\\s*,\\s*")));
@@ -77,7 +82,7 @@ public class NovoProjeto extends ListActivity {
 			tv_nome.setVisibility(View.VISIBLE);
 			tv_prazo.setVisibility(View.VISIBLE);
 			excluir.setVisibility(View.VISIBLE);
-			contexto.setText("Projeto"+" - "+(extras.getString("projeto_nome")));
+			contexto.setText(extras.getString("projeto_nome"));
 		}
 		integrantes.add(ParseUser.getCurrentUser().getObjectId().toString());
 		buscarMembros();
@@ -113,7 +118,7 @@ public class NovoProjeto extends ListActivity {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				}
+				
 					if(new Date().after(data_prazo)){
 						txt_prazo.setError( "Esse prazo já passou!" );
 					}
@@ -121,10 +126,12 @@ public class NovoProjeto extends ListActivity {
 					
 						projeto.put("nome", txt_nome.getText().toString());
 						projeto.put("prazo", data_prazo);	
-						projeto.put("membros", integrantes);	
+						projeto.put("membros", integrantes);
+						projeto.put("status", "Em Aberto");	
 						projeto.put("criador", ParseUser.getCurrentUser());
 						projeto.saveInBackground();
 						
+						if(!is_edicao){
 						 ParseObject feed = new ParseObject("feed");
 						 feed.put("projeto", projeto);
 						 feed.put("modelo", "NovoProjeto");
@@ -133,14 +140,15 @@ public class NovoProjeto extends ListActivity {
 						 feed.put("contador", 0);
 						 feed.put("data", new Date());
 						 feed.saveInBackground();
+						}
 						 
 		
 						Intent VoltarParaProjeto = new Intent(NovoProjeto.this,
 								Projeto.class);
 						NovoProjeto.this.startActivity(VoltarParaProjeto);
-						//NovoProjeto.this.finish();
+						NovoProjeto.this.finish();
 					}
-
+				}
 			}
 		});
 
@@ -234,27 +242,5 @@ public class NovoProjeto extends ListActivity {
 			});
 		
 	}
-
-//	@Override
-//	public void onContentChanged() {
-//		// TODO Auto-generated method stub
-//
-//		listTelefone = (ListView) findViewById(R.id.listMembro);
-//
-//		Bundle extras = getIntent().getExtras();
-//		if (extras != null) {
-//
-//			usuarios.add(extras.get("user_id"));
-//			contatos.add(extras.get("nome").toString() + "  "
-//					+ extras.get("celular").toString());
-//		}
-//		if (contatos.size() != 0) {
-//			adapter = new ArrayAdapter<String>(this,
-//					android.R.layout.simple_list_item_1, contatos);
-//			listTelefone.setAdapter(adapter);
-//
-//		}
-//		super.onContentChanged();
-//	}
 
 }

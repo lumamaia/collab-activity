@@ -26,7 +26,21 @@
             android:layout_weight="1"
             android:text="Feeds" />
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp" >
 
+		<Button
+            android:id="@+id/button_contexto"
+            style="@style/bt_customizado3"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+                        android:drawableLeft="@drawable/ic_back2"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:text="@string/contexto" />
+		</LinearLayout>
+		
      <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,7 +53,7 @@
             android:layout_weight="0.73"
             android:background="@color/myGrayColor"
             android:gravity="center_horizontal|center_vertical"
-            android:text="@string/contexto"
+            android:text="Atividades"
             android:layout_marginRight="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white" />

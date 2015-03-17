@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -49,10 +50,9 @@ import com.parse.SaveCallback;
 
 public class GerenciarAtividade extends Activity {
 
-	private EditText txt_nome, txt_prazo, txt_descricao;
+	private EditText nome, prazo, descricao;
 	private Date data_prazo;
-	private Button salvar, bt_projeto,
-			bt_feed;
+	private Button salvar, bt_projeto, bt_feed, bt_contexto;
 	private ImageView ic_add_comentario, ic_add_responsavel, ic_finalizar,
 			ic_finalizada, ic_editar, ic_salvar, ic_excluir, ic_cancelar;
 	public ImageView visualizar_img, anexo, remove_anexo;
@@ -61,8 +61,8 @@ public class GerenciarAtividade extends Activity {
 	public List<ParseObject> comentarios = null;
 	List<ParseObject> responsaveis;
 	public ListaComentarioAdapter comentarioAdapter;
-	public String atividade_id, nome, prazo, descricao, projeto_id,
-			projeto_nome, projeto_membros;
+	public String atividade_id, projeto_id, projeto_nome, projeto_membros;
+	static public Long projeto_prazo;
 	public ViewFlipper viewFlipper;
 
 	/** Called when the activity is first created. */
@@ -76,6 +76,7 @@ public class GerenciarAtividade extends Activity {
 			projeto_id = extras.getString("projeto_id");
 			projeto_nome = extras.getString("projeto_nome");
 			projeto_membros = extras.getString("projeto_membros");
+			projeto_prazo = extras.getLong("projeto_prazo");
 			this.findAtividade();
 		}
 
@@ -83,8 +84,8 @@ public class GerenciarAtividade extends Activity {
 
 		//
 
-		txt_prazo = (EditText) findViewById(R.id.atividade_prazo);
-		txt_prazo.addTextChangedListener(Mask.insert("##/##/####", txt_prazo));
+		prazo = (EditText) findViewById(R.id.atividade_prazo);
+		prazo.addTextChangedListener(Mask.insert("##/##/####", prazo));
 
 		// add_comentario = (Button) findViewById(R.id.bt_add_comentario);
 		ic_add_comentario = (ImageView) findViewById(R.id.ic_add_comentario);
@@ -92,50 +93,49 @@ public class GerenciarAtividade extends Activity {
 
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
+
 				comentario = new ParseObject("comentario");
-				
-				final AlertDialog.Builder builder = new AlertDialog.Builder(GerenciarAtividade.this, AlertDialog.THEME_HOLO_LIGHT);
+
+				final AlertDialog.Builder builder = new AlertDialog.Builder(
+						GerenciarAtividade.this, AlertDialog.THEME_HOLO_LIGHT);
 				builder.setTitle("Comentario");
 				builder.setIcon(R.drawable.ic_comentario);
-				
 
 				final AlertDialog alertDialog = builder.create();
 				LayoutInflater inflater = alertDialog.getLayoutInflater();
-				final View dialoglayout = inflater.inflate(R.layout.add_comentario, null);
+				final View dialoglayout = inflater.inflate(
+						R.layout.add_comentario, null);
 				builder.setView(dialoglayout);
-				
-				final EditText input = (EditText) dialoglayout.findViewById(R.id.input_comentario);
+
+				final EditText input = (EditText) dialoglayout
+						.findViewById(R.id.input_comentario);
 				anexo = (ImageButton) dialoglayout.findViewById(R.id.ic_anexo);
-				remove_anexo = (ImageButton) dialoglayout.findViewById(R.id.ic_remove_anexo);
-				visualizar_img = (ImageView) dialoglayout.findViewById(R.id.imageview);
+				remove_anexo = (ImageButton) dialoglayout
+						.findViewById(R.id.ic_remove_anexo);
+				visualizar_img = (ImageView) dialoglayout
+						.findViewById(R.id.imageview);
 				anexo.setOnClickListener(new View.OnClickListener() {
 
 					public void onClick(View v) {
 						Intent intent = new Intent();
 						intent.setType("image/*");
 						intent.setAction(Intent.ACTION_GET_CONTENT);//
-						startActivityForResult(Intent.createChooser(intent, "Selecione a imagem"),1234);
-						
-						
-						
+						startActivityForResult(Intent.createChooser(intent,
+								"Selecione a imagem"), 1234);
+
 					}
 				});
-				
+
 				remove_anexo.setOnClickListener(new View.OnClickListener() {
 
 					public void onClick(View v) {
 						comentario.remove("anexo");
 						anexo.setVisibility(View.VISIBLE);
-			            remove_anexo.setVisibility(View.GONE);
-			            visualizar_img.setVisibility(View.GONE);
-						
-						
-						
+						remove_anexo.setVisibility(View.GONE);
+						visualizar_img.setVisibility(View.GONE);
+
 					}
 				});
-				
-				
 
 				builder.setNegativeButton("Cancelar",
 						new DialogInterface.OnClickListener() {
@@ -149,9 +149,10 @@ public class GerenciarAtividade extends Activity {
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int which) {
-								
-								comentario.put("comentario", input.getText().toString());
-								
+
+								comentario.put("comentario", input.getText()
+										.toString());
+
 								comentario.put("atividade_id", atividade_id);
 								comentario.put("atividade", atividade1);
 								comentario.put("data", new Date());
@@ -162,7 +163,8 @@ public class GerenciarAtividade extends Activity {
 
 								ParseObject feed = new ParseObject("feed");
 								feed.put("atividade", atividade1);
-								feed.put("projeto", atividade1.getParseObject("projeto"));
+								feed.put("projeto",
+										atividade1.getParseObject("projeto"));
 								feed.put("modelo", "NovoComentario");
 								feed.put("icone", "none");
 								feed.put("contador", 0);
@@ -219,47 +221,44 @@ public class GerenciarAtividade extends Activity {
 								atividade.put("status", "Finalizada");
 								atividade.saveInBackground();
 
-										ParseObject comentario = new ParseObject(
-												"comentario");
-										comentario.put("comentario",
-												"Resolução: "
-														+ input.getText()
-																.toString());
-										comentario.put("atividade_id",
-												atividade_id);
-										comentario.put("atividade", atividade1);
-										comentario.put("data", new Date());
-										comentario.put("contador", 0);
-										comentario.put("usuario",
-												ParseUser.getCurrentUser());
-										comentario.saveInBackground();
+								ParseObject comentario = new ParseObject(
+										"comentario");
+								comentario.put("comentario", "Resolução: "
+										+ input.getText().toString());
+								comentario.put("atividade_id", atividade_id);
+								comentario.put("atividade", atividade1);
+								comentario.put("data", new Date());
+								comentario.put("contador", 0);
+								comentario.put("usuario",
+										ParseUser.getCurrentUser());
+								comentario.saveInBackground();
 
-										ParseObject feed3 = new ParseObject(
-												"feed");
-										feed3.put("atividade", atividade1);
-										feed3.put("projeto", atividade1.getParseObject("projeto"));
-										feed3.put("modelo",
-												"AtividadeFinalizada");
-										feed3.put("icone", "like");
-										feed3.put("contador", 0);
-										feed3.put("data", new Date());
-										feed3.saveInBackground();
+								ParseObject feed3 = new ParseObject("feed");
+								feed3.put("atividade", atividade1);
+								feed3.put("projeto",
+										atividade1.getParseObject("projeto"));
+								feed3.put("modelo", "AtividadeFinalizada");
+								feed3.put("icone", "like");
+								feed3.put("contador", 0);
+								feed3.put("data", new Date());
+								feed3.saveInBackground();
 
-										Intent VoltarParaAtividade = new Intent(
-												GerenciarAtividade.this,
-												Atividade.class);
-										VoltarParaAtividade.putExtra(
-												"projeto_id", projeto_id);
-										VoltarParaAtividade.putExtra(
-												"projeto_nome", projeto_nome);
-										VoltarParaAtividade.putExtra(
-												"atividade_id", atividade_id);
-										VoltarParaAtividade.putExtra(
-												"projeto_membros",
-												projeto_membros);
-										GerenciarAtividade.this
-												.startActivity(VoltarParaAtividade);
-										GerenciarAtividade.this.finish();
+								Intent VoltarParaAtividade = new Intent(
+										GerenciarAtividade.this,
+										Atividade.class);
+								VoltarParaAtividade.putExtra("projeto_id",
+										projeto_id);
+								VoltarParaAtividade.putExtra("projeto_nome",
+										projeto_nome);
+								VoltarParaAtividade.putExtra("projeto_prazo",
+										projeto_prazo);
+								VoltarParaAtividade.putExtra("atividade_id",
+										atividade_id);
+								VoltarParaAtividade.putExtra("projeto_membros",
+										projeto_membros);
+								GerenciarAtividade.this
+										.startActivity(VoltarParaAtividade);
+								GerenciarAtividade.this.finish();
 
 							}
 
@@ -267,7 +266,7 @@ public class GerenciarAtividade extends Activity {
 				alertDialog.show();
 			}
 		});
-		
+
 		ic_finalizada = (ImageView) findViewById(R.id.ic_finalizada);
 		ic_finalizada.setOnClickListener(new View.OnClickListener() {
 
@@ -305,55 +304,34 @@ public class GerenciarAtividade extends Activity {
 								atividade = atividade1;
 								atividade.put("status", "Em Aberto");
 								atividade.saveInBackground();
-								
-								
+
 								ic_finalizada.setVisibility(View.GONE);
 								ic_finalizar.setVisibility(View.VISIBLE);
 
-										ParseObject comentario = new ParseObject(
-												"comentario");
-										comentario.put("comentario",
-												"Reaberta: "
-														+ input.getText()
-																.toString());
-										comentario.put("atividade_id",
-												atividade_id);
-										comentario.put("atividade", atividade1);
-										comentario.put("data", new Date());
-										comentario.put("contador", 0);
-										comentario.put("usuario",
-												ParseUser.getCurrentUser());
-										comentario.saveInBackground();
-										
-										ParseObject feed3 = new ParseObject(
-												"feed");
-										feed3.put("atividade", atividade1);
-										feed3.put("projeto", atividade1.getParseObject("projeto"));
-										feed3.put("modelo",
-												"AtividadeReaberta");
-										feed3.put("icone", "like");
-										feed3.put("contador", 0);
-										feed3.put("data", new Date());
-										feed3.saveInBackground();
-										
-										new RemoteDataTask().execute();
-										dialog.cancel();
-//
-//										Intent VoltarParaAtividade = new Intent(
-//												GerenciarAtividade.this,
-//												Atividade.class);
-//										VoltarParaAtividade.putExtra(
-//												"projeto_id", projeto_id);
-//										VoltarParaAtividade.putExtra(
-//												"projeto_nome", projeto_nome);
-//										VoltarParaAtividade.putExtra(
-//												"atividade_id", atividade_id);
-//										VoltarParaAtividade.putExtra(
-//												"projeto_membros",
-//												projeto_membros);
-//										GerenciarAtividade.this
-//												.startActivity(VoltarParaAtividade);
-//										GerenciarAtividade.this.finish();
+								ParseObject comentario = new ParseObject(
+										"comentario");
+								comentario.put("comentario", "Reaberta: "
+										+ input.getText().toString());
+								comentario.put("atividade_id", atividade_id);
+								comentario.put("atividade", atividade1);
+								comentario.put("data", new Date());
+								comentario.put("contador", 0);
+								comentario.put("usuario",
+										ParseUser.getCurrentUser());
+								comentario.saveInBackground();
+
+								ParseObject feed3 = new ParseObject("feed");
+								feed3.put("atividade", atividade1);
+								feed3.put("projeto",
+										atividade1.getParseObject("projeto"));
+								feed3.put("modelo", "AtividadeReaberta");
+								feed3.put("icone", "like");
+								feed3.put("contador", 0);
+								feed3.put("data", new Date());
+								feed3.saveInBackground();
+
+								new RemoteDataTask().execute();
+								dialog.cancel();
 
 							}
 
@@ -369,47 +347,78 @@ public class GerenciarAtividade extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				txt_nome = (EditText) findViewById(R.id.atividade_nome);
-				txt_prazo = (EditText) findViewById(R.id.atividade_prazo);
-				txt_descricao = (EditText) findViewById(R.id.atividade_descricao);
+				nome = (EditText) findViewById(R.id.atividade_nome);
+				prazo = (EditText) findViewById(R.id.atividade_prazo);
+				descricao = (EditText) findViewById(R.id.atividade_descricao);
 
-				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-				try {
-					data_prazo = sdf.parse(txt_prazo.getText().toString());
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				ParseObject atividade = new ParseObject("atividade");
-				atividade = atividade1;
-				atividade.put("nome", txt_nome.getText().toString());
-				atividade.put("prazo", data_prazo);
-				// atividade.put("projeto_id", projeto_id);
-				atividade.put("descricao", txt_descricao.getText().toString());
-				atividade.saveInBackground(new SaveCallback() {
+				if (nome.getText().toString().trim().equals(""))
+					nome.setError("Nome é obrigatorio!");
+				else if (prazo.getText().toString().trim().equals(""))
+					prazo.setError("Prazo é obrigatorio!");
+				else {
 
-					@Override
-					public void done(com.parse.ParseException e) {
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+					try {
+						data_prazo = sdf.parse(prazo.getText().toString());
+						Calendar cal = Calendar.getInstance();
+						cal.setTime(data_prazo);
+						if (cal.get(Calendar.YEAR) < 1000) {
+							cal.add(Calendar.YEAR, 2000);
+						}
+						data_prazo = cal.getTime();
 
-						Intent VoltarParaAtividade = new Intent(
-								GerenciarAtividade.this, Atividade.class);
-						VoltarParaAtividade.putExtra("projeto_id", projeto_id);
-						VoltarParaAtividade.putExtra("projeto_nome",
-								projeto_nome);
-						VoltarParaAtividade.putExtra("atividade_id",
-								atividade_id);
-						VoltarParaAtividade.putExtra("projeto_membros",
-								projeto_membros);
-						GerenciarAtividade.this
-								.startActivity(VoltarParaAtividade);
-						GerenciarAtividade.this.finish();
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					if (new Date().after(data_prazo)) {
+						prazo.setError("Esse prazo já passou!");
+					} else if (new Date(projeto_prazo).before(data_prazo)) {
+						prazo.setError("Esse prazo é maior que o prazo do Projeto!");
+					} else {
+						ParseObject atividade = new ParseObject("atividade");
+						atividade = atividade1;
+						atividade.put("nome", nome.getText().toString());
+						atividade.put("prazo", data_prazo);
+						// atividade.put("projeto_id", projeto_id);
+						atividade.put("descricao", descricao.getText()
+								.toString());
+						atividade.saveInBackground();
+						// atividade.saveInBackground(new SaveCallback() {
+						//
+						// @Override
+						// public void done(com.parse.ParseException e) {
+						//
+						// Intent VoltarParaAtividade = new Intent(
+						// GerenciarAtividade.this, Atividade.class);
+						// VoltarParaAtividade.putExtra("projeto_id",
+						// projeto_id);
+						// VoltarParaAtividade.putExtra("projeto_nome",
+						// projeto_nome);
+						// VoltarParaAtividade.putExtra("projeto_prazo",
+						// projeto_prazo);
+						// VoltarParaAtividade.putExtra("atividade_id",
+						// atividade_id);
+						// VoltarParaAtividade.putExtra("projeto_membros",
+						// projeto_membros);
+						// GerenciarAtividade.this
+						// .startActivity(VoltarParaAtividade);
+						// GerenciarAtividade.this.finish();
+						//
+						// }
+						// });
+
+						view_gerenciar.setVisibility(View.VISIBLE);
+						view_editar.setVisibility(View.GONE);
+						nome.setEnabled(false);
+						prazo.setEnabled(false);
+						descricao.setEnabled(false);
 
 					}
-				});
-
+				}
 			}
 		});
-
 
 		bt_projeto = (Button) findViewById(R.id.button_projeto);
 		bt_projeto.setOnClickListener(new View.OnClickListener() {
@@ -448,16 +457,17 @@ public class GerenciarAtividade extends Activity {
 				IrParaResponsavel.putExtra("atividade_id", atividade_id);
 				IrParaResponsavel.putExtra("projeto_id", projeto_id);
 				IrParaResponsavel.putExtra("projeto_nome", projeto_nome);
+				IrParaResponsavel.putExtra("projeto_prazo", projeto_prazo);
 				IrParaResponsavel.putExtra("projeto_membros", projeto_membros);
-				GerenciarAtividade.this.startActivity(IrParaResponsavel);
-				GerenciarAtividade.this.finish();
+				startActivity(IrParaResponsavel);
+//				GerenciarAtividade.this.finish();
 
 			}
 		});
 
 		view_editar = (LinearLayout) findViewById(R.id.view_editar);
 		view_gerenciar = (LinearLayout) findViewById(R.id.view_gerenciar);
-		
+
 		ic_excluir = (ImageView) findViewById(R.id.ic_excluir);
 		ic_excluir.setOnClickListener(new View.OnClickListener() {
 
@@ -486,9 +496,9 @@ public class GerenciarAtividade extends Activity {
 			public void onClick(View v) {
 				view_gerenciar.setVisibility(View.GONE);
 				view_editar.setVisibility(View.VISIBLE);
-				txt_nome.setEnabled(true);
-				txt_prazo.setEnabled(true);
-				txt_descricao.setEnabled(true);
+				nome.setEnabled(true);
+				prazo.setEnabled(true);
+				descricao.setEnabled(true);
 
 			}
 		});
@@ -500,10 +510,19 @@ public class GerenciarAtividade extends Activity {
 			public void onClick(View v) {
 				view_gerenciar.setVisibility(View.VISIBLE);
 				view_editar.setVisibility(View.GONE);
-				txt_nome.setEnabled(false);
-				txt_prazo.setEnabled(false);
-				txt_descricao.setEnabled(false);
+				nome.setEnabled(false);
+				prazo.setEnabled(false);
+				descricao.setEnabled(false);
 
+			}
+		});
+
+		bt_contexto = (Button) findViewById(R.id.button_contexto);
+		bt_contexto.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				finish();
 			}
 		});
 
@@ -521,9 +540,13 @@ public class GerenciarAtividade extends Activity {
 					// if(atividade1.getString("status").equals("Finalizada"))
 					// finalizar_atividade.setVisibility(View.GONE);
 
+					bt_contexto = (Button) findViewById(R.id.button_contexto);
+					bt_contexto.setText("Projeto " + projeto_nome
+							+ " > Atividades");
+
 					TextView contexto = (TextView) findViewById(R.id.tv_contexto);
-					contexto.setText(projeto_nome + " > "
-							+ atividade1.getString("nome"));
+					contexto.setText(atividade1.getString("nome"));
+
 					ic_finalizar = (ImageView) findViewById(R.id.ic_finalizar);
 					ic_finalizada = (ImageView) findViewById(R.id.ic_finalizada);
 
@@ -532,17 +555,17 @@ public class GerenciarAtividade extends Activity {
 						ic_finalizada.setVisibility(View.VISIBLE);
 					}
 
-					txt_nome = (EditText) findViewById(R.id.atividade_nome);
-					txt_nome.setText(atividade1.getString("nome"));
-					txt_nome.setEnabled(false);
-					txt_prazo = (EditText) findViewById(R.id.atividade_prazo);
-					txt_prazo.setText(DateFormat.format("dd/MM/yyyy",
+					nome = (EditText) findViewById(R.id.atividade_nome);
+					nome.setText(atividade1.getString("nome"));
+					nome.setEnabled(false);
+					prazo = (EditText) findViewById(R.id.atividade_prazo);
+					prazo.setText(DateFormat.format("dd/MM/yyyy",
 							atividade1.getDate("prazo")));
-					txt_prazo.setEnabled(false);
+					prazo.setEnabled(false);
 
-					txt_descricao = (EditText) findViewById(R.id.atividade_descricao);
-					txt_descricao.setText(atividade1.getString("descricao"));
-					txt_descricao.setEnabled(false);
+					descricao = (EditText) findViewById(R.id.atividade_descricao);
+					descricao.setText(atividade1.getString("descricao"));
+					descricao.setEnabled(false);
 
 				}
 			}
@@ -574,50 +597,51 @@ public class GerenciarAtividade extends Activity {
 
 				comentarioAdapter = new ListaComentarioAdapter(
 						GerenciarAtividade.this, comentarios);
-				//setListAdapter(comentarioAdapter);
-				ListView myList=(ListView)findViewById(R.id.listview_comentarios);
+				// setListAdapter(comentarioAdapter);
+				ListView myList = (ListView) findViewById(R.id.listview_comentarios);
 				myList.setAdapter(comentarioAdapter);
 			}
 		}
-		
+
 	}
-	
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
-	{
-	    super.onActivityResult(requestCode, resultCode, data); 
 
-	    switch(requestCode) { 
-	    case 1234:
-	        if(resultCode == RESULT_OK){  
-	            Uri selectedImage = data.getData();
-	            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 
-	            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-	            cursor.moveToFirst();
+		switch (requestCode) {
+		case 1234:
+			if (resultCode == RESULT_OK) {
+				Uri selectedImage = data.getData();
+				String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
-	            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-	            String filePath = cursor.getString(columnIndex);
-	            cursor.close();
+				Cursor cursor = getContentResolver().query(selectedImage,
+						filePathColumn, null, null, null);
+				cursor.moveToFirst();
 
-	          
-	            Bitmap yourSelectedImage = BitmapFactory.decodeFile(filePath);
-	            visualizar_img.setImageBitmap(yourSelectedImage);
-	            visualizar_img.setVisibility(View.VISIBLE);
-	            anexo.setVisibility(View.GONE);
-	            remove_anexo.setVisibility(View.VISIBLE);
-	            
-	           
-	            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-	            yourSelectedImage.compress(Bitmap.CompressFormat.PNG, 30, stream);
-	            byte[] byteArray = stream.toByteArray();
-	            
-	            ParseFile file = new ParseFile("teste.jpg",byteArray);            
-	            comentario.put("anexo", file);
-	            
-	            
-	            /* Now you have choosen image in Bitmap format in object "yourSelectedImage". You can use it in way you want! */
-	        }
-	    }
+				int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+				String filePath = cursor.getString(columnIndex);
+				cursor.close();
+
+				Bitmap yourSelectedImage = BitmapFactory.decodeFile(filePath);
+				visualizar_img.setImageBitmap(yourSelectedImage);
+				visualizar_img.setVisibility(View.VISIBLE);
+				anexo.setVisibility(View.GONE);
+				remove_anexo.setVisibility(View.VISIBLE);
+
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				yourSelectedImage.compress(Bitmap.CompressFormat.PNG, 30,
+						stream);
+				byte[] byteArray = stream.toByteArray();
+
+				ParseFile file = new ParseFile("teste.jpg", byteArray);
+				comentario.put("anexo", file);
+
+				/*
+				 * Now you have choosen image in Bitmap format in object
+				 * "yourSelectedImage". You can use it in way you want!
+				 */
+			}
+		}
 
 	};
 }

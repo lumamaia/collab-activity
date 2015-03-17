@@ -41,7 +41,7 @@
             android:layout_height="match_parent"
             android:background="@color/myGrayColor"
             android:gravity="center_horizontal|center_vertical"
-            android:text="@string/contexto"
+            android:text="Novo Projeto"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white" />
 

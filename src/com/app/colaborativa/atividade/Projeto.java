@@ -3,6 +3,7 @@ package com.app.colaborativa.atividade;
 import java.util.ArrayList;
 import java.util.List;
 
+import utils.PullParse;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import com.app.colaborativa.adapter.ListaProjetoAdapter;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.app.colaborativa.R;
 
 public class Projeto extends ListActivity {
@@ -38,6 +40,7 @@ public class Projeto extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_projeto);
 
+		
 		// + Projeto
 		add_projeto = (ImageButton) findViewById(R.id.add_projeto);
 		add_projeto.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +84,7 @@ public class Projeto extends ListActivity {
 		protected Void doInBackground(Void... params) {
 
 			ParseQuery<ParseObject> query = ParseQuery.getQuery("projeto");
+			query.whereEqualTo("membros", ParseUser.getCurrentUser().getObjectId());
 			query.orderByDescending("prazo");
 
 			try {
@@ -95,7 +99,9 @@ public class Projeto extends ListActivity {
 		protected void onPostExecute(Void result) {
 
 			if (projetos != null) {
-
+				
+				PullParse.setListProjeto(projetos);
+				
 				projetoAdapter = new ListaProjetoAdapter(Projeto.this, projetos);
 				setListAdapter(projetoAdapter);
 

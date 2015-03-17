@@ -27,7 +27,7 @@ public class Atividade extends ListActivity {
 	private long projeto_prazo;
 	private ListaAtividadeAdapter atividadeAdapter;
 	private List<ParseObject> atividades;
-	private Button bt_projeto, bt_feed;
+	private Button bt_projeto, bt_feed, bt_contexto;
 	
 	/** Called when the activity is first created. */
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class Atividade extends ListActivity {
 				IrParaAddAtividade.putExtra("projeto_nome", projeto_nome);
 				IrParaAddAtividade.putExtra("projeto_prazo", projeto_prazo);
 				Atividade.this.startActivity(IrParaAddAtividade);
-				Atividade.this.finish();
+//				Atividade.this.finish();
 				
 			}
 	
@@ -75,6 +75,14 @@ public class Atividade extends ListActivity {
 					
 				}
 			});
+		    bt_contexto = (Button) findViewById(R.id.button_contexto);		    
+		    bt_contexto.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					finish();
+				}
+			});
 	}
 
 	@Override
@@ -91,8 +99,8 @@ public class Atividade extends ListActivity {
 			
 		}
 		
-		TextView contexto = (TextView) findViewById(R.id.tv_contexto);
-		contexto.setText(projeto_nome+"> Atividades");
+		bt_contexto = (Button) findViewById(R.id.button_contexto);
+		bt_contexto.setText("Projeto "+projeto_nome);
 		new RemoteDataTask().execute();
 		
 		super.onContentChanged();

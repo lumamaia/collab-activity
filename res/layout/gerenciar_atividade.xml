@@ -35,6 +35,20 @@
         </LinearLayout>
 
         <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp" >
+
+		<Button
+            android:id="@+id/button_contexto"
+            style="@style/bt_customizado3"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+                        android:drawableLeft="@drawable/ic_back2"
+            android:layout_height="wrap_content"
+            android:text="@string/contexto" />
+		</LinearLayout>
+		
+        <LinearLayout
             android:id="@+id/ll04"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -48,7 +62,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/myGrayColor"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="@string/contexto"
+                android:text="@string/atividade"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white" />
 

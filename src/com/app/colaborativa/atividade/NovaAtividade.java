@@ -45,7 +45,7 @@ public class NovaAtividade extends ListActivity {
 	private Long proj_prazo;
 	ParseObject projeto;
 	List<ParseUser> convidados = new ArrayList<ParseUser>();
-	private Button bt_projeto, bt_feed, bt_convidar;
+	private Button bt_projeto, bt_feed, bt_contexto;
 	ListaConviteAdapter responsavelAdapter;
 	
 	/** Called when the activity is first created. */
@@ -62,8 +62,8 @@ public class NovaAtividade extends ListActivity {
 			
 		}
 		
-		TextView contexto = (TextView) findViewById(R.id.tv_contexto);
-		contexto.setText(proj_nome+" > Nova Atividade");
+		bt_contexto = (Button) findViewById(R.id.button_contexto);
+		bt_contexto.setText("Projeto " + proj_nome + " > Atividades");
 		
 		prazo = (EditText) findViewById(R.id.atividade_prazo);
 		prazo.addTextChangedListener(Mask.insert("##/##/####", prazo));
@@ -137,6 +137,7 @@ public class NovaAtividade extends ListActivity {
 							 
 							 ParseObject feed2 = new ParseObject("feed");
 							 feed2.put("atividade", atividade);
+							 feed2.put("projeto", projeto);
 							 feed2.put("modelo", "InformativoSugestaoResponsavel");
 							 feed2.put("icone", "like");
 							 feed2.put("membro", membro);
@@ -179,6 +180,15 @@ public class NovaAtividade extends ListActivity {
 				NovaAtividade.this.startActivity(IrParaFeed);
 				NovaAtividade.this.finish();
 				
+			}
+		});
+	    
+	    bt_contexto = (Button) findViewById(R.id.button_contexto);
+		bt_contexto.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				finish();
 			}
 		});
 		

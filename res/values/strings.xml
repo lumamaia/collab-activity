@@ -6,7 +6,8 @@
     <string name="botao2">Grupo</string>
     <string name="botao3">Feeds</string>
     <string name="nomeProjeto">Projeto:</string>
-    <string name="contexto">Projetos</string>
+    <string name="contexto">Projeto </string>
+    <string name="atividade">Nome da Atividade</string>
     <string name="btn_projeto">Projetos</string>
     
     

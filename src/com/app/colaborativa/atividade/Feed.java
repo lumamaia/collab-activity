@@ -2,6 +2,7 @@ package com.app.colaborativa.atividade;
 
 import java.util.List;
 
+import utils.PullParse;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -61,6 +62,7 @@ public class Feed extends ListActivity {
 		protected Void doInBackground(Void... params) {
 
 			ParseQuery<ParseObject> query = ParseQuery.getQuery("feed");
+			query.whereContainedIn("projeto", PullParse.getListProjeto());
 			query.include("atividade");
 			query.include("projeto");
 			query.include("membro");
@@ -96,6 +98,7 @@ public class Feed extends ListActivity {
 						}
 						
 						intent.putExtra("projeto_nome",feed.getParseObject("projeto").getString("nome"));
+						intent.putExtra("projeto_prazo",feed.getParseObject("projeto").getString("prazo"));
 						intent.putExtra("projeto_membros", feed.getParseObject("projeto").getList("membros").toString());
 						startActivity(intent);
 					}
