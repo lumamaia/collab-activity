@@ -82,6 +82,8 @@ public class NovaAtividade extends ListActivity {
 					     nome.setError( "Nome é obrigatorio!" );
 					else if(prazo.getText().toString().trim().equals(""))
 						prazo.setError( "Prazo é obrigatorio!" );
+					else if(prazo.getText().length() < 6)
+						prazo.setError( "Esse Prazo é inválido!" );
 					else{
 					
 						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -95,8 +97,7 @@ public class NovaAtividade extends ListActivity {
 							data_prazo = cal.getTime();
 								
 						} catch (ParseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							prazo.setError( "Esse Prazo é inválido!" );
 						}
 					
 						if(new Date().after(data_prazo)){

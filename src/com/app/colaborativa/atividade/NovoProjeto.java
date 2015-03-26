@@ -102,6 +102,8 @@ public class NovoProjeto extends ListActivity {
 				     txt_nome.setError( "Nome é obrigatorio!" );
 				else if(txt_prazo.getText().toString().trim().equals(""))
 					txt_prazo.setError( "Prazo é obrigatorio!" );
+				else if(txt_prazo.getText().length() < 6)
+					txt_prazo.setError( "Esse Prazo é inválido!" );
 				else{
 					
 					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");

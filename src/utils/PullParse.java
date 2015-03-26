@@ -7,6 +7,7 @@ import com.parse.ParseObject;
 public class PullParse {
 	
 	public static List<ParseObject> projetos;
+	public static List<ParseObject> atualizacao;
 	
 	public static void setListProjeto(List<ParseObject> listProjetos) {
 
@@ -18,5 +19,13 @@ public class PullParse {
 		return projetos;
 		
 	}
+	
+
+	public static void setUltimaAtualizacaoFeed(List<ParseObject> listProjetos) {
+
+		atualizacao = listProjetos;
 		
+	}
+		
+	
 }

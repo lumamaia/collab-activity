@@ -33,6 +33,7 @@ public class ListaComentarioAdapter extends ArrayAdapter<ParseObject> {
 	private List<ParseObject> comentarios = null;
 	public ParseObject membro;
 	String userId = ParseUser.getCurrentUser().getObjectId();
+	Bitmap bmp;
 
 	public ListaComentarioAdapter(Context context, List<ParseObject> comentarios) {
 		super(context, 0, comentarios);
@@ -65,7 +66,7 @@ public class ListaComentarioAdapter extends ArrayAdapter<ParseObject> {
 		final TextView textViewContador = (TextView) view.findViewById(R.id.tv_contador);
 		textViewContador.setText(comentario.getNumber("contador").toString());
 		
-		ImageView anexo = (ImageView) view.findViewById(R.id.anexo);
+		final ImageView anexo = (ImageView) view.findViewById(R.id.anexo);
 		
 		anexo.setImageDrawable(null);
 		anexo.setVisibility(View.GONE);
@@ -88,6 +89,7 @@ public class ListaComentarioAdapter extends ArrayAdapter<ParseObject> {
 			Bitmap bmp = BitmapFactory.decodeStream(is, null, options);
 			anexo.setImageBitmap(bmp);
 		}
+		
 
 		final ImageButton imageIcone = (ImageButton) view
 				.findViewById(R.id.ic_like);
@@ -115,7 +117,7 @@ public class ListaComentarioAdapter extends ArrayAdapter<ParseObject> {
 			}
 
 		});
-		
+//		
 //		anexo.setOnClickListener(new View.OnClickListener() {
 //
 //			@Override

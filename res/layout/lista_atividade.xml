@@ -41,14 +41,18 @@
             android:id="@+id/tv_ativ_nome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/tv_ativ_prazo"
             android:layout_centerVertical="true"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="13dp"
+            android:layout_weight="0.72"
+            android:gravity="center_vertical"
             android:text="Nome Atividade"
             android:textColor="#040404"
             android:textSize="16dip"
             android:textStyle="bold"
             android:typeface="sans" />
+
         <!-- Weather Information -->
 
     </LinearLayout>
@@ -60,7 +64,7 @@
         android:layout_alignBottom="@+id/linearLayout1"
         android:layout_toLeftOf="@+id/ic_setinha"
         android:layout_weight="0.74"
-        android:text="prazo"
+        android:text="22/12/2005"
         android:textColor="#343434"
         android:textSize="11dip" />
 
