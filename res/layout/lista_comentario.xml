@@ -4,8 +4,8 @@
     android:layout_height="fill_parent"
     android:background="@color/myWindowBackground"
     android:orientation="horizontal"
-    android:descendantFocusability="blocksDescendants">
-
+    >
+<!--android:descendantFocusability="blocksDescendants"  -->
     
       <TextView
         android:id="@+id/tv_texto"

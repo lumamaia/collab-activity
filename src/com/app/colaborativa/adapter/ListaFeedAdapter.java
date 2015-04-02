@@ -7,9 +7,12 @@ import java.util.Date;
 import java.util.List;
 
 import utils.Mensagens;
+import utils.PullParse;
 import android.R.drawable;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -35,12 +38,14 @@ public class ListaFeedAdapter extends ArrayAdapter<ParseObject> {
 	String modelo, mensagem;
 	Method metodo = null;
 	String userId = ParseUser.getCurrentUser().getObjectId();
+	Date ultimaVisita;
 	//Mensagens mensagem = new Mensagens();
 
 	public ListaFeedAdapter(Context context, List<ParseObject> feeds) {
 		super(context, 0, feeds);
 		this.feeds = feeds;
 		this.context = context;
+		ultimaVisita = PullParse.getUltimaVisita();
 	}
 
 	@Override
@@ -108,7 +113,8 @@ public class ListaFeedAdapter extends ArrayAdapter<ParseObject> {
 		
 		TextView textViewTexto = (TextView) view.findViewById(R.id.tv_texto);
 		
-		
+		if(feed.getDate("data").after(ultimaVisita))
+			textViewMensagem.setTypeface(null, Typeface.BOLD);
 		
 		final ImageButton imageIcone = (ImageButton) view.findViewById(R.id.ic_feed);
 		if(feed.getString("icone").equals("like")){

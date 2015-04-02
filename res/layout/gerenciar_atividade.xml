@@ -8,31 +8,13 @@
     android:orientation="vertical"
     android:scrollbars="vertical" >
 
+    
+    <include layout="@layout/menu"/>
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <Button
-                android:id="@+id/button_projeto"
-                style="@style/bt_customizado2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/btn_projeto" />
-
-            <Button
-                android:id="@+id/button_feeds"
-                style="@style/bt_customizado2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Feeds" />
-        </LinearLayout>
+        
 
         <LinearLayout
         android:layout_width="match_parent"
@@ -47,16 +29,15 @@
             android:layout_height="wrap_content"
             android:text="@string/contexto" />
 		</LinearLayout>
-		
-        <LinearLayout
-            android:id="@+id/ll04"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/myWindowBackground"
-            android:orientation="vertical"
-            android:padding="10dp" >
-
-            <TextView
+ 		
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:padding="10dp" 
+                android:orientation="vertical">
+                
+                <TextView
                 android:id="@+id/tv_contexto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -65,13 +46,6 @@
                 android:text="@string/atividade"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:padding="10dp" 
-                android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/view_editar"
@@ -221,6 +195,6 @@
                 android:layout_height="fill_parent" >
             </ListView>
         </LinearLayout>
-    </LinearLayout>
+ 
 
 </LinearLayout>

@@ -10,6 +10,9 @@ import java.util.List;
 
 import utils.DeleteAll;
 import utils.Mask;
+import utils.MenuAction;
+import utils.PullParse;
+import android.R.color;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -62,6 +65,7 @@ public class GerenciarAtividade extends Activity {
 	List<ParseObject> responsaveis;
 	public ListaComentarioAdapter comentarioAdapter;
 	public String atividade_id, projeto_id, projeto_nome, projeto_membros;
+	public boolean teveAnexo;
 	static public Long projeto_prazo;
 	public ViewFlipper viewFlipper;
 
@@ -82,7 +86,11 @@ public class GerenciarAtividade extends Activity {
 
 		new RemoteDataTask().execute();
 
-		//
+		bt_projeto = (Button) findViewById(R.id.button_projeto);
+		bt_feed = (Button) findViewById(R.id.button_feeds);
+		MenuAction menu = new MenuAction();
+		menu.MapearProjeto(this, bt_projeto);		
+		menu.MapearFeed(this, bt_feed);
 
 		prazo = (EditText) findViewById(R.id.atividade_prazo);
 		prazo.addTextChangedListener(Mask.insert("##/##/####", prazo));
@@ -95,7 +103,7 @@ public class GerenciarAtividade extends Activity {
 				// TODO Auto-generated method stub
 
 				comentario = new ParseObject("comentario");
-
+				teveAnexo = false;
 				final AlertDialog.Builder builder = new AlertDialog.Builder(
 						GerenciarAtividade.this, AlertDialog.THEME_HOLO_LIGHT);
 				builder.setTitle("Comentario");
@@ -117,6 +125,7 @@ public class GerenciarAtividade extends Activity {
 				anexo.setOnClickListener(new View.OnClickListener() {
 
 					public void onClick(View v) {
+						teveAnexo = true;
 						Intent intent = new Intent();
 						intent.setType("image/*");
 						intent.setAction(Intent.ACTION_GET_CONTENT);//
@@ -129,6 +138,7 @@ public class GerenciarAtividade extends Activity {
 				remove_anexo.setOnClickListener(new View.OnClickListener() {
 
 					public void onClick(View v) {
+						teveAnexo = false;
 						comentario.remove("anexo");
 						anexo.setVisibility(View.VISIBLE);
 						remove_anexo.setVisibility(View.GONE);
@@ -157,22 +167,22 @@ public class GerenciarAtividade extends Activity {
 								comentario.put("atividade", atividade1);
 								comentario.put("data", new Date());
 								comentario.put("contador", 0);
-								comentario.put("usuario",
-										ParseUser.getCurrentUser());
-								comentario.saveInBackground();
-
-								ParseObject feed = new ParseObject("feed");
-								feed.put("atividade", atividade1);
-								feed.put("projeto",
-										atividade1.getParseObject("projeto"));
-								feed.put("modelo", "NovoComentario");
-								feed.put("icone", "none");
-								feed.put("contador", 0);
-								feed.put("data", new Date());
-								feed.saveInBackground();
+								comentario.put("usuario",ParseUser.getCurrentUser());
+								
+								if(teveAnexo){
+									try {
+										comentario.save();
+									} catch (com.parse.ParseException e) {
+										e.printStackTrace();
+									}
+								}
+								else
+									comentario.saveInBackground();
+								
+								PullParse.saveFeed(atividade1, atividade1.getParseObject("projeto"), "NovoComentario", "none", null);
 
 								new RemoteDataTask().execute();
-
+								dialog.cancel();
 								// viewFlipper.showPrevious();
 							}
 						});
@@ -200,7 +210,7 @@ public class GerenciarAtividade extends Activity {
 						LinearLayout.LayoutParams.MATCH_PARENT);
 				input.setLayoutParams(lp);
 				alertDialog.setView(input);
-				alertDialog.setIcon(R.drawable.ic_finalizada);
+//				alertDialog.setIcon(R.drawable.ic_finalizada);
 
 				alertDialog.setNegativeButton("Cancelar",
 						new DialogInterface.OnClickListener() {
@@ -220,6 +230,10 @@ public class GerenciarAtividade extends Activity {
 								atividade = atividade1;
 								atividade.put("status", "Finalizada");
 								atividade.saveInBackground();
+								
+								ic_finalizada.setVisibility(View.VISIBLE);
+								ic_finalizar.setVisibility(View.GONE);
+								ic_editar.setVisibility(View.GONE);
 
 								ParseObject comentario = new ParseObject(
 										"comentario");
@@ -233,33 +247,12 @@ public class GerenciarAtividade extends Activity {
 										ParseUser.getCurrentUser());
 								comentario.saveInBackground();
 
-								ParseObject feed3 = new ParseObject("feed");
-								feed3.put("atividade", atividade1);
-								feed3.put("projeto",
-										atividade1.getParseObject("projeto"));
-								feed3.put("modelo", "AtividadeFinalizada");
-								feed3.put("icone", "like");
-								feed3.put("contador", 0);
-								feed3.put("data", new Date());
-								feed3.saveInBackground();
+								
+								PullParse.saveFeed(atividade1, atividade1.getParseObject("projeto"), "AtividadeFinalizada", "like", null);
 
-								Intent VoltarParaAtividade = new Intent(
-										GerenciarAtividade.this,
-										Atividade.class);
-								VoltarParaAtividade.putExtra("projeto_id",
-										projeto_id);
-								VoltarParaAtividade.putExtra("projeto_nome",
-										projeto_nome);
-								VoltarParaAtividade.putExtra("projeto_prazo",
-										projeto_prazo);
-								VoltarParaAtividade.putExtra("atividade_id",
-										atividade_id);
-								VoltarParaAtividade.putExtra("projeto_membros",
-										projeto_membros);
-								GerenciarAtividade.this
-										.startActivity(VoltarParaAtividade);
-								GerenciarAtividade.this.finish();
-
+								new RemoteDataTask().execute();
+								dialog.cancel();
+								
 							}
 
 						});
@@ -284,7 +277,7 @@ public class GerenciarAtividade extends Activity {
 						LinearLayout.LayoutParams.MATCH_PARENT);
 				input.setLayoutParams(lp);
 				alertDialog.setView(input);
-				alertDialog.setIcon(R.drawable.ic_finalizar);
+//				alertDialog.setIcon(R.drawable.ic_finalizar);
 
 				alertDialog.setNegativeButton("Cancelar",
 						new DialogInterface.OnClickListener() {
@@ -307,7 +300,8 @@ public class GerenciarAtividade extends Activity {
 
 								ic_finalizada.setVisibility(View.GONE);
 								ic_finalizar.setVisibility(View.VISIBLE);
-
+								ic_editar.setVisibility(View.VISIBLE);
+								
 								ParseObject comentario = new ParseObject(
 										"comentario");
 								comentario.put("comentario", "Reaberta: "
@@ -320,15 +314,8 @@ public class GerenciarAtividade extends Activity {
 										ParseUser.getCurrentUser());
 								comentario.saveInBackground();
 
-								ParseObject feed3 = new ParseObject("feed");
-								feed3.put("atividade", atividade1);
-								feed3.put("projeto",
-										atividade1.getParseObject("projeto"));
-								feed3.put("modelo", "AtividadeReaberta");
-								feed3.put("icone", "like");
-								feed3.put("contador", 0);
-								feed3.put("data", new Date());
-								feed3.saveInBackground();
+								PullParse.saveFeed(atividade1, atividade1.getParseObject("projeto"), "AtividadeReaberta", "like", null);
+
 
 								new RemoteDataTask().execute();
 								dialog.cancel();
@@ -385,30 +372,6 @@ public class GerenciarAtividade extends Activity {
 						atividade.put("descricao", descricao.getText()
 								.toString());
 						atividade.saveInBackground();
-						// atividade.saveInBackground(new SaveCallback() {
-						//
-						// @Override
-						// public void done(com.parse.ParseException e) {
-						//
-						// Intent VoltarParaAtividade = new Intent(
-						// GerenciarAtividade.this, Atividade.class);
-						// VoltarParaAtividade.putExtra("projeto_id",
-						// projeto_id);
-						// VoltarParaAtividade.putExtra("projeto_nome",
-						// projeto_nome);
-						// VoltarParaAtividade.putExtra("projeto_prazo",
-						// projeto_prazo);
-						// VoltarParaAtividade.putExtra("atividade_id",
-						// atividade_id);
-						// VoltarParaAtividade.putExtra("projeto_membros",
-						// projeto_membros);
-						// GerenciarAtividade.this
-						// .startActivity(VoltarParaAtividade);
-						// GerenciarAtividade.this.finish();
-						//
-						// }
-						// });
-
 						view_gerenciar.setVisibility(View.VISIBLE);
 						view_editar.setVisibility(View.GONE);
 						nome.setEnabled(false);
@@ -417,32 +380,6 @@ public class GerenciarAtividade extends Activity {
 
 					}
 				}
-			}
-		});
-
-		bt_projeto = (Button) findViewById(R.id.button_projeto);
-		bt_projeto.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				Intent VoltarParaProjeto = new Intent(GerenciarAtividade.this,
-						Projeto.class);
-				GerenciarAtividade.this.startActivity(VoltarParaProjeto);
-				GerenciarAtividade.this.finish();
-
-			}
-		});
-		bt_feed = (Button) findViewById(R.id.button_feeds);
-		bt_feed.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent IrParaFeed = new Intent(GerenciarAtividade.this,
-						Feed.class);
-				GerenciarAtividade.this.startActivity(IrParaFeed);
-				GerenciarAtividade.this.finish();
-
 			}
 		});
 
@@ -473,19 +410,51 @@ public class GerenciarAtividade extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				DeleteAll delete = new DeleteAll();
-				delete.execute(atividade1);
+				
+				AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+						GerenciarAtividade.this, AlertDialog.THEME_HOLO_LIGHT);
 
-				Intent VoltarParaAtividade = new Intent(
-						GerenciarAtividade.this, Atividade.class);
-				VoltarParaAtividade.putExtra("projeto_id", projeto_id);
-				VoltarParaAtividade.putExtra("projeto_nome", projeto_nome);
-				VoltarParaAtividade.putExtra("atividade_id", atividade_id);
-				VoltarParaAtividade
-						.putExtra("projeto_membros", projeto_membros);
-				GerenciarAtividade.this.startActivity(VoltarParaAtividade);
-				GerenciarAtividade.this.finish();
+				alertDialog.setTitle("Confirmação de Exclusão");
 
+				// Setting Dialog Message
+				final TextView input = new TextView(GerenciarAtividade.this);
+				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+						LinearLayout.LayoutParams.MATCH_PARENT,
+						LinearLayout.LayoutParams.MATCH_PARENT);
+				input.setLayoutParams(lp);
+				input.setText("Tem certeza que deseja EXCLUIR a atividade?");
+				alertDialog.setView(input);
+
+				alertDialog.setNegativeButton("Cancelar",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.cancel();
+							}
+						});
+
+				alertDialog.setPositiveButton("Excluir",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int which) {
+
+								
+								DeleteAll delete = new DeleteAll();
+								delete.execute(atividade1);
+
+								Intent VoltarParaAtividade = new Intent(
+										GerenciarAtividade.this, Atividade.class);
+								VoltarParaAtividade.putExtra("projeto_id", projeto_id);
+								VoltarParaAtividade.putExtra("projeto_nome", projeto_nome);
+								VoltarParaAtividade.putExtra("atividade_id", atividade_id);
+								VoltarParaAtividade
+										.putExtra("projeto_membros", projeto_membros);
+								GerenciarAtividade.this.startActivity(VoltarParaAtividade);
+								GerenciarAtividade.this.finish();								
+							}
+
+						});
+				alertDialog.show();
 			}
 		});
 
@@ -549,10 +518,12 @@ public class GerenciarAtividade extends Activity {
 
 					ic_finalizar = (ImageView) findViewById(R.id.ic_finalizar);
 					ic_finalizada = (ImageView) findViewById(R.id.ic_finalizada);
+					ic_editar =  (ImageView) findViewById(R.id.ic_editar);
 
 					if (atividade1.getString("status").equals("Finalizada")) {
 						ic_finalizar.setVisibility(View.GONE);
 						ic_finalizada.setVisibility(View.VISIBLE);
+						ic_editar.setVisibility(View.GONE);
 					}
 
 					nome = (EditText) findViewById(R.id.atividade_nome);
@@ -597,7 +568,6 @@ public class GerenciarAtividade extends Activity {
 
 				comentarioAdapter = new ListaComentarioAdapter(
 						GerenciarAtividade.this, comentarios);
-				// setListAdapter(comentarioAdapter);
 				ListView myList = (ListView) findViewById(R.id.listview_comentarios);
 				myList.setAdapter(comentarioAdapter);
 			}

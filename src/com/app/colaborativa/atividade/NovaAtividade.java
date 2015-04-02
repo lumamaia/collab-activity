@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 
 import utils.Mask;
+import utils.MenuAction;
+import utils.PullParse;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
@@ -62,8 +64,21 @@ public class NovaAtividade extends ListActivity {
 			
 		}
 		
+		bt_projeto = (Button) findViewById(R.id.button_projeto);
+		bt_feed = (Button) findViewById(R.id.button_feeds);
+		MenuAction menu = new MenuAction();
+		menu.MapearProjeto(this, bt_projeto);		
+		menu.MapearFeed(this, bt_feed);
+		
 		bt_contexto = (Button) findViewById(R.id.button_contexto);
 		bt_contexto.setText("Projeto " + proj_nome + " > Atividades");
+		bt_contexto.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 		
 		prazo = (EditText) findViewById(R.id.atividade_prazo);
 		prazo.addTextChangedListener(Mask.insert("##/##/####", prazo));
@@ -117,15 +132,9 @@ public class NovaAtividade extends ListActivity {
 						if(projeto != null)
 							atividade.put("projeto", projeto);
 						atividade.saveInBackground();
-						
-						 ParseObject feed = new ParseObject("feed");
-						 feed.put("atividade", atividade);
-						 feed.put("projeto", projeto);
-						 feed.put("modelo", "NovaAtividade");
-						 feed.put("icone", "like");
-						 feed.put("contador", 0);
-						 feed.put("data", new Date());
-						 feed.saveInBackground();
+										 
+						 PullParse.saveFeed(atividade, projeto, "NovaAtividade", "like", null);
+
 						 
 						 for (ParseUser membro : convidados) {
 							 
@@ -135,16 +144,8 @@ public class NovaAtividade extends ListActivity {
 							 convite.put("usuario", ParseUser.getCurrentUser());
 							 convite.put("status", "Convidado");
 							 convite.saveInBackground();
-							 
-							 ParseObject feed2 = new ParseObject("feed");
-							 feed2.put("atividade", atividade);
-							 feed2.put("projeto", projeto);
-							 feed2.put("modelo", "InformativoSugestaoResponsavel");
-							 feed2.put("icone", "like");
-							 feed2.put("membro", membro);
-							 feed2.put("contador", 0);
-							 feed2.put("data", new Date());
-							 feed2.saveInBackground();
+							 							 
+							 PullParse.saveFeed(atividade, projeto, "InformativoSugestaoResponsavel", "like", membro);
 							 
 							
 						} 
@@ -160,38 +161,7 @@ public class NovaAtividade extends ListActivity {
 				}
 			});
 		
-		bt_projeto = (Button) findViewById(R.id.button_projeto);		    
-	    bt_projeto.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				
-				Intent IrParaProjeto = new Intent(NovaAtividade.this, Projeto.class);
-				NovaAtividade.this.startActivity(IrParaProjeto);
-				NovaAtividade.this.finish();
-				
-			}
-		});
-	    bt_feed = (Button) findViewById(R.id.button_feeds);		    
-	    bt_feed.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Intent IrParaFeed = new Intent(NovaAtividade.this, Feed.class);
-				NovaAtividade.this.startActivity(IrParaFeed);
-				NovaAtividade.this.finish();
-				
-			}
-		});
 	    
-	    bt_contexto = (Button) findViewById(R.id.button_contexto);
-		bt_contexto.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		});
 		
 	}
 	

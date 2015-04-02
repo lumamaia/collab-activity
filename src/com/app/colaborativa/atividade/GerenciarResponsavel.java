@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import utils.MenuAction;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -53,31 +54,11 @@ public class GerenciarResponsavel extends ListActivity {
 		}
 
 		bt_projeto = (Button) findViewById(R.id.button_projeto);
-		bt_projeto.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				Intent VoltarParaProjeto = new Intent(
-						GerenciarResponsavel.this, Projeto.class);
-				GerenciarResponsavel.this.startActivity(VoltarParaProjeto);
-				GerenciarResponsavel.this.finish();
-
-			}
-		});
 		bt_feed = (Button) findViewById(R.id.button_feeds);
-		bt_feed.setOnClickListener(new View.OnClickListener() {
+		MenuAction menu = new MenuAction();
+		menu.MapearProjeto(this, bt_projeto);		
+		menu.MapearFeed(this, bt_feed);
 
-			@Override
-			public void onClick(View v) {
-				Intent IrParaFeed = new Intent(GerenciarResponsavel.this,
-						Feed.class);
-				GerenciarResponsavel.this.startActivity(IrParaFeed);
-				GerenciarResponsavel.this.finish();
-
-			}
-		});
-		
 		bt_contexto = (Button) findViewById(R.id.button_contexto);
 		bt_contexto.setOnClickListener(new View.OnClickListener() {
 

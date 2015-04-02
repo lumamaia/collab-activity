@@ -2,6 +2,7 @@ package com.app.colaborativa.atividade;
 
 import java.util.List;
 
+import utils.MenuAction;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -52,29 +53,13 @@ public class Atividade extends ListActivity {
 	
 		});
 		
-		 	bt_projeto = (Button) findViewById(R.id.button_projeto);		    
-		    bt_projeto.setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					
-					Intent IrParaProjeto = new Intent(Atividade.this, Projeto.class);
-					Atividade.this.startActivity(IrParaProjeto);
-					Atividade.this.finish();
-					
-				}
-			});
-		    bt_feed = (Button) findViewById(R.id.button_feeds);		    
-		    bt_feed.setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					Intent IrParaFeed = new Intent(Atividade.this, Feed.class);
-					Atividade.this.startActivity(IrParaFeed);
-					Atividade.this.finish();
-					
-				}
-			});
+		bt_projeto = (Button) findViewById(R.id.button_projeto);
+		bt_feed = (Button) findViewById(R.id.button_feeds);
+		MenuAction menu = new MenuAction();
+		menu.MapearProjeto(this, bt_projeto);		
+		menu.MapearFeed(this, bt_feed);
+		
+
 		    bt_contexto = (Button) findViewById(R.id.button_contexto);		    
 		    bt_contexto.setOnClickListener(new View.OnClickListener() {
 				

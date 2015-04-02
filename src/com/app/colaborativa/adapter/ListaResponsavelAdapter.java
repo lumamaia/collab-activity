@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import utils.PullParse;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,7 +70,30 @@ public class ListaResponsavelAdapter extends BaseAdapter {
 
 				TextView tvstatus = (TextView) v.findViewById(R.id.tv_status);
 
-				if (tvstatus.getText().equals("semconvite")) {
+				if (tvstatus.getText().equals("semconvite")
+						&& membro.hasSameId(ParseUser.getCurrentUser())){
+					
+					textViewStatus.setText("Responsável");
+					selecionado
+							.setBackgroundResource(R.drawable.ic_responsavel);
+
+					ParseObject convite = new ParseObject("convite_responsavel");
+					convite.put("atividade", atividade);
+					convite.put("responsavel", membro);
+					convite.put("usuario", ParseUser.getCurrentUser());
+					convite.put("status", "Responsável");
+					convite.saveInBackground();
+
+					List<Object> responsaveis = new ArrayList<Object>();
+					responsaveis.add(ParseUser.getCurrentUser().getObjectId());
+					atividade.put("responsavel", responsaveis);
+					atividade.saveInBackground();
+
+
+					PullParse.saveFeed(atividade, atividade.getParseObject("projeto"), "NovoResponsavel", "like", ParseUser.getCurrentUser());
+
+				}
+				else if (tvstatus.getText().equals("semconvite")) {
 					// enviar convite
 
 					textViewStatus.setText("Convidado");
@@ -82,15 +106,7 @@ public class ListaResponsavelAdapter extends BaseAdapter {
 					convite.put("status", "Convidado");
 					convite.saveInBackground();
 
-					ParseObject feed2 = new ParseObject("feed");
-					feed2.put("atividade", atividade);
-					feed2.put("projeto", atividade.getParseObject("projeto"));
-					feed2.put("modelo", "InformativoSugestaoResponsavel");
-					feed2.put("icone", "like");
-					feed2.put("membro", membro);
-					feed2.put("contador", 0);
-					feed2.put("data", new Date());
-					feed2.saveInBackground();
+					PullParse.saveFeed(atividade, atividade.getParseObject("projeto"), "InformativoSugestaoResponsavel", "like", membro);
 				}
 
 				else if (tvstatus.getText().equals("Convidado")
@@ -109,16 +125,8 @@ public class ListaResponsavelAdapter extends BaseAdapter {
 					responsaveis.add(ParseUser.getCurrentUser().getObjectId());
 					atividade.put("responsavel", responsaveis);
 					atividade.saveInBackground();
-
-					ParseObject feed = new ParseObject("feed");
-					feed.put("atividade", atividade);
-					feed.put("projeto", atividade.getParseObject("projeto"));
-					feed.put("membro", ParseUser.getCurrentUser());
-					feed.put("modelo", "NovoResponsavel");
-					feed.put("icone", "like");
-					feed.put("contador", 0);
-					feed.put("data", new Date());
-					feed.saveInBackground();
+					
+					PullParse.saveFeed(atividade, atividade.getParseObject("projeto"), "NovoResponsavel", "like", ParseUser.getCurrentUser());
 
 				}
 

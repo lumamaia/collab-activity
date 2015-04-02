@@ -5,28 +5,13 @@
     android:background="@color/myWindowBackground"
     android:gravity="center_horizontal"
     >
-  
 
     <LinearLayout
         android:id="@+id/ll01"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
-        <Button
-            android:id="@+id/button_projeto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/btn_projeto" 
-            style="@style/bt_customizado2"/>
-
-        <Button
-            android:id="@+id/button_feeds"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Feeds" 
-            style="@style/bt_customizado2"/>
+        <include layout="@layout/menu"/>
     </LinearLayout>
 
      <LinearLayout

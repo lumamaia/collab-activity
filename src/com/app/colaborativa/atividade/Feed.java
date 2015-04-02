@@ -2,6 +2,7 @@ package com.app.colaborativa.atividade;
 
 import java.util.List;
 
+import utils.MenuAction;
 import utils.PullParse;
 import android.app.ListActivity;
 import android.content.Intent;
@@ -36,19 +37,10 @@ public class Feed extends ListActivity {
 		
 		new RemoteDataTask().execute();
 		
-
 		bt_projeto = (Button) findViewById(R.id.button_projeto);
-		bt_projeto.setOnClickListener(new View.OnClickListener() {
+		MenuAction menu = new MenuAction();
+		menu.MapearProjeto(this, bt_projeto);		
 
-			@Override
-			public void onClick(View v) {
-
-				Intent VoltarParaProjeto = new Intent(Feed.this, Projeto.class);
-				Feed.this.startActivity(VoltarParaProjeto);
-				Feed.this.finish();
-
-			}
-		});
 	}
 
 	@Override

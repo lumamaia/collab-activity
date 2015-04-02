@@ -10,7 +10,12 @@ import java.util.List;
 
 import utils.DeleteAll;
 import utils.Mask;
+import utils.MenuAction;
+import utils.PullParse;
+import android.R.color;
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -21,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -39,7 +45,7 @@ public class NovoProjeto extends ListActivity {
 	private String nome, prazo, projeto_id;
 	private boolean is_edicao;
 	private Date data_prazo;
-	private Button bt_projeto, bt_feed;
+	private Button bt_projeto, bt_feed, bt_contexto;
 	private ImageView salvar, excluir;
 	private ListaIntegranteGrupoAdapter integrantesAdapter;
 
@@ -67,6 +73,7 @@ public class NovoProjeto extends ListActivity {
 		tv_nome = (TextView) findViewById(R.id.tv_nome);		
 		tv_prazo = (TextView) findViewById(R.id.tv_prazo);
 		excluir = (ImageView) findViewById(R.id.ic_excluir);
+		bt_contexto = (Button) findViewById(R.id.button_contexto);
 		TextView contexto = (TextView) findViewById(R.id.tv_contexto);	
 
 		Bundle extras = getIntent().getExtras();
@@ -83,9 +90,24 @@ public class NovoProjeto extends ListActivity {
 			tv_prazo.setVisibility(View.VISIBLE);
 			excluir.setVisibility(View.VISIBLE);
 			contexto.setText(extras.getString("projeto_nome"));
+			bt_contexto.setText("Projeto " + extras.getString("projeto_nome"));
 		}
 		integrantes.add(ParseUser.getCurrentUser().getObjectId().toString());
 		buscarMembros();
+		
+		bt_projeto = (Button) findViewById(R.id.button_projeto);
+		bt_feed = (Button) findViewById(R.id.button_feeds);
+		MenuAction menu = new MenuAction();
+		menu.MapearProjeto(this, bt_projeto);		
+		menu.MapearFeed(this, bt_feed);
+		
+		bt_contexto.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 		
 		salvar = (ImageView) findViewById(R.id.ic_salvar);
 		salvar.setOnClickListener(new View.OnClickListener() {
@@ -134,14 +156,7 @@ public class NovoProjeto extends ListActivity {
 						projeto.saveInBackground();
 						
 						if(!is_edicao){
-						 ParseObject feed = new ParseObject("feed");
-						 feed.put("projeto", projeto);
-						 feed.put("modelo", "NovoProjeto");
-						 feed.put("membro", ParseUser.getCurrentUser());
-						 feed.put("icone", "like");
-						 feed.put("contador", 0);
-						 feed.put("data", new Date());
-						 feed.saveInBackground();
+						 PullParse.saveFeed(null, projeto, "NovoProjeto", "like", ParseUser.getCurrentUser());
 						}
 						 
 		
@@ -159,40 +174,47 @@ public class NovoProjeto extends ListActivity {
 			@Override
 			public void onClick(View v) {
 
-				DeleteAll delete = new DeleteAll();
-				delete.deleteProjeto(projeto);
 
-				Intent IrParaProjeto = new Intent(NovoProjeto.this,
-						Projeto.class);
-				NovoProjeto.this.startActivity(IrParaProjeto);
-				NovoProjeto.this.finish();
+			AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+					NovoProjeto.this, AlertDialog.THEME_HOLO_LIGHT);
 
-			}
-		});
-		
-		bt_projeto = (Button) findViewById(R.id.button_projeto);
-		bt_projeto.setOnClickListener(new View.OnClickListener() {
+			alertDialog.setTitle("Confirmação de Exclusão");
 
-			@Override
-			public void onClick(View v) {
+			// Setting Dialog Message
+			final TextView input = new TextView(NovoProjeto.this);
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+					LinearLayout.LayoutParams.MATCH_PARENT,
+					LinearLayout.LayoutParams.MATCH_PARENT);
+			input.setLayoutParams(lp);
+			input.setText("Tem certeza que deseja EXCLUIR a atividade?");
+			alertDialog.setView(input);
 
-				Intent IrParaProjeto = new Intent(NovoProjeto.this,
-						Projeto.class);
-				NovoProjeto.this.startActivity(IrParaProjeto);
-				NovoProjeto.this.finish();
+			alertDialog.setNegativeButton("Cancelar",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog,
+								int which) {
+							dialog.cancel();
+						}
+					});
 
-			}
-		});
-		bt_feed = (Button) findViewById(R.id.button_feeds);
-		bt_feed.setOnClickListener(new View.OnClickListener() {
+			alertDialog.setPositiveButton("Excluir",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog,
+								int which) {
 
-			@Override
-			public void onClick(View v) {
-				Intent IrParaFeed = new Intent(NovoProjeto.this, Feed.class);
-				NovoProjeto.this.startActivity(IrParaFeed);
-				NovoProjeto.this.finish();
+							
+							DeleteAll delete = new DeleteAll();
+							delete.deleteProjeto(projeto);
 
-			}
+							Intent IrParaProjeto = new Intent(NovoProjeto.this,
+									Projeto.class);
+							NovoProjeto.this.startActivity(IrParaProjeto);
+							NovoProjeto.this.finish();					
+						}
+
+					});
+			alertDialog.show();
+		}
 		});
 	}
 

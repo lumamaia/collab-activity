@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/LinearLayout01"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/myWindowBackground"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:scrollbars="vertical" >
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,8 +17,8 @@
                 android:id="@+id/button_projeto"
                 style="@style/bt_customizado2"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
                 android:text="@string/btn_projeto" />
 
             <Button
@@ -30,42 +26,9 @@
                 style="@style/bt_customizado2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="1"         
                 android:text="Feeds" />
+
         </LinearLayout>
-
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp" >
-
-		<Button
-            android:id="@+id/button_contexto"
-            style="@style/bt_customizado3"
-            android:gravity="center_vertical"
-            android:layout_width="match_parent"
-                        android:drawableLeft="@drawable/ic_back2"
-            android:layout_height="wrap_content"
-            android:text="@string/contexto" />
-		</LinearLayout>
-		
-        <LinearLayout
-            android:id="@+id/ll04"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/myWindowBackground"
-            android:orientation="vertical"
-            android:padding="10dp" >
-
-            <TextView
-                android:id="@+id/tv_contexto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/myGrayColor"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="@string/atividade"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/white" />           
-        </LinearLayout>
-    </LinearLayout>
 
 </LinearLayout>

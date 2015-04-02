@@ -60,7 +60,7 @@ public class ListaComentarioAdapter extends ArrayAdapter<ParseObject> {
 
 		TextView textViewPrazo = (TextView) view
 				.findViewById(R.id.tv_comentario_data);
-		textViewPrazo.setText(DateFormat.format("dd/MM/yyyy hh:mm:ss",
+		textViewPrazo.setText(DateFormat.format("dd/MM/yyyy hh24:mm:ss",
 				comentario.getDate("data").getTime()));
 		
 		final TextView textViewContador = (TextView) view.findViewById(R.id.tv_contador);

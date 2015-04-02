@@ -3,6 +3,7 @@ package com.app.colaborativa.atividade;
 import java.util.ArrayList;
 import java.util.List;
 
+import utils.MenuAction;
 import utils.PullParse;
 import android.app.Activity;
 import android.app.ListActivity;
@@ -40,6 +41,9 @@ public class Projeto extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_projeto);
 
+		bt_feed = (Button) findViewById(R.id.button_feeds);
+		MenuAction menu = new MenuAction();	
+		menu.MapearFeed(this, bt_feed);
 		
 		// + Projeto
 		add_projeto = (ImageButton) findViewById(R.id.add_projeto);

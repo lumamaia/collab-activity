@@ -17,4 +17,6 @@
 	<color name="myGrayColor">#B3B3B3</color>
 	<color name="myBlackColor">#000000</color>
 	<color name="myTextSecundaryColor">#858585</color>
+	<color name="myButtomColor">#647690</color>
+	
 </resources>
