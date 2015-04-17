@@ -44,13 +44,12 @@
     <requestFocus />
         </EditText>
 
-    <EditText
+<!--     <EditText
         android:id="@+id/main_celular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/apptheme_textfield_default_holo_light"
-        android:editable="false"
-        android:hint="Celular" />
+        android:hint="Celular" /> -->
 
     <Button
         android:id="@+id/bt_projeto"

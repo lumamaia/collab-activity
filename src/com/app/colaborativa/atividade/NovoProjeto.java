@@ -35,6 +35,7 @@ import com.app.colaborativa.adapter.ListaIntegranteGrupoAdapter;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -75,7 +76,7 @@ public class NovoProjeto extends ListActivity {
 		excluir = (ImageView) findViewById(R.id.ic_excluir);
 		bt_contexto = (Button) findViewById(R.id.button_contexto);
 		TextView contexto = (TextView) findViewById(R.id.tv_contexto);	
-
+		contexto.setText("Projetos");
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			is_edicao = true;
@@ -154,11 +155,13 @@ public class NovoProjeto extends ListActivity {
 						projeto.put("status", "Em Aberto");	
 						projeto.put("criador", ParseUser.getCurrentUser());
 						projeto.saveInBackground();
+
 						
 						if(!is_edicao){
-						 PullParse.saveFeed(null, projeto, "NovoProjeto", "like", ParseUser.getCurrentUser());
+							PullParse.saveFeed(null, projeto, "NovoProjeto", "like", ParseUser.getCurrentUser());
 						}
-						 
+						
+						
 		
 						Intent VoltarParaProjeto = new Intent(NovoProjeto.this,
 								Projeto.class);
@@ -235,7 +238,10 @@ public class NovoProjeto extends ListActivity {
 	}
 	
 	private void buscarMembros() {
-		ParseUser.getQuery().orderByAscending("nome").findInBackground(new FindCallback<ParseUser>() {
+		ParseQuery<ParseUser> query = ParseUser.getQuery();
+		query.include("instalacao");
+		query.orderByAscending("nome");
+		query.findInBackground(new FindCallback<ParseUser>() {
 
 			@Override
 			public void done(List<ParseUser> objects, com.parse.ParseException e) {
@@ -255,6 +261,7 @@ public class NovoProjeto extends ListActivity {
 						if(!integrantes.contains(user.getObjectId())){
 							selecionado.setBackgroundResource(R.drawable.ic_membro_check);
 							integrantes.add(user.getObjectId());
+							
 						}else{
 							selecionado.setBackgroundResource(R.drawable.ic_membro_uncheck);
 							integrantes.remove(user.getObjectId());

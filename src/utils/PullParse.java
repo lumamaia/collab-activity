@@ -7,7 +7,9 @@ import android.R.bool;
 
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -18,6 +20,7 @@ public class PullParse {
 	public static Date ultimaVisitaFeed;
 	public static Date ultimaVisualizacaoFeed;
 	public static ParseObject ultimo_feed;
+	public static boolean isNotificacao = false;
 	
 	public PullParse() {
 	}
@@ -45,7 +48,8 @@ public class PullParse {
 	public static void setUltimaVisita(Date _ultimaVisitaFeed) {
 		if(ultimaVisitaFeed == null)
 			ultimaVisualizacaoFeed = _ultimaVisitaFeed;
-		ultimaVisualizacaoFeed = ultimaVisitaFeed;
+		else
+			ultimaVisualizacaoFeed = ultimaVisitaFeed;
 		ultimaVisitaFeed = _ultimaVisitaFeed;
 		
 	}
@@ -92,7 +96,31 @@ public class PullParse {
 		feed.put("data", new Date());
 		setUltimaAtualizacaoFeed(new Date());
 		feed.saveInBackground();
+		
+		if(!modelo.equals("NovoProjeto")){
+			
+
+			ParseQuery<ParseInstallation> pushQuery = ParseInstallation.getQuery();
+			pushQuery.whereEqualTo("channels", "Proj_"+projeto.getObjectId().toString());
+			pushQuery.whereNotEqualTo("objectId", ParseInstallation.getCurrentInstallation().getObjectId());
+			ParsePush push = new ParsePush();
+			push.setQuery(pushQuery);
+		
+			
+			//ParsePush push = new ParsePush();
+			//push.setChannel("Proj_"+projeto.getObjectId().toString());
+			push.setMessage("Notificação: Projeto "+projeto.getString("nome"));
+			push.sendInBackground();
+		}
+	}
+	
+	public static void setIsNotificacao(Boolean is){
+		isNotificacao = is;
 	}
 		
+	public static boolean isNotificacao(){
+		return isNotificacao;
+	}
+	
 	
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
+import com.parse.SaveCallback;
 import com.app.colaborativa.R;
 import com.app.colaborativa.atividade.Atividade;
 import com.app.colaborativa.atividade.NovoProjeto;
@@ -33,14 +37,23 @@ public class ListaProjetoAdapter extends ArrayAdapter<ParseObject> {
     @Override
     public View getView(int position, View view, ViewGroup parent) {
     	final ParseObject proj = projeto.get(position);
+    	String canal = "Proj_"+proj.getObjectId().toString();
+    	ParsePush.subscribeInBackground(canal, new SaveCallback() {
+    		  public void done(ParseException e) {
+    		    if (e == null) {
+    		      Log.d("com.parse.push", "SUCESSO--------."+proj.getObjectId().toString() );
+    		    } else {
+    		      Log.e("com.parse.push",  "FALHA--------."+proj.getObjectId().toString(),e);
+    		    }
+    		  }
+    		});
          
         if(view == null)
             view = LayoutInflater.from(context).inflate(R.layout.lista_projeto, null);
- 
        
         TextView textViewNome = (TextView) view.findViewById(R.id.tv_proj_nome);
-        textViewNome.setText(proj.getString("nome"));
-         
+        textViewNome.setText(proj.getString("nome")); 
+        
         TextView textViewPrazo = (TextView)view.findViewById(R.id.tv_proj_prazo);
         textViewPrazo.setText(DateFormat.format("dd-MM-yyyy", proj.getDate("prazo").getTime()));
         

@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.app.colaborativa.adapter.ListaFeedAdapter;
+import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -25,7 +26,7 @@ public class Feed extends ListActivity {
 
 	private ListaFeedAdapter feedAdapter;
 	private List<ParseObject> feeds;
-	private Button bt_projeto;
+	private Button bt_projeto, bt_feed;
 
 	/** Called when the activity is first created. */
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,8 +39,8 @@ public class Feed extends ListActivity {
 		new RemoteDataTask().execute();
 		
 		bt_projeto = (Button) findViewById(R.id.button_projeto);
-		MenuAction menu = new MenuAction();
-		menu.MapearProjeto(this, bt_projeto);		
+		MenuAction menu = new MenuAction();	
+		menu.MapearProjeto(this, bt_projeto);
 
 	}
 
@@ -93,6 +94,7 @@ public class Feed extends ListActivity {
 						intent.putExtra("projeto_prazo",feed.getParseObject("projeto").getString("prazo"));
 						intent.putExtra("projeto_membros", feed.getParseObject("projeto").getList("membros").toString());
 						startActivity(intent);
+						finish();
 					}
 				});
 			}

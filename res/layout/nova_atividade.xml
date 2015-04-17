@@ -76,8 +76,8 @@
             android:id="@+id/atividade_prazo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Prazo"
-            android:inputType="date" 
+            android:hint="Prazo (dd/mm/yyyy)"
+            android:inputType="date"
             android:background="@drawable/apptheme_textfield_default_holo_light" />
         
         <EditText

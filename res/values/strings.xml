@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, ParseStarterProjectActivity!</string>
-    <string name="app_name">Atividade Colaborativa</string>
+    <string name="app_name">Colab</string>
     <string name="botao1">Projeto</string>
     <string name="botao2">Grupo</string>
     <string name="botao3">Feeds</string>

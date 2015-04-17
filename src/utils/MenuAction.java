@@ -9,6 +9,7 @@ import com.app.colaborativa.atividade.GerenciarAtividade;
 import com.app.colaborativa.atividade.Projeto;
 import com.parse.ParseUser;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -36,6 +37,7 @@ public class MenuAction {
 	                public void onClick(View v) {
 	                     Intent i = new Intent(contexto, Projeto.class);
 	                     contexto.startActivity(i);
+	                     ((Activity) contexto).finish();
 	                }
 	            }
 	         ); 

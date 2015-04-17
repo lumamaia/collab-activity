@@ -24,6 +24,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.app.colaborativa.adapter.ListaProjetoAdapter;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.app.colaborativa.R;
@@ -60,19 +61,6 @@ public class Projeto extends ListActivity {
 			}
 
 		});
-
-		bt_feed = (Button) findViewById(R.id.button_feeds);
-		bt_feed.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				Intent IrParaFeed = new Intent(Projeto.this, Feed.class);
-				Projeto.this.startActivity(IrParaFeed);
-				Projeto.this.finish();
-
-			}
-		});
 	}
 
 	@Override
@@ -105,7 +93,7 @@ public class Projeto extends ListActivity {
 			if (projetos != null) {
 				
 				PullParse.setListProjeto(projetos);
-				
+							
 				projetoAdapter = new ListaProjetoAdapter(Projeto.this, projetos);
 				setListAdapter(projetoAdapter);
 
@@ -114,6 +102,9 @@ public class Projeto extends ListActivity {
 					public void onItemClick(AdapterView<?> adapter, View v,
 							int position, long l) {
 						ParseObject proj = projetoAdapter.getItem(position);
+						
+						ParsePush.subscribeInBackground(proj.getObjectId().toString());
+						
 						Intent intent = new Intent(Projeto.this,
 								Atividade.class);
 						intent.putExtra("projeto_nome", proj.getString("nome"));

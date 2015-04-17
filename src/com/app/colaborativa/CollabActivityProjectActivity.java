@@ -16,6 +16,7 @@ import com.app.colaborativa.atividade.Projeto;
 import com.parse.GetCallback;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -32,14 +33,15 @@ public class CollabActivityProjectActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		ParseAnalytics.trackAppOpened(getIntent());
+//		ParseAnalytics.trackAppOpened(getIntent());
 
 		currentUser = ParseUser.getCurrentUser();
+		
 
-		celular_cadastrado = currentUser.getString("celular");
+//		celular_cadastrado = currentUser.getString("celular");
 		nome_cadastrado = currentUser.getString("nome");
 		txt_main_apelido = (EditText) findViewById(R.id.main_apelido);
-		txt_main_celular = (EditText) findViewById(R.id.main_celular);
+//		txt_main_celular = (EditText) findViewById(R.id.main_celular);
 
 		// txt_main_celular.addTextChangedListener(Mask.insert("### (##) #####-####",
 		// txt_main_celular));
@@ -47,15 +49,15 @@ public class CollabActivityProjectActivity extends Activity {
 			txt_main_apelido = (EditText) findViewById(R.id.main_apelido);
 			txt_main_apelido.setText(nome_cadastrado);
 		}
-		if (celular_cadastrado != null) {
-			txt_main_celular = (EditText) findViewById(R.id.main_celular);
-			txt_main_celular.setText(celular_cadastrado);
-		} else {
-			TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-			celular = tm.getLine1Number();
-			txt_main_celular.setText(celular);
-			currentUser.put("celular", celular);
-		}
+//		if (celular_cadastrado != null) {
+//			txt_main_celular = (EditText) findViewById(R.id.main_celular);
+//			txt_main_celular.setText(celular_cadastrado);
+//		} else {
+//			TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+//			celular = tm.getLine1Number();
+//			txt_main_celular.setText(celular);
+//			currentUser.put("celular", celular);
+//		}
 
 		try {
 			ultimoAcesso = ParseQuery.getQuery("ultimo_feed").getFirst();
@@ -64,6 +66,20 @@ public class CollabActivityProjectActivity extends Activity {
 			// e.printStackTrace();
 		}
 
+		if(PullParse.isNotificacao())
+		{
+			PullParse.setUltimoFeed(ultimoAcesso);
+			PullParse.setUltimaVisita(currentUser.getDate("ultimoAcessoFeed"));
+			PullParse.setUltimaAtualizacaoFeed(ultimoAcesso.getDate("data"));
+			currentUser.increment("acessos");
+			currentUser.saveInBackground();
+
+			Intent irFeed = new Intent(
+					CollabActivityProjectActivity.this, Feed.class);
+			CollabActivityProjectActivity.this
+					.startActivity(irFeed);
+			CollabActivityProjectActivity.this.finish();
+		}
 		bt_projeto = (Button) findViewById(R.id.bt_projeto);
 		bt_projeto.setOnClickListener(new View.OnClickListener() {
 
@@ -80,6 +96,7 @@ public class CollabActivityProjectActivity extends Activity {
 					PullParse.setUltimaAtualizacaoFeed(ultimoAcesso.getDate("data"));
 					currentUser.increment("acessos");
 					currentUser.put("nome", nome_cadastrado);
+					currentUser.put("instalacao", ParseInstallation.getCurrentInstallation());
 					currentUser.saveInBackground();
 
 					Intent VoltarParaProjeto = new Intent(
