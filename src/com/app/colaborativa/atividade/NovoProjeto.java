@@ -13,8 +13,10 @@ import utils.Mask;
 import utils.MenuAction;
 import utils.PullParse;
 import android.R.color;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,11 +40,12 @@ import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class NovoProjeto extends ListActivity {
 
 	private EditText txt_nome, txt_prazo;
-	private TextView tv_nome, tv_prazo;
+	private TextView tv_nome, tv_prazo, tv_list;
 	private String nome, prazo, projeto_id;
 	private boolean is_edicao;
 	private Date data_prazo;
@@ -73,10 +76,12 @@ public class NovoProjeto extends ListActivity {
 		txt_prazo.addTextChangedListener(Mask.insert("##/##/####", txt_prazo));
 		tv_nome = (TextView) findViewById(R.id.tv_nome);		
 		tv_prazo = (TextView) findViewById(R.id.tv_prazo);
+		tv_list = (TextView) findViewById(R.id.tv_list);
 		excluir = (ImageView) findViewById(R.id.ic_excluir);
 		bt_contexto = (Button) findViewById(R.id.button_contexto);
 		TextView contexto = (TextView) findViewById(R.id.tv_contexto);	
-		contexto.setText("Projetos");
+		contexto.setText("Novo Projeto");
+		bt_contexto.setText("Projetos");
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			is_edicao = true;
@@ -106,6 +111,9 @@ public class NovoProjeto extends ListActivity {
 
 			@Override
 			public void onClick(View v) {
+
+				Intent returnIntent = new Intent();
+				setResult(RESULT_CANCELED,returnIntent);
 				finish();
 			}
 		});
@@ -123,6 +131,9 @@ public class NovoProjeto extends ListActivity {
 				
 				if(txt_nome.getText().toString().trim().equals(""))
 				     txt_nome.setError( "Nome é obrigatorio!" );
+				else if(integrantes.size() ==0){
+					tv_list.setError("Membro é obrigatorio!");
+				}
 				else if(txt_prazo.getText().toString().trim().equals(""))
 					txt_prazo.setError( "Prazo é obrigatorio!" );
 				else if(txt_prazo.getText().length() < 6)
@@ -154,19 +165,22 @@ public class NovoProjeto extends ListActivity {
 						projeto.put("membros", integrantes);
 						projeto.put("status", "Em Aberto");	
 						projeto.put("criador", ParseUser.getCurrentUser());
-						projeto.saveInBackground();
-
-						
-						if(!is_edicao){
-							PullParse.saveFeed(null, projeto, "NovoProjeto", "like", ParseUser.getCurrentUser());
-						}
-						
-						
+						projeto.saveInBackground(new SaveCallback() {
+							
+							@Override
+							public void done(com.parse.ParseException e) {
+								
+								if(!is_edicao){
+									ParsePush.subscribeInBackground("Proj_"+projeto.getObjectId().toString());
+									PullParse.saveFeed(null, projeto, "NovoProjeto", "like", ParseUser.getCurrentUser());
+								}
+								
+							}
+						});
 		
-						Intent VoltarParaProjeto = new Intent(NovoProjeto.this,
-								Projeto.class);
-						NovoProjeto.this.startActivity(VoltarParaProjeto);
-						NovoProjeto.this.finish();
+						Intent returnIntent = new Intent();
+						setResult(RESULT_OK,returnIntent);
+						finish();
 					}
 				}
 			}
@@ -208,15 +222,16 @@ public class NovoProjeto extends ListActivity {
 							
 							DeleteAll delete = new DeleteAll();
 							delete.deleteProjeto(projeto);
-
-							Intent IrParaProjeto = new Intent(NovoProjeto.this,
-									Projeto.class);
-							NovoProjeto.this.startActivity(IrParaProjeto);
-							NovoProjeto.this.finish();					
+						
+							Intent returnIntent = new Intent();
+							setResult(RESULT_OK,returnIntent);
+							finish();
+							
 						}
 
 					});
 			alertDialog.show();
+			
 		}
 		});
 	}
@@ -273,5 +288,6 @@ public class NovoProjeto extends ListActivity {
 			});
 		
 	}
+	
 
 }

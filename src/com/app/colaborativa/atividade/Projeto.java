@@ -55,8 +55,8 @@ public class Projeto extends ListActivity {
 
 				Intent IrParaAddProjeto = new Intent(Projeto.this,
 						NovoProjeto.class);
-				Projeto.this.startActivity(IrParaAddProjeto);
-				Projeto.this.finish();
+				Projeto.this.startActivityForResult(IrParaAddProjeto, 1);
+//				Projeto.this.finish();
 
 			}
 
@@ -77,6 +77,7 @@ public class Projeto extends ListActivity {
 
 			ParseQuery<ParseObject> query = ParseQuery.getQuery("projeto");
 			query.whereEqualTo("membros", ParseUser.getCurrentUser().getObjectId());
+			query.include("criador");
 			query.orderByDescending("prazo");
 
 			try {
@@ -121,5 +122,15 @@ public class Projeto extends ListActivity {
 			}
 		}
 
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+	    if (requestCode == 1) {
+	        if(resultCode == -1){
+	        	onContentChanged();
+	        }
+	    }
 	}
 }

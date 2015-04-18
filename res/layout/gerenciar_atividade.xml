@@ -123,7 +123,7 @@
                         android:layout_width="55dp"
                         android:layout_height="55dp"
                         android:layout_weight="1"
-                        android:src="@drawable/ic_ativ_finalizada"
+                        android:src="@drawable/ic_ativ_reabrir"
                         android:visibility="gone" />
                 </LinearLayout>
             </LinearLayout>
@@ -157,7 +157,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/apptheme_textfield_default_holo_light"
-                android:hint="Prazo"
+                android:hint="Prazo (dd/mm/yyyy)"
                 android:inputType="date" />
 
             <TextView
@@ -170,11 +170,13 @@
 
             <EditText
                 android:id="@+id/atividade_descricao"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
+                android:inputType="textMultiLine"
+          		android:linksClickable="true"
+          		android:autoLink="web"
                 android:layout_height="wrap_content"
                 android:background="@drawable/apptheme_textfield_default_holo_light"
-                android:hint="Descrição"
-                android:inputType="textCapSentences" />
+                android:hint="Descrição"/>
 
             <TextView
                 android:layout_width="match_parent"

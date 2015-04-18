@@ -3,6 +3,7 @@ package com.app.colaborativa.adapter;
 import java.util.Date;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.format.DateFormat;
@@ -52,7 +53,10 @@ public class ListaProjetoAdapter extends ArrayAdapter<ParseObject> {
             view = LayoutInflater.from(context).inflate(R.layout.lista_projeto, null);
        
         TextView textViewNome = (TextView) view.findViewById(R.id.tv_proj_nome);
-        textViewNome.setText(proj.getString("nome")); 
+        textViewNome.setText(proj.getString("nome"));
+        
+        TextView textViewcriador = (TextView) view.findViewById(R.id.tv_criador_nome);
+        textViewcriador.setText(proj.getParseUser("criador").getString("nome"));
         
         TextView textViewPrazo = (TextView)view.findViewById(R.id.tv_proj_prazo);
         textViewPrazo.setText(DateFormat.format("dd-MM-yyyy", proj.getDate("prazo").getTime()));
@@ -69,7 +73,7 @@ public class ListaProjetoAdapter extends ArrayAdapter<ParseObject> {
 				intent.putExtra("projeto_prazo", proj.getDate("prazo").getTime());
 				intent.putExtra("projeto_membros", proj.getList("membros").toString().replace("[", "").replace("]", ""));
 				intent.putExtra("projeto_id", proj.getObjectId());
-				context.startActivity(intent);
+				((Activity)context).startActivityForResult(intent, 1);
 			}
 	
 		});

@@ -35,7 +35,8 @@
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_ativ_nome"
@@ -52,8 +53,18 @@
             android:textSize="16dip"
             android:textStyle="bold"
             android:typeface="sans" />
-
-        <!-- Weather Information -->
+ 
+<TextView
+            android:id="@+id/tv_criador_nome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            
+            android:layout_marginLeft="50dp"
+            android:textSize="10dip"
+            android:text="Criado por"
+            android:textColor="@color/myTextSecundaryColor" />
+        
 
     </LinearLayout>
 
@@ -61,11 +72,11 @@
         android:id="@+id/tv_ativ_prazo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/linearLayout1"
+        android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/ic_setinha"
         android:layout_weight="0.74"
         android:text="22/12/2005"
         android:textColor="#343434"
         android:textSize="11dip" />
-
+    
 </RelativeLayout>

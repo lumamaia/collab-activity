@@ -3,6 +3,8 @@ package utils;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONException;
+
 import android.R.bool;
 
 import com.parse.Parse;
@@ -12,6 +14,7 @@ import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SendCallback;
 
 public class PullParse {
 	
@@ -111,6 +114,16 @@ public class PullParse {
 			//push.setChannel("Proj_"+projeto.getObjectId().toString());
 			push.setMessage("Notificação: Projeto "+projeto.getString("nome"));
 			push.sendInBackground();
+			
+			push.sendInBackground(new SendCallback() {
+				
+				@Override
+				public void done(ParseException e) {
+					 if (e != null){
+						 
+					 } //Something wrong 
+				}
+			}); 
 		}
 	}
 	

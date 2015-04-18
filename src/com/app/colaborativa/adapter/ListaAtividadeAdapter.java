@@ -37,6 +37,9 @@ public class ListaAtividadeAdapter extends ArrayAdapter<ParseObject> {
         TextView textViewNome = (TextView) view.findViewById(R.id.tv_ativ_nome);
         textViewNome.setText(ativ.getString("nome"));
         
+        TextView textViewcriador = (TextView) view.findViewById(R.id.tv_criador_nome);
+        textViewcriador.setText(ativ.getParseUser("criador").getString("nome"));
+        
 
        Long diferenca = (ativ.getDate("prazo").getTime()- new Date().getTime());
         TextView textViewPrazo = (TextView)view.findViewById(R.id.tv_ativ_prazo);

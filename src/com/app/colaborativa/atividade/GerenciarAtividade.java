@@ -55,19 +55,20 @@ public class GerenciarAtividade extends Activity {
 
 	private EditText nome, prazo, descricao;
 	private Date data_prazo;
-	private Button salvar, bt_projeto, bt_feed, bt_contexto;
+	private Button bt_projeto, bt_feed, bt_contexto;
 	private ImageView ic_add_comentario, ic_add_responsavel, ic_finalizar,
 			ic_finalizada, ic_editar, ic_salvar, ic_excluir, ic_cancelar;
-	public ImageView visualizar_img, anexo, remove_anexo;
+	private ImageView visualizar_img, anexo, remove_anexo;
 	private LinearLayout view_editar, view_gerenciar;
-	public ParseObject atividade1, comentario;
-	public List<ParseObject> comentarios = null;
+	private ParseObject atividade1, comentario;
+	private List<ParseObject> comentarios = null;
 	List<ParseObject> responsaveis;
-	public ListaComentarioAdapter comentarioAdapter;
-	public String atividade_id, projeto_id, projeto_nome, projeto_membros;
-	public boolean teveAnexo;
+	private ListaComentarioAdapter comentarioAdapter;
+	private String atividade_id, projeto_id, projeto_nome, projeto_membros;
+	private boolean teveAnexo;
 	static public Long projeto_prazo;
-	public ViewFlipper viewFlipper;
+	private Exception exp;
+	private int atualizacao;
 
 	/** Called when the activity is first created. */
 	public void onCreate(Bundle savedInstanceState) {
@@ -84,12 +85,14 @@ public class GerenciarAtividade extends Activity {
 			this.findAtividade();
 		}
 
+		atualizacao = RESULT_CANCELED;
+
 		new RemoteDataTask().execute();
 
 		bt_projeto = (Button) findViewById(R.id.button_projeto);
 		bt_feed = (Button) findViewById(R.id.button_feeds);
 		MenuAction menu = new MenuAction();
-		menu.MapearProjeto(this, bt_projeto);		
+		menu.MapearProjeto(this, bt_projeto);
 		menu.MapearFeed(this, bt_feed);
 
 		prazo = (EditText) findViewById(R.id.atividade_prazo);
@@ -167,19 +170,21 @@ public class GerenciarAtividade extends Activity {
 								comentario.put("atividade", atividade1);
 								comentario.put("data", new Date());
 								comentario.put("contador", 0);
-								comentario.put("usuario",ParseUser.getCurrentUser());
-								
-								if(teveAnexo){
+								comentario.put("usuario",
+										ParseUser.getCurrentUser());
+
+								if (teveAnexo) {
 									try {
 										comentario.save();
 									} catch (com.parse.ParseException e) {
 										e.printStackTrace();
 									}
-								}
-								else
+								} else
 									comentario.saveInBackground();
-								
-								PullParse.saveFeed(atividade1, atividade1.getParseObject("projeto"), "NovoComentario", "none", null);
+
+								PullParse.saveFeed(atividade1,
+										atividade1.getParseObject("projeto"),
+										"NovoComentario", "none", null);
 
 								new RemoteDataTask().execute();
 								dialog.cancel();
@@ -201,7 +206,7 @@ public class GerenciarAtividade extends Activity {
 				AlertDialog.Builder alertDialog = new AlertDialog.Builder(
 						GerenciarAtividade.this, AlertDialog.THEME_HOLO_LIGHT);
 
-				alertDialog.setTitle("Resolução");
+				alertDialog.setTitle("Finalizar: resolução");
 
 				// Setting Dialog Message
 				final EditText input = new EditText(GerenciarAtividade.this);
@@ -210,7 +215,7 @@ public class GerenciarAtividade extends Activity {
 						LinearLayout.LayoutParams.MATCH_PARENT);
 				input.setLayoutParams(lp);
 				alertDialog.setView(input);
-//				alertDialog.setIcon(R.drawable.ic_finalizada);
+				// alertDialog.setIcon(R.drawable.ic_finalizada);
 
 				alertDialog.setNegativeButton("Cancelar",
 						new DialogInterface.OnClickListener() {
@@ -230,7 +235,7 @@ public class GerenciarAtividade extends Activity {
 								atividade = atividade1;
 								atividade.put("status", "Finalizada");
 								atividade.saveInBackground();
-								
+
 								ic_finalizada.setVisibility(View.VISIBLE);
 								ic_finalizar.setVisibility(View.GONE);
 								ic_editar.setVisibility(View.GONE);
@@ -247,12 +252,13 @@ public class GerenciarAtividade extends Activity {
 										ParseUser.getCurrentUser());
 								comentario.saveInBackground();
 
-								
-								PullParse.saveFeed(atividade1, atividade1.getParseObject("projeto"), "AtividadeFinalizada", "like", null);
+								PullParse.saveFeed(atividade1,
+										atividade1.getParseObject("projeto"),
+										"AtividadeFinalizada", "like", null);
 
 								new RemoteDataTask().execute();
 								dialog.cancel();
-								
+
 							}
 
 						});
@@ -268,7 +274,7 @@ public class GerenciarAtividade extends Activity {
 				AlertDialog.Builder alertDialog = new AlertDialog.Builder(
 						GerenciarAtividade.this, AlertDialog.THEME_HOLO_LIGHT);
 
-				alertDialog.setTitle("Motivo");
+				alertDialog.setTitle("Reabrir: motivo");
 
 				// Setting Dialog Message
 				final EditText input = new EditText(GerenciarAtividade.this);
@@ -277,7 +283,7 @@ public class GerenciarAtividade extends Activity {
 						LinearLayout.LayoutParams.MATCH_PARENT);
 				input.setLayoutParams(lp);
 				alertDialog.setView(input);
-//				alertDialog.setIcon(R.drawable.ic_finalizar);
+				// alertDialog.setIcon(R.drawable.ic_finalizar);
 
 				alertDialog.setNegativeButton("Cancelar",
 						new DialogInterface.OnClickListener() {
@@ -301,7 +307,7 @@ public class GerenciarAtividade extends Activity {
 								ic_finalizada.setVisibility(View.GONE);
 								ic_finalizar.setVisibility(View.VISIBLE);
 								ic_editar.setVisibility(View.VISIBLE);
-								
+
 								ParseObject comentario = new ParseObject(
 										"comentario");
 								comentario.put("comentario", "Reaberta: "
@@ -314,8 +320,9 @@ public class GerenciarAtividade extends Activity {
 										ParseUser.getCurrentUser());
 								comentario.saveInBackground();
 
-								PullParse.saveFeed(atividade1, atividade1.getParseObject("projeto"), "AtividadeReaberta", "like", null);
-
+								PullParse.saveFeed(atividade1,
+										atividade1.getParseObject("projeto"),
+										"AtividadeReaberta", "like", null);
 
 								new RemoteDataTask().execute();
 								dialog.cancel();
@@ -334,50 +341,55 @@ public class GerenciarAtividade extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				nome = (EditText) findViewById(R.id.atividade_nome);
-				prazo = (EditText) findViewById(R.id.atividade_prazo);
-				descricao = (EditText) findViewById(R.id.atividade_descricao);
-
 				if (nome.getText().toString().trim().equals(""))
 					nome.setError("Nome é obrigatorio!");
-				else if (prazo.getText().toString().trim().equals(""))
-					prazo.setError("Prazo é obrigatorio!");
+
 				else {
-
-					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-					try {
-						data_prazo = sdf.parse(prazo.getText().toString());
+					if (prazo.getText().toString().trim().equals("")) {
 						Calendar cal = Calendar.getInstance();
-						cal.setTime(data_prazo);
-						if (cal.get(Calendar.YEAR) < 1000) {
-							cal.add(Calendar.YEAR, 2000);
-						}
+						cal.setTimeInMillis(projeto_prazo);
 						data_prazo = cal.getTime();
+					} else if (prazo.getText().length() < 8)
+						prazo.setError("Esse Prazo é inválido!");
+					else {
+						exp = null;
+						SimpleDateFormat sdf = new SimpleDateFormat(
+								"dd/MM/yyyy");
+						try {
+							data_prazo = sdf.parse(prazo.getText().toString());
+							Calendar cal = Calendar.getInstance();
+							cal.setTime(data_prazo);
+							if (cal.get(Calendar.YEAR) < 1000) {
+								cal.add(Calendar.YEAR, 2000);
+							}
+							data_prazo = cal.getTime();
 
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+						} catch (ParseException e) {
+							exp = e;
+						}
+						if (exp != null) {
+							prazo.setError("Esse Prazo é inválido!");
+						} else if (new Date().after(data_prazo)) {
+							prazo.setError("Esse prazo já passou!");
+						} else {
 
-					if (new Date().after(data_prazo)) {
-						prazo.setError("Esse prazo já passou!");
-					} else if (new Date(projeto_prazo).before(data_prazo)) {
-						prazo.setError("Esse prazo é maior que o prazo do Projeto!");
-					} else {
-						ParseObject atividade = new ParseObject("atividade");
-						atividade = atividade1;
-						atividade.put("nome", nome.getText().toString());
-						atividade.put("prazo", data_prazo);
-						// atividade.put("projeto_id", projeto_id);
-						atividade.put("descricao", descricao.getText()
-								.toString());
-						atividade.saveInBackground();
-						view_gerenciar.setVisibility(View.VISIBLE);
-						view_editar.setVisibility(View.GONE);
-						nome.setEnabled(false);
-						prazo.setEnabled(false);
-						descricao.setEnabled(false);
+							ParseObject atividade = new ParseObject("atividade");
+							atividade = atividade1;
+							atividade.put("nome", nome.getText().toString());
+							atividade.put("prazo", data_prazo);
+							// atividade.put("projeto_id", projeto_id);
+							atividade.put("descricao", descricao.getText()
+									.toString());
+							atividade.saveInBackground();
+							view_gerenciar.setVisibility(View.VISIBLE);
+							view_editar.setVisibility(View.GONE);
+							nome.setEnabled(false);
+							prazo.setEnabled(false);
+							descricao.setEnabled(false);
 
+							atualizacao = RESULT_OK;
+
+						}
 					}
 				}
 			}
@@ -397,7 +409,7 @@ public class GerenciarAtividade extends Activity {
 				IrParaResponsavel.putExtra("projeto_prazo", projeto_prazo);
 				IrParaResponsavel.putExtra("projeto_membros", projeto_membros);
 				startActivity(IrParaResponsavel);
-//				GerenciarAtividade.this.finish();
+				// GerenciarAtividade.this.finish();
 
 			}
 		});
@@ -410,7 +422,7 @@ public class GerenciarAtividade extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				
+
 				AlertDialog.Builder alertDialog = new AlertDialog.Builder(
 						GerenciarAtividade.this, AlertDialog.THEME_HOLO_LIGHT);
 
@@ -438,19 +450,23 @@ public class GerenciarAtividade extends Activity {
 							public void onClick(DialogInterface dialog,
 									int which) {
 
-								
 								DeleteAll delete = new DeleteAll();
 								delete.execute(atividade1);
 
 								Intent VoltarParaAtividade = new Intent(
-										GerenciarAtividade.this, Atividade.class);
-								VoltarParaAtividade.putExtra("projeto_id", projeto_id);
-								VoltarParaAtividade.putExtra("projeto_nome", projeto_nome);
-								VoltarParaAtividade.putExtra("atividade_id", atividade_id);
-								VoltarParaAtividade
-										.putExtra("projeto_membros", projeto_membros);
-								GerenciarAtividade.this.startActivity(VoltarParaAtividade);
-								GerenciarAtividade.this.finish();								
+										GerenciarAtividade.this,
+										Atividade.class);
+								VoltarParaAtividade.putExtra("projeto_id",
+										projeto_id);
+								VoltarParaAtividade.putExtra("projeto_nome",
+										projeto_nome);
+								VoltarParaAtividade.putExtra("atividade_id",
+										atividade_id);
+								VoltarParaAtividade.putExtra("projeto_membros",
+										projeto_membros);
+								GerenciarAtividade.this
+										.startActivity(VoltarParaAtividade);
+								GerenciarAtividade.this.finish();
 							}
 
 						});
@@ -479,6 +495,12 @@ public class GerenciarAtividade extends Activity {
 			public void onClick(View v) {
 				view_gerenciar.setVisibility(View.VISIBLE);
 				view_editar.setVisibility(View.GONE);
+				
+				nome.setText(atividade1.getString("nome"));
+				prazo.setText(DateFormat.format("dd/MM/yyyy",
+						atividade1.getDate("prazo")));
+				descricao.setText(atividade1.getString("descricao"));
+				
 				nome.setEnabled(false);
 				prazo.setEnabled(false);
 				descricao.setEnabled(false);
@@ -491,6 +513,9 @@ public class GerenciarAtividade extends Activity {
 
 			@Override
 			public void onClick(View v) {
+
+				Intent returnIntent = new Intent();
+				setResult(atualizacao, returnIntent);
 				finish();
 			}
 		});
@@ -499,6 +524,7 @@ public class GerenciarAtividade extends Activity {
 
 	public void findAtividade() {
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("atividade");
+		query.include("projeto");
 		query.getInBackground(atividade_id, new GetCallback<ParseObject>() {
 
 			@Override
@@ -518,7 +544,7 @@ public class GerenciarAtividade extends Activity {
 
 					ic_finalizar = (ImageView) findViewById(R.id.ic_finalizar);
 					ic_finalizada = (ImageView) findViewById(R.id.ic_finalizada);
-					ic_editar =  (ImageView) findViewById(R.id.ic_editar);
+					ic_editar = (ImageView) findViewById(R.id.ic_editar);
 
 					if (atividade1.getString("status").equals("Finalizada")) {
 						ic_finalizar.setVisibility(View.GONE);

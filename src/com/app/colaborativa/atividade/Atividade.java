@@ -46,7 +46,7 @@ public class Atividade extends ListActivity {
 				IrParaAddAtividade.putExtra("projeto_id", projeto_id);
 				IrParaAddAtividade.putExtra("projeto_nome", projeto_nome);
 				IrParaAddAtividade.putExtra("projeto_prazo", projeto_prazo);
-				Atividade.this.startActivity(IrParaAddAtividade);
+				Atividade.this.startActivityForResult(IrParaAddAtividade, 1);
 //				Atividade.this.finish();
 				
 			}
@@ -97,6 +97,7 @@ public class Atividade extends ListActivity {
 			ParseQuery<ParseObject> query = ParseQuery.getQuery("atividade");
 			query.orderByDescending("prazo");
 			query.whereEqualTo("projeto_id", projeto_id);
+			query.include("criador");
 
 			try {
 				atividades = query.find();
@@ -122,7 +123,7 @@ public class Atividade extends ListActivity {
 		              intent.putExtra("projeto_id", ativ.getString("projeto_id"));
 		              intent.putExtra("projeto_nome", projeto_nome);
 		              intent.putExtra("projeto_membros", proj_membros);
-		              intent.putExtra("projeto_prazo", projeto_prazo);
+//		              intent.putExtra("projeto_prazo", projeto_prazo);
 		              intent.putExtra("atividade_id", ativ.getObjectId());
 		              startActivity(intent);
 		              
@@ -133,4 +134,14 @@ public class Atividade extends ListActivity {
 			}
 						
 		}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+	    if (requestCode == 1) {
+	        if(resultCode == -1){
+	        	onContentChanged();
+	        }
+	    }
+	}
 }

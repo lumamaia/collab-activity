@@ -36,7 +36,7 @@ import com.parse.ParseUser;
 import com.app.colaborativa.R;
 
 public class NovaAtividade extends ListActivity {
-	
+
 	private EditText nome;
 	private TextView convite;
 	private EditText prazo;
@@ -49,122 +49,139 @@ public class NovaAtividade extends ListActivity {
 	List<ParseUser> convidados = new ArrayList<ParseUser>();
 	private Button bt_projeto, bt_feed, bt_contexto;
 	ListaConviteAdapter responsavelAdapter;
-	
+	private Exception exp;
+
 	/** Called when the activity is first created. */
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.nova_atividade);
-		
+
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			proj_id = extras.getString("projeto_id");
 			proj_nome = extras.getString("projeto_nome");
 			proj_prazo = extras.getLong("projeto_prazo");
 			findProjeto();
-			
+
 		}
-		
+
 		bt_projeto = (Button) findViewById(R.id.button_projeto);
 		bt_feed = (Button) findViewById(R.id.button_feeds);
 		MenuAction menu = new MenuAction();
-		menu.MapearProjeto(this, bt_projeto);		
+		menu.MapearProjeto(this, bt_projeto);
 		menu.MapearFeed(this, bt_feed);
-		
+
 		bt_contexto = (Button) findViewById(R.id.button_contexto);
 		bt_contexto.setText("Projeto " + proj_nome + " > Atividades");
 		bt_contexto.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
+				// Intent VoltarParaAtividade = new Intent(NovaAtividade.this,
+				// Atividade.class);
+				// VoltarParaAtividade.putExtra("projeto_id", proj_id);
+				// VoltarParaAtividade.putExtra("projeto_nome", proj_nome);
+				// VoltarParaAtividade.putExtra("projeto_membros",
+				// projeto.getList("membros").toString());
+				// NovaAtividade.this.startActivity(VoltarParaAtividade);
+				// NovaAtividade.this.finish();
+				Intent returnIntent = new Intent();
+				setResult(RESULT_CANCELED, returnIntent);
 				finish();
 			}
 		});
-		
+
 		prazo = (EditText) findViewById(R.id.atividade_prazo);
 		prazo.addTextChangedListener(Mask.insert("##/##/####", prazo));
-		
+
 		salvar = (ImageView) findViewById(R.id.bt_salvar);
 		salvar.setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					
-					nome = (EditText) findViewById(R.id.atividade_nome);
-					prazo = (EditText) findViewById(R.id.atividade_prazo);
-					descricao = (EditText) findViewById(R.id.atividade_descricao);
-					
-					if(nome.getText().toString().trim().equals(""))
-					     nome.setError( "Nome é obrigatorio!" );
-					else if(prazo.getText().toString().trim().equals(""))
-						prazo.setError( "Prazo é obrigatorio!" );
-					else if(prazo.getText().length() < 6)
-						prazo.setError( "Esse Prazo é inválido!" );
-					else{
-					
-						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+			@Override
+			public void onClick(View v) {
+
+				nome = (EditText) findViewById(R.id.atividade_nome);
+				prazo = (EditText) findViewById(R.id.atividade_prazo);
+				descricao = (EditText) findViewById(R.id.atividade_descricao);
+
+				if (nome.getText().toString().trim().equals("")) {
+					nome.setError("Nome é obrigatorio!");
+				} else {
+
+					if (prazo.getText().toString().trim().equals("")) {
+						Calendar cal = Calendar.getInstance();
+						cal.setTimeInMillis(proj_prazo);
+						data_prazo = cal.getTime();
+					} else if (prazo.getText().length() < 8) {
+						prazo.setError("Esse Prazo é inválido!");
+					} else {
+						exp = null;
+						SimpleDateFormat sdf = new SimpleDateFormat(
+								"dd/MM/yyyy");
 						try {
 							data_prazo = sdf.parse(prazo.getText().toString());
 							Calendar cal = Calendar.getInstance();
-					        cal.setTime(data_prazo);
-					        if(cal.get(Calendar.YEAR)<1000){
+							cal.setTime(data_prazo);
+							if (cal.get(Calendar.YEAR) < 1000) {
 								cal.add(Calendar.YEAR, 2000);
 							}
 							data_prazo = cal.getTime();
-								
-						} catch (ParseException e) {
-							prazo.setError( "Esse Prazo é inválido!" );
-						}
-					
-						if(new Date().after(data_prazo)){
-							prazo.setError( "Esse prazo já passou!" );
-						}
-						else if(new Date(proj_prazo).before(data_prazo)){
-							prazo.setError( "Esse prazo é maior que o prazo do Projeto!" );
-						}
-						else{
-						ParseObject atividade = new ParseObject("atividade");
-						atividade.put("nome", nome.getText().toString());
-						atividade.put("prazo", data_prazo);
-						atividade.put("status", "Em Aberto");
-						atividade.put("descricao", descricao.getText().toString());
-						atividade.put("projeto_id", proj_id);
-						atividade.put("criador", ParseUser.getCurrentUser());
-						if(projeto != null)
-							atividade.put("projeto", projeto);
-						atividade.saveInBackground();
-										 
-						 PullParse.saveFeed(atividade, projeto, "NovaAtividade", "like", null);
 
-						 
-						 for (ParseUser membro : convidados) {
-							 
-							 ParseObject convite = new ParseObject("convite_responsavel");
-							 convite.put("atividade", atividade);
-							 convite.put("responsavel", membro);
-							 convite.put("usuario", ParseUser.getCurrentUser());
-							 convite.put("status", "Convidado");
-							 convite.saveInBackground();
-							 							 
-							 PullParse.saveFeed(atividade, projeto, "InformativoSugestaoResponsavel", "like", membro);
-							 
-							
-						} 
-						
-						Intent VoltarParaAtividade = new Intent(NovaAtividade.this, Atividade.class);
-						VoltarParaAtividade.putExtra("projeto_id", proj_id);
-						VoltarParaAtividade.putExtra("projeto_nome", proj_nome);
-						VoltarParaAtividade.putExtra("projeto_membros",  projeto.getList("membros").toString());
-						NovaAtividade.this.startActivity(VoltarParaAtividade);
-						NovaAtividade.this.finish();
+						} catch (ParseException e) {
+							exp = e;
 						}
+
+						if (exp != null) {
+							prazo.setError("Esse Prazo é inválido!");
+						} else if (new Date().after(data_prazo)) {
+							prazo.setError("Esse prazo já passou!");
+						} else {
+
+							ParseObject atividade = new ParseObject("atividade");
+							atividade.put("nome", nome.getText().toString());
+							atividade.put("prazo", data_prazo);
+							atividade.put("status", "Em Aberto");
+							atividade.put("descricao", descricao.getText()
+									.toString());
+							atividade.put("projeto_id", proj_id);
+							atividade.put("criador", ParseUser.getCurrentUser());
+							if (projeto != null)
+								atividade.put("projeto", projeto);
+							atividade.saveInBackground();
+
+							PullParse.saveFeed(atividade, projeto,
+									"NovaAtividade", "like", null);
+
+							for (ParseUser membro : convidados) {
+
+								ParseObject convite = new ParseObject(
+										"convite_responsavel");
+								convite.put("atividade", atividade);
+								convite.put("responsavel", membro);
+								convite.put("usuario",
+										ParseUser.getCurrentUser());
+								convite.put("status", "Convidado");
+								convite.saveInBackground();
+
+								PullParse.saveFeed(atividade, projeto,
+										"InformativoSugestaoResponsavel",
+										"like", membro);
+								
+
+							}
+							Intent returnIntent = new Intent();
+							setResult(RESULT_OK, returnIntent);
+							finish();
+						}
+
 					}
 				}
-			});
-		
-	    
-		
+
+			}
+		});
+
 	}
-	
+
 	public void findProjeto() {
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("projeto");
 		query.include("membros");
@@ -175,41 +192,58 @@ public class NovaAtividade extends ListActivity {
 				if (e == null) {
 					projeto = object;
 					List<Object> membro = projeto.getList("membros");
-					 if(membro!=null){
-					
-						ParseUser.getQuery().whereContainedIn("objectId", projeto.getList("membros")).findInBackground(new FindCallback<ParseUser>() {
-							
-							@Override
-							public void done(List<ParseUser> objects, com.parse.ParseException e) {
-								responsavelAdapter = new ListaConviteAdapter(NovaAtividade.this, objects);
-								setListAdapter(responsavelAdapter);
-								
-								getListView().setOnItemClickListener(new OnItemClickListener() {
+					if (membro != null) {
 
-									public void onItemClick(AdapterView<?> adapter, View v,
-											int position, long l) {
-										
-										ImageView conviteIcone = (ImageView) v.findViewById(R.id.ic_convite);
-										ParseUser user = responsavelAdapter.getItem(position);
-										if(!convidados.contains(user)){
-											convidados.add(user);
-											conviteIcone.setBackgroundResource(R.drawable.ic_membro_check);
-										}else{
-											convidados.remove(user);
-											conviteIcone.setBackgroundResource(R.drawable.ic_membro_uncheck);
-										}
-									}
-								});
-								
-				
-								
-							}
-						});
-					 }
+						ParseUser
+								.getQuery()
+								.whereContainedIn("objectId",
+										projeto.getList("membros"))
+								.findInBackground(
+										new FindCallback<ParseUser>() {
+
+											@Override
+											public void done(
+													List<ParseUser> objects,
+													com.parse.ParseException e) {
+												responsavelAdapter = new ListaConviteAdapter(
+														NovaAtividade.this,
+														objects);
+												setListAdapter(responsavelAdapter);
+
+												getListView()
+														.setOnItemClickListener(
+																new OnItemClickListener() {
+
+																	public void onItemClick(
+																			AdapterView<?> adapter,
+																			View v,
+																			int position,
+																			long l) {
+
+																		ImageView conviteIcone = (ImageView) v
+																				.findViewById(R.id.ic_convite);
+																		ParseUser user = responsavelAdapter
+																				.getItem(position);
+																		if (!convidados
+																				.contains(user)) {
+																			convidados
+																					.add(user);
+																			conviteIcone
+																					.setBackgroundResource(R.drawable.ic_membro_check);
+																		} else {
+																			convidados
+																					.remove(user);
+																			conviteIcone
+																					.setBackgroundResource(R.drawable.ic_membro_uncheck);
+																		}
+																	}
+																});
+
+											}
+										});
+					}
 				}
 			}
 		});
 	}
 }
-
-
