@@ -123,11 +123,10 @@ public class Atividade extends ListActivity {
 		              intent.putExtra("projeto_id", ativ.getString("projeto_id"));
 		              intent.putExtra("projeto_nome", projeto_nome);
 		              intent.putExtra("projeto_membros", proj_membros);
-//		              intent.putExtra("projeto_prazo", projeto_prazo);
+		              intent.putExtra("projeto_prazo", projeto_prazo);
 		              intent.putExtra("atividade_id", ativ.getObjectId());
-		              startActivity(intent);
-		              
-		              //Toast.makeText(ListaProjeto.this,proj.getInt("nome"), Toast.LENGTH_SHORT).show();    
+		              Atividade.this.startActivityForResult(intent, 1);
+		             
 		            }
 			        });
 				}
@@ -140,7 +139,7 @@ public class Atividade extends ListActivity {
 
 	    if (requestCode == 1) {
 	        if(resultCode == -1){
-	        	onContentChanged();
+	        	new RemoteDataTask().execute();
 	        }
 	    }
 	}

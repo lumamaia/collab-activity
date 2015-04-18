@@ -115,8 +115,6 @@ public class Projeto extends ListActivity {
 						intent.putExtra("position", position);
 						startActivity(intent);
 
-						// Toast.makeText(ListaProjeto.this,proj.getInt("nome"),
-						// Toast.LENGTH_SHORT).show();
 					}
 				});
 			}

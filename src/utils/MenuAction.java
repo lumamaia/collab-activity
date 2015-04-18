@@ -59,7 +59,6 @@ public class MenuAction {
 	                	feed.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 	                     Intent i = new Intent(contexto, Feed.class);
 	                     contexto.startActivity(i);
-//	                     ((Activity) contexto).finish();
 	                }
 	            }
 	         ); 

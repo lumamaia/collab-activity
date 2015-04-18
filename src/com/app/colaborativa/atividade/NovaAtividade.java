@@ -77,14 +77,6 @@ public class NovaAtividade extends ListActivity {
 
 			@Override
 			public void onClick(View v) {
-				// Intent VoltarParaAtividade = new Intent(NovaAtividade.this,
-				// Atividade.class);
-				// VoltarParaAtividade.putExtra("projeto_id", proj_id);
-				// VoltarParaAtividade.putExtra("projeto_nome", proj_nome);
-				// VoltarParaAtividade.putExtra("projeto_membros",
-				// projeto.getList("membros").toString());
-				// NovaAtividade.this.startActivity(VoltarParaAtividade);
-				// NovaAtividade.this.finish();
 				Intent returnIntent = new Intent();
 				setResult(RESULT_CANCELED, returnIntent);
 				finish();
@@ -100,81 +92,76 @@ public class NovaAtividade extends ListActivity {
 			@Override
 			public void onClick(View v) {
 
+				exp = null;
+				boolean com_prazo = true;
 				nome = (EditText) findViewById(R.id.atividade_nome);
 				prazo = (EditText) findViewById(R.id.atividade_prazo);
 				descricao = (EditText) findViewById(R.id.atividade_descricao);
 
+				if (prazo.getText().toString().trim().equals("")) {
+					Calendar cal = Calendar.getInstance();
+					cal.setTimeInMillis(proj_prazo);
+					data_prazo = cal.getTime();
+					com_prazo = false;
+				} else {
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+					sdf.setLenient(false);
+					try {
+						data_prazo = sdf.parse(prazo.getText().toString());
+						Calendar cal = Calendar.getInstance();
+						cal.setTime(data_prazo);
+						if (cal.get(Calendar.YEAR) < 1000) {
+							cal.add(Calendar.YEAR, 2000);
+						}
+						data_prazo = cal.getTime();
+
+					} catch (ParseException e) {
+						exp = e;
+					}
+				}
+
 				if (nome.getText().toString().trim().equals("")) {
 					nome.setError("Nome é obrigatorio!");
+				} else if (prazo.getText().length() < 8 && com_prazo) {
+					prazo.setError("Esse Prazo é inválido!");
+				} else if (exp != null) {
+					prazo.setError("Esse Prazo é inválido!");
+				} else if (new Date().after(data_prazo)) {
+					prazo.setError("Esse prazo já passou!");
 				} else {
 
-					if (prazo.getText().toString().trim().equals("")) {
-						Calendar cal = Calendar.getInstance();
-						cal.setTimeInMillis(proj_prazo);
-						data_prazo = cal.getTime();
-					} else if (prazo.getText().length() < 8) {
-						prazo.setError("Esse Prazo é inválido!");
-					} else {
-						exp = null;
-						SimpleDateFormat sdf = new SimpleDateFormat(
-								"dd/MM/yyyy");
-						try {
-							data_prazo = sdf.parse(prazo.getText().toString());
-							Calendar cal = Calendar.getInstance();
-							cal.setTime(data_prazo);
-							if (cal.get(Calendar.YEAR) < 1000) {
-								cal.add(Calendar.YEAR, 2000);
-							}
-							data_prazo = cal.getTime();
+					ParseObject atividade = new ParseObject("atividade");
+					atividade.put("nome", nome.getText().toString());
+					atividade.put("prazo", data_prazo);
+					atividade.put("status", "Em Aberto");
+					atividade.put("descricao", descricao.getText().toString());
+					atividade.put("projeto_id", proj_id);
+					atividade.put("criador", ParseUser.getCurrentUser());
+					if (projeto != null)
+						atividade.put("projeto", projeto);
+					atividade.saveInBackground();
 
-						} catch (ParseException e) {
-							exp = e;
-						}
+					PullParse.saveFeed(atividade, projeto, "NovaAtividade",
+							"like", null);
 
-						if (exp != null) {
-							prazo.setError("Esse Prazo é inválido!");
-						} else if (new Date().after(data_prazo)) {
-							prazo.setError("Esse prazo já passou!");
-						} else {
+					for (ParseUser membro : convidados) {
 
-							ParseObject atividade = new ParseObject("atividade");
-							atividade.put("nome", nome.getText().toString());
-							atividade.put("prazo", data_prazo);
-							atividade.put("status", "Em Aberto");
-							atividade.put("descricao", descricao.getText()
-									.toString());
-							atividade.put("projeto_id", proj_id);
-							atividade.put("criador", ParseUser.getCurrentUser());
-							if (projeto != null)
-								atividade.put("projeto", projeto);
-							atividade.saveInBackground();
+						ParseObject convite = new ParseObject(
+								"convite_responsavel");
+						convite.put("atividade", atividade);
+						convite.put("responsavel", membro);
+						convite.put("usuario", ParseUser.getCurrentUser());
+						convite.put("status", "Convidado");
+						convite.saveInBackground();
 
-							PullParse.saveFeed(atividade, projeto,
-									"NovaAtividade", "like", null);
-
-							for (ParseUser membro : convidados) {
-
-								ParseObject convite = new ParseObject(
-										"convite_responsavel");
-								convite.put("atividade", atividade);
-								convite.put("responsavel", membro);
-								convite.put("usuario",
-										ParseUser.getCurrentUser());
-								convite.put("status", "Convidado");
-								convite.saveInBackground();
-
-								PullParse.saveFeed(atividade, projeto,
-										"InformativoSugestaoResponsavel",
-										"like", membro);
-								
-
-							}
-							Intent returnIntent = new Intent();
-							setResult(RESULT_OK, returnIntent);
-							finish();
-						}
+						PullParse.saveFeed(atividade, projeto,
+								"InformativoSugestaoResponsavel", "like",
+								membro);
 
 					}
+					Intent returnIntent = new Intent();
+					setResult(RESULT_OK, returnIntent);
+					finish();
 				}
 
 			}

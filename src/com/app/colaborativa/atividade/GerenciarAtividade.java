@@ -1,7 +1,6 @@
 package com.app.colaborativa.atividade;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -12,11 +11,8 @@ import utils.DeleteAll;
 import utils.Mask;
 import utils.MenuAction;
 import utils.PullParse;
-import android.R.color;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -26,30 +22,24 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.MediaStore.Files;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import com.app.colaborativa.R;
-import com.app.colaborativa.R.drawable;
 import com.app.colaborativa.adapter.ListaComentarioAdapter;
 import com.parse.GetCallback;
 import com.parse.ParseFile;
-import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 public class GerenciarAtividade extends Activity {
 
@@ -98,12 +88,10 @@ public class GerenciarAtividade extends Activity {
 		prazo = (EditText) findViewById(R.id.atividade_prazo);
 		prazo.addTextChangedListener(Mask.insert("##/##/####", prazo));
 
-		// add_comentario = (Button) findViewById(R.id.bt_add_comentario);
 		ic_add_comentario = (ImageView) findViewById(R.id.ic_add_comentario);
 		ic_add_comentario.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 
 				comentario = new ParseObject("comentario");
 				teveAnexo = false;
@@ -197,7 +185,6 @@ public class GerenciarAtividade extends Activity {
 			}
 		});
 
-		// finalizar_atividade = (Button) findViewById(R.id.bt_finalizar);
 		ic_finalizar = (ImageView) findViewById(R.id.ic_finalizar);
 		ic_finalizar.setOnClickListener(new View.OnClickListener() {
 
@@ -341,58 +328,56 @@ public class GerenciarAtividade extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				if (nome.getText().toString().trim().equals(""))
-					nome.setError("Nome é obrigatorio!");
+				boolean com_prazo = true;
 
-				else {
-					if (prazo.getText().toString().trim().equals("")) {
+				if (prazo.getText().toString().trim().equals("")) {
+					Calendar cal = Calendar.getInstance();
+					cal.setTimeInMillis(projeto_prazo);
+					data_prazo = cal.getTime();
+					com_prazo = false;
+				} else {
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+					sdf.setLenient(false);
+					try {
+						data_prazo = sdf.parse(prazo.getText().toString());
 						Calendar cal = Calendar.getInstance();
-						cal.setTimeInMillis(projeto_prazo);
+						cal.setTime(data_prazo);
+						if (cal.get(Calendar.YEAR) < 1000) {
+							cal.add(Calendar.YEAR, 2000);
+						}
 						data_prazo = cal.getTime();
-					} else if (prazo.getText().length() < 8)
-						prazo.setError("Esse Prazo é inválido!");
-					else {
-						exp = null;
-						SimpleDateFormat sdf = new SimpleDateFormat(
-								"dd/MM/yyyy");
-						try {
-							data_prazo = sdf.parse(prazo.getText().toString());
-							Calendar cal = Calendar.getInstance();
-							cal.setTime(data_prazo);
-							if (cal.get(Calendar.YEAR) < 1000) {
-								cal.add(Calendar.YEAR, 2000);
-							}
-							data_prazo = cal.getTime();
 
-						} catch (ParseException e) {
-							exp = e;
-						}
-						if (exp != null) {
-							prazo.setError("Esse Prazo é inválido!");
-						} else if (new Date().after(data_prazo)) {
-							prazo.setError("Esse prazo já passou!");
-						} else {
-
-							ParseObject atividade = new ParseObject("atividade");
-							atividade = atividade1;
-							atividade.put("nome", nome.getText().toString());
-							atividade.put("prazo", data_prazo);
-							// atividade.put("projeto_id", projeto_id);
-							atividade.put("descricao", descricao.getText()
-									.toString());
-							atividade.saveInBackground();
-							view_gerenciar.setVisibility(View.VISIBLE);
-							view_editar.setVisibility(View.GONE);
-							nome.setEnabled(false);
-							prazo.setEnabled(false);
-							descricao.setEnabled(false);
-
-							atualizacao = RESULT_OK;
-
-						}
+					} catch (ParseException e) {
+						exp = e;
 					}
 				}
+
+				if (nome.getText().toString().trim().equals(""))
+					nome.setError("Nome é obrigatorio!");
+				else if (prazo.getText().length() < 8 && com_prazo)
+					prazo.setError("Esse Prazo é inválido!");
+				else if (exp != null)
+					prazo.setError("Esse Prazo é inválido!");
+				else if (new Date().after(data_prazo))
+					prazo.setError("Esse prazo já passou!");
+				else {
+					ParseObject atividade = new ParseObject("atividade");
+					atividade = atividade1;
+					atividade.put("nome", nome.getText().toString());
+					atividade.put("prazo", data_prazo);
+					atividade.put("descricao", descricao.getText().toString());
+					atividade.saveInBackground();
+					view_gerenciar.setVisibility(View.VISIBLE);
+					view_editar.setVisibility(View.GONE);
+					nome.setEnabled(false);
+					prazo.setEnabled(false);
+					descricao.setEnabled(false);
+
+					atualizacao = RESULT_OK;
+
+				}
 			}
+
 		});
 
 		// bt_responsavel = (Button) findViewById(R.id.bt_responsavel);
@@ -449,24 +434,15 @@ public class GerenciarAtividade extends Activity {
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int which) {
+								
+								Intent returnIntent = new Intent();
+								setResult(RESULT_OK, returnIntent);
 
 								DeleteAll delete = new DeleteAll();
 								delete.execute(atividade1);
 
-								Intent VoltarParaAtividade = new Intent(
-										GerenciarAtividade.this,
-										Atividade.class);
-								VoltarParaAtividade.putExtra("projeto_id",
-										projeto_id);
-								VoltarParaAtividade.putExtra("projeto_nome",
-										projeto_nome);
-								VoltarParaAtividade.putExtra("atividade_id",
-										atividade_id);
-								VoltarParaAtividade.putExtra("projeto_membros",
-										projeto_membros);
-								GerenciarAtividade.this
-										.startActivity(VoltarParaAtividade);
-								GerenciarAtividade.this.finish();
+								
+								finish();
 							}
 
 						});
@@ -481,8 +457,10 @@ public class GerenciarAtividade extends Activity {
 			public void onClick(View v) {
 				view_gerenciar.setVisibility(View.GONE);
 				view_editar.setVisibility(View.VISIBLE);
-				nome.setEnabled(true);
 				prazo.setEnabled(true);
+
+				nome.setEnabled(true);
+				// prazo.setEnabled(true);
 				descricao.setEnabled(true);
 
 			}
@@ -495,12 +473,12 @@ public class GerenciarAtividade extends Activity {
 			public void onClick(View v) {
 				view_gerenciar.setVisibility(View.VISIBLE);
 				view_editar.setVisibility(View.GONE);
-				
+
 				nome.setText(atividade1.getString("nome"));
-				prazo.setText(DateFormat.format("dd/MM/yyyy",
-						atividade1.getDate("prazo")));
+				// prazo.setText(DateFormat.format("dd/MM/yyyy",
+				// atividade1.getDate("prazo")));
 				descricao.setText(atividade1.getString("descricao"));
-				
+
 				nome.setEnabled(false);
 				prazo.setEnabled(false);
 				descricao.setEnabled(false);
@@ -555,7 +533,7 @@ public class GerenciarAtividade extends Activity {
 					nome = (EditText) findViewById(R.id.atividade_nome);
 					nome.setText(atividade1.getString("nome"));
 					nome.setEnabled(false);
-					prazo = (EditText) findViewById(R.id.atividade_prazo);
+					// prazo = (EditText) findViewById(R.id.atividade_prazo);
 					prazo.setText(DateFormat.format("dd/MM/yyyy",
 							atividade1.getDate("prazo")));
 					prazo.setEnabled(false);
@@ -632,10 +610,6 @@ public class GerenciarAtividade extends Activity {
 				ParseFile file = new ParseFile("teste.jpg", byteArray);
 				comentario.put("anexo", file);
 
-				/*
-				 * Now you have choosen image in Bitmap format in object
-				 * "yourSelectedImage". You can use it in way you want!
-				 */
 			}
 		}
 

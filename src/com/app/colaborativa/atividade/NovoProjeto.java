@@ -46,7 +46,7 @@ public class NovoProjeto extends ListActivity {
 
 	private EditText txt_nome, txt_prazo;
 	private TextView tv_nome, tv_prazo, tv_list;
-	private String nome, prazo, projeto_id;
+	private String projeto_id;
 	private boolean is_edicao;
 	private Date data_prazo;
 	private Button bt_projeto, bt_feed, bt_contexto;
@@ -58,6 +58,7 @@ public class NovoProjeto extends ListActivity {
 	public List<ParseObject> membros = new ArrayList<ParseObject>();
 	public List<String> integrantes = new ArrayList<String>();
 	public ParseObject projeto;
+	private Exception exp;
 	
 
 	String phoneNumber;
@@ -123,8 +124,23 @@ public class NovoProjeto extends ListActivity {
 
 			@Override
 			public void onClick(View v) {
-
+				exp = null;
 				txt_prazo = (EditText) findViewById(R.id.proj_prazo);
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				sdf.setLenient (false);
+				try {
+					data_prazo = sdf.parse(txt_prazo.getText().toString());
+					Calendar cal = Calendar.getInstance();
+			        cal.setTime(data_prazo);
+					if(cal.get(Calendar.YEAR)<1000){
+						cal.add(Calendar.YEAR, 2000);
+					}
+					data_prazo = cal.getTime();
+						
+				} catch (ParseException e) {
+					exp = e;
+				}
+				
 								
 				if(projeto==null)
 					projeto = new ParseObject("projeto");
@@ -136,29 +152,13 @@ public class NovoProjeto extends ListActivity {
 				}
 				else if(txt_prazo.getText().toString().trim().equals(""))
 					txt_prazo.setError( "Prazo é obrigatorio!" );
-				else if(txt_prazo.getText().length() < 6)
+				else if(txt_prazo.getText().length() < 8)
 					txt_prazo.setError( "Esse Prazo é inválido!" );
-				else{
-					
-					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-					try {
-						data_prazo = sdf.parse(txt_prazo.getText().toString());
-						Calendar cal = Calendar.getInstance();
-				        cal.setTime(data_prazo);
-						if(cal.get(Calendar.YEAR)<1000){
-							cal.add(Calendar.YEAR, 2000);
-						}
-						data_prazo = cal.getTime();
-							
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				
-					if(new Date().after(data_prazo)){
+				else if(exp != null)
+					txt_prazo.setError( "Esse Prazo é inválido!" );
+				else if(new Date().after(data_prazo))
 						txt_prazo.setError( "Esse prazo já passou!" );
-					}
-					else{
+				else{
 					
 						projeto.put("nome", txt_nome.getText().toString());
 						projeto.put("prazo", data_prazo);	
@@ -182,7 +182,7 @@ public class NovoProjeto extends ListActivity {
 						setResult(RESULT_OK,returnIntent);
 						finish();
 					}
-				}
+				
 			}
 		});
 

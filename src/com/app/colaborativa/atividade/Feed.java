@@ -90,6 +90,7 @@ public class Feed extends ListActivity {
 							intent.putExtra("atividade_id", feed.getParseObject("atividade").getObjectId());
 						}
 						
+						intent.putExtra("projeto_id",feed.getParseObject("projeto").getObjectId());
 						intent.putExtra("projeto_nome",feed.getParseObject("projeto").getString("nome"));
 						intent.putExtra("projeto_prazo",feed.getParseObject("projeto").getString("prazo"));
 						intent.putExtra("projeto_membros", feed.getParseObject("projeto").getList("membros").toString());

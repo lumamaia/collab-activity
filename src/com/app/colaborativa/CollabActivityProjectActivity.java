@@ -33,8 +33,6 @@ public class CollabActivityProjectActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-//		ParseAnalytics.trackAppOpened(getIntent());
-
 		currentUser = ParseUser.getCurrentUser();
 		
 
@@ -78,7 +76,6 @@ public class CollabActivityProjectActivity extends Activity {
 					CollabActivityProjectActivity.this, Feed.class);
 			CollabActivityProjectActivity.this
 					.startActivity(irFeed);
-//			CollabActivityProjectActivity.this.finish();
 		}
 		bt_projeto = (Button) findViewById(R.id.bt_projeto);
 		bt_projeto.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +100,6 @@ public class CollabActivityProjectActivity extends Activity {
 							CollabActivityProjectActivity.this, Projeto.class);
 					CollabActivityProjectActivity.this
 							.startActivity(VoltarParaProjeto);
-//					CollabActivityProjectActivity.this.finish();
 				}
 			}
 
